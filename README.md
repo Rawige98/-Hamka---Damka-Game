@@ -1,7 +1,7 @@
 # Hamka2020
 
 ## Team members:
-Najwan Kanj - n.kanj2@gmail.com
-Ayah Abu Alhija - aya.15.667@gmail.com
-Amneh Hassan - amneh.hassan@gmail.com
-Rawi Jaraisy - rawige.98@gmail.com
+1. Najwan Kanj - n.kanj2@gmail.com
+2. Ayah Abu Alhija - aya.15.667@gmail.com
+3. Amneh Hassan - amneh.hassan@gmail.com
+4. Rawi Jaraisy - rawige.98@gmail.com
