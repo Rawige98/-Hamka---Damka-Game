@@ -1,4 +1,4 @@
-# Hamka2020
+# Hamka - Wolf team
 
 ## Team members:
 1. Najwan Kanj - n.kanj2@gmail.com
