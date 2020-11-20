@@ -14,7 +14,7 @@ public class Question {
 		super();
 		this.id = id;
 		this.text = text;
-		this.answers = answers;
+		this.answers = new ArrayList<String>();
 		this.rightAnswer = rightAnswer;
 		this.difficulty = difficulty;
 	}
