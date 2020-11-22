@@ -1,84 +1,209 @@
 package Model;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class SysData {
+import Controller.Logger;
+
+
+public class SysData implements Serializable {
 	
-	private ArrayList<Game> games ;
-	private ArrayList<Question> questions;
-	private ArrayList<Game> pausedGames ;
+	private static final long serialVersionUID = 1L;
+	
+	/**instance object for the class.*/
+	transient private static SysData sysData;
+	
+	/**hashMap stores the questions for each level.*/
+	private HashMap<Difficulty, List<Question>> questions ;
+	transient private Game currentGame;
+	transient private User currentUser;
+	private Map<Integer, Game> gameData;
+	private List<User> playerData;
+	
+//	private ArrayList<Game> games ;
+//	private ArrayList<Game> pausedGames ;
 	
 /******************************Constructor***********************************************/
-	
-	public SysData(ArrayList<Game> games, ArrayList<Question> questions, ArrayList<Game> pausedGames) {
-		super();
-		this.games = new ArrayList<Game>();
-		this.questions = new ArrayList<Question>();
-		this.pausedGames = new ArrayList<Game>();
-	}
-	
-/*****************************Getters and Setters ******************************************/
-	public ArrayList<Game> getGames() {
-		return games;
-	}
 
-	public void setGames(ArrayList<Game> games) {
-		this.games = games;
-	}
-
-	public ArrayList<Question> getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(ArrayList<Question> questions) {
-		this.questions = questions;
-	}
-
-	public ArrayList<Game> getPausedGames() {
-		return pausedGames;
-	}
-
-	public void setPausedGames(ArrayList<Game> pausedGames) {
-		this.pausedGames = pausedGames;
-	}
-	/*****************************************hashCode + equals**********************/
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((games == null) ? 0 : games.hashCode());
-		result = prime * result + ((pausedGames == null) ? 0 : pausedGames.hashCode());
-		result = prime * result + ((questions == null) ? 0 : questions.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SysData other = (SysData) obj;
-		if (games == null) {
-			if (other.games != null)
-				return false;
-		} else if (!games.equals(other.games))
-			return false;
-		if (pausedGames == null) {
-			if (other.pausedGames != null)
-				return false;
-		} else if (!pausedGames.equals(other.pausedGames))
-			return false;
-		if (questions == null) {
-			if (other.questions != null)
-				return false;
-		} else if (!questions.equals(other.questions))
-			return false;
-		return true;
+	public static SysData getInstance() {
+		if (sysData == null) {
+			sysData = importData();
+		}
+		return sysData;
 	}
 	
+	
+	/**
+	 * private c'tor for singleton use.
+	 */
+	private SysData() {
+		sysData = this;
+		playerData = new ArrayList<>();
+		this.questions= JSON.getInstance().loadQuestions(null);
+		//tileSet = new LinkedList<>();
+		gameData = new HashMap<>();
+		Logger.log("Finished creating new instance of DB");
+		currentGame = null;
+
+	}
+
+	//-------------------------------------------------------------------
+	//-------------------------functionality-----------------------------
+	//-------------------------------------------------------------------
+	/**
+	 * add a new question to json file
+	 * @param questionToAdd
+	 * @return
+	 */
+	public boolean addQuestion(Question questionToAdd){
+		if(questionToAdd==null) return false;
+		List<Question> qList=this.questions.get(questionToAdd.getDifficulty());
+		if(qList==null)
+			qList=new ArrayList<Question>();
+		if(qList.add(questionToAdd)){
+	      JSON.getInstance().saveQuestions(this.questions,null);
+		  return true;}
+		
+		return false;
+	}
+    
+	/**
+	 * remove a new question to json file
+	 * @param questionToAdd
+	 * @return
+	 */
+	public boolean removeQuestion(Question questionToRemove){
+		if(questionToRemove==null) return false;
+		List<Question> qList=this.questions.get(questionToRemove.getDifficulty());
+		if(qList==null)return false;
+	    int index=qList.indexOf(questionToRemove);
+	    if(index>-1){
+		 qList.remove(index);	
+	      JSON.getInstance().saveQuestions(this.questions,null);
+		  return true;
+	    }
+	    return false;
+	
+	}
+	
+	public void closeGame() {
+
+	}
+	
+	public String login(String nickname){
+		if (getCurrentUser() == null)
+			setCurrentUser(new User(verifyPlayer(nickname)));
+		else
+			verifyPlayer(nickname);
+		return nickname;
+		
+		
+	}
+	
+	public void setCurrentUser(User currentPlayer) {
+		this.currentUser = currentPlayer;
+	}
+	public void login(String nickname, Boolean force) {
+		this.currentUser = null;
+		login(nickname);
+		
+	}
+	
+	public String verifyPlayer(String nickname) {
+		if (playerData == null)
+			playerData = new ArrayList<>();
+		if (!playerData.contains(new User(nickname))) {
+			Logger.log("Added player " + nickname + " to database.");
+			playerData.add(new User(nickname, E_UserType.PLAYER));
+//			exportData();
+		}
+
+		return playerData.get(playerData.indexOf(new User(nickname))).getNickName();
+	}
+	
+	//-------------------------------------------------------------------
+		//----------------------------utility--------------------------------
+		//-------------------------------------------------------------------
+		/**
+		 * Seraialize all relevant data
+		 *
+		 * @return
+		 */
+		private static SysData importData() {
+			try {
+				String fileName = "SysData.cer";
+				FileInputStream input = new FileInputStream(fileName);
+				ObjectInputStream objInput = new ObjectInputStream(input);
+				SysData Data = (SysData) objInput.readObject();
+				Logger.log("Successfully imported Data.cer");
+				Data.questions = JSON.getInstance().loadQuestions(null);
+				
+				objInput.close();
+
+				return Data;
+			} catch (Exception e) {
+				Logger.log("Failed to import database");
+				return new SysData();
+			}
+		}
+		/**
+		 * Deserialize data
+		 */
+		public static void exportData() {
+			try {
+				String fileName = "SysData.cer";
+				FileOutputStream output = new FileOutputStream(fileName);
+				ObjectOutputStream objoutput = new ObjectOutputStream(output);
+				objoutput.writeObject(sysData);
+				objoutput.close();
+				Logger.log("Exported Data to \"" + fileName + "\"");
+
+			} catch (Exception e) {
+				System.err.println("Could not export database\n" + e.toString());
+
+			}
+		}
+		public boolean AdminLogin(String username,String password) {
+			// TODO Auto-generated method stub
+			if(username.equals("Admin") && password.equals("Admin"))
+				return true;
+			return false;
+		}
+		
+		public Map<Difficulty, List<Question>> getQuestions() {
+			return questions;
+		}
+		public boolean editQuestion(Question qBefore, Question qAfter) {
+			// TODO Auto-generated method stub
+			if (removeQuestion(qBefore))
+				if (addQuestion(qAfter))
+					return true;
+
+			return false;
+		}
+		public int getNextQuestionNum() {
+			// TODO Auto-generated method stub
+			int num=0;
+			for(List<Question> list:questions.values())
+				num+=list.size();
+			return num++;
+		}
+		
+		public Difficulty getQuestionLevel(int level) {
+			// TODO Auto-generated method stub
+			return   JSON.getQuestionLevel(level);
+		}
+		public User getCurrentUser() {
+			return currentUser;
+		}
+
 
 	
 	
