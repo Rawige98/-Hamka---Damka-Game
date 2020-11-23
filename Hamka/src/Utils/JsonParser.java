@@ -13,7 +13,7 @@ import Model.Game;
 import Model.Player;
 import Model.Question;
 import Model.Tile;
-public class Parser {
+public class JsonParser {
 
 	public static<T> List<T> parseToArray(String data, Object clazz){
 		GsonBuilder builder = new GsonBuilder();

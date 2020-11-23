@@ -2,43 +2,55 @@ package Model;
 
 import java.util.ArrayList;
 
+
+
 public class Question {
 
 	private int id;
 	private String text;
-	private ArrayList<String> answers;
-	private String rightAnswer;
+	private ArrayList<Answer> answers;
+	private int rightAnswer;
 	private Difficulty difficulty;
+	private E_Teams team;
 
-	public Question(int id, String text, ArrayList<String> answers, String rightAnswer, Difficulty difficulty) {
+	public Question(int id, String text, Difficulty difficulty, int rightAnswer,E_Teams team) {
 		super();
 		this.id = id;
 		this.text = text;
-		this.answers = answers;
+		this.answers = new ArrayList<Answer>();
 		this.rightAnswer = rightAnswer;
 		this.difficulty = difficulty;
+		this.team=team;
 	}
-
-	public boolean addAnswer(String answer, boolean isCorrect) {
-		if (answer != null) {
-			answers.add(answer);
-			if (isCorrect)
-				setRightAnswer(answer);
+	
+    /**
+     * Add a possible answer to the question.
+     * check if the answer is not already exists in answers arraylist.
+     * @param answerToAdd
+     * @return true if the answer added successfully,false otherwise.
+     */
+	public boolean addAnswer(Answer answerToAdd){
+		
+		if(answerToAdd!=null && !this.answers.contains(answerToAdd)){
+			this.answers.add(answerToAdd);
 			return true;
 		}
-
 		return false;
 	}
 
-	public boolean removeAnswer(String answer) {
-		if (!answers.contains(answer))
-			return false;
-		else {
-			if (this.rightAnswer.equals(answer))
-				setRightAnswer("");
-			answers.remove(answer);
+    /**
+     * Remove a possible answer to the question.
+     * check if the answer is exists in answers arraylist.
+     * @param answerToRemove
+     * @return true if the answer removed successfully,false otherwise.
+     */
+	public boolean removeAnswer(Answer answerToRemove){
+		
+		if(answerToRemove!=null && this.answers.contains(answerToRemove)){
+			this.answers.remove(answerToRemove);
 			return true;
 		}
+		return false;
 	}
 
 	/******************** Getters And Setters ******************************/
@@ -59,19 +71,19 @@ public class Question {
 		this.text = text;
 	}
 
-	public ArrayList<String> getAnswers() {
+	public ArrayList<Answer> getAnswers() {
 		return answers;
 	}
 
-	public void setAnswers(ArrayList<String> answers) {
+	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
 	}
 
-	public String getRightAnswer() {
+	public int getRightAnswer() {
 		return rightAnswer;
 	}
 
-	public void setRightAnswer(String rightAnswer) {
+	public void setRightAnswer(int rightAnswer) {
 		this.rightAnswer = rightAnswer;
 	}
 
@@ -82,6 +94,17 @@ public class Question {
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
 	}
+	
+
+	public E_Teams getTeam() {
+		return team;
+	}
+
+
+	public void setTeam(E_Teams team) {
+		this.team = team;
+	}
+
 
 	@Override
 	public String toString() {
@@ -96,7 +119,8 @@ public class Question {
 		result = prime * result + ((answers == null) ? 0 : answers.hashCode());
 		result = prime * result + ((difficulty == null) ? 0 : difficulty.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((rightAnswer == null) ? 0 : rightAnswer.hashCode());
+		result = prime * result + rightAnswer;
+		result = prime * result + ((team == null) ? 0 : team.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		return result;
 	}
@@ -119,10 +143,9 @@ public class Question {
 			return false;
 		if (id != other.id)
 			return false;
-		if (rightAnswer == null) {
-			if (other.rightAnswer != null)
-				return false;
-		} else if (!rightAnswer.equals(other.rightAnswer))
+		if (rightAnswer != other.rightAnswer)
+			return false;
+		if (team != other.team)
 			return false;
 		if (text == null) {
 			if (other.text != null)
@@ -131,5 +154,9 @@ public class Question {
 			return false;
 		return true;
 	}
+
+
+
+
 
 }
