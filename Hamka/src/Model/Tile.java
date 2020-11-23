@@ -44,10 +44,21 @@ public class Tile {
 	public void setY(int y) {
 		this.y = y;
 	}
-	//---------------------------------------
-	public boolean changeColor(Color c)
-	{
-		return true;
+	//------------------------------------
+	/**
+	 * in this method we upgrade the soldier to queen
+	 * @param Tile T
+	 * @return true if the soldier upgraded successfully
+	 */
+	public boolean upgradeToQueen() {
+		if(this.getValue()==1) {
+			this.setValue(11);
+			return true;
+		}
+		if(this.getValue()==2) {
+			this.setValue(22);
+			return true;
+		}
+		return false;
 	}
-
 }
