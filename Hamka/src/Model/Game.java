@@ -1,5 +1,6 @@
 package Model;
 
+import java.awt.Point;
 import java.util.Date;
 import java.util.Timer;
 
@@ -13,6 +14,8 @@ public class Game {
 	private Player winner;
 	private Player playerTurn;
 	private Timer gameDuration;
+	private boolean isP1Turn;
+
 
 	public Game(Player player1, Player player2) {
 		super();
@@ -88,6 +91,13 @@ public class Game {
 	public void setGameDuration(Timer gameDuration) {
 		this.gameDuration = gameDuration;
 	}
+	public boolean isP1Turn() {
+		return isP1Turn;
+	}
+
+	public void setP1Turn(boolean isP1Turn) {
+		this.isP1Turn = isP1Turn;
+	}
 	// ---------------------------------------------------
 
 	public void pauseGame() {
@@ -97,6 +107,12 @@ public class Game {
 	}
 
 	public void popQuestion() {
+	}
+	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
+		return true;
+	}
+	public String getGameState() {
+		return "";
 	}
 
 }
