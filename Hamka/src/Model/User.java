@@ -1,7 +1,8 @@
 package Model;
 
 import java.io.Serializable;
-import Model.E_UserType;
+
+import Utils.E_UserType;
 
 /**
  * This class represents a user of the game.(Regular player OR Admin).

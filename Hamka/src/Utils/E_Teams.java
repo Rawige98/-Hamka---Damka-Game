@@ -1,4 +1,4 @@
-package Model;
+package Utils;
 
 public enum E_Teams {
 	Chimp,Crocodile,Scorpion,Giraffe,Spider,Viper,Panther,Zebra,Wolf,Sloth,Lion,Jellyfish,Panda,Piranha,Rabbit,

@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 import Controller.Logger;
-import Model.Answer;
+//import Model.Answer;
 import Model.Question;
-
+import Utils.Difficulty;
+import Utils.E_Teams;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,7 +28,7 @@ import java.util.Iterator;
  */
 
 public class JSON {
-  
+ 
      //-------------------------------------------------------------------
 	 //-----------------------------fields--------------------------------
 	 //-------------------------------------------------------------------
@@ -125,7 +126,7 @@ public class JSON {
 					for (int i = 0; i < ansArray.size(); i++) {
 						String a=(String) ansArray.get(i);
 						//add answers to the queston's answers array.
-						questionToAdd.addAnswer(new Answer(a));
+						//questionToAdd.addAnswer(new Answer(a));
 					}
 					
 					questionToAdd.setId(code);
@@ -179,9 +180,9 @@ public class JSON {
 						
 					// get all answers
 					JSONArray answers = new JSONArray();
-					for (Answer a : q.getAnswers()){
-						answers.add(a.getText());
-					}
+//					for (Answer a : q.getAnswers()){
+//						answers.add(a.getText());
+//					}
 
 					// put fields in the object
 					ja.put("id", q.getId());
