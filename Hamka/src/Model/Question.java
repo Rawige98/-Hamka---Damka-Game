@@ -2,13 +2,16 @@ package Model;
 
 import java.util.ArrayList;
 
+import Utils.Difficulty;
+import Utils.E_Teams;
+
 
 
 public class Question {
 
 	private int id;
 	private String text;
-	private ArrayList<Answer> answers;
+	private ArrayList<String> answers;
 	private int rightAnswer;
 	private Difficulty difficulty;
 	private E_Teams team;
@@ -17,7 +20,7 @@ public class Question {
 		super();
 		this.id = id;
 		this.text = text;
-		this.answers = new ArrayList<Answer>();
+		this.answers = new ArrayList<String>();
 		this.rightAnswer = rightAnswer;
 		this.difficulty = difficulty;
 		this.team=team;
@@ -29,7 +32,7 @@ public class Question {
      * @param answerToAdd
      * @return true if the answer added successfully,false otherwise.
      */
-	public boolean addAnswer(Answer answerToAdd){
+	public boolean addAnswer(String answerToAdd){
 		
 		if(answerToAdd!=null && !this.answers.contains(answerToAdd)){
 			this.answers.add(answerToAdd);
@@ -44,7 +47,7 @@ public class Question {
      * @param answerToRemove
      * @return true if the answer removed successfully,false otherwise.
      */
-	public boolean removeAnswer(Answer answerToRemove){
+	public boolean removeAnswer(String answerToRemove){
 		
 		if(answerToRemove!=null && this.answers.contains(answerToRemove)){
 			this.answers.remove(answerToRemove);
@@ -71,11 +74,11 @@ public class Question {
 		this.text = text;
 	}
 
-	public ArrayList<Answer> getAnswers() {
+	public ArrayList<String> getAnswers() {
 		return answers;
 	}
 
-	public void setAnswers(ArrayList<Answer> answers) {
+	public void setAnswers(ArrayList<String> answers) {
 		this.answers = answers;
 	}
 
