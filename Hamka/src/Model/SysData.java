@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import Controller.Logger;
+import Utils.Difficulty;
+import Utils.E_UserType;
 
 
 public class SysData implements Serializable {

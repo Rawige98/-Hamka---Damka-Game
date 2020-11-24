@@ -1,4 +1,4 @@
-package Model;
+package Utils;
 
 /**
  * This enum represents the types of user that can use the game.

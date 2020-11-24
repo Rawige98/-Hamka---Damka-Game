@@ -1,4 +1,4 @@
-package Model;
+package Utils;
 
 public enum Difficulty {
 	/**difficult difficulty level*/
