@@ -5,26 +5,24 @@ import java.util.Date;
 import java.util.Timer;
 
 public class Game {
-	private static int Serial=0;
+	private static int Serial = 0;
 	private int id;
 	private Player player1;
 	private Player player2;
 	private Date gameDate;
 	private Board board;
 	private Player winner;
-	private Player playerTurn;
 	private Timer gameDuration;
 	private boolean isP1Turn;
-
 
 	public Game(Player player1, Player player2) {
 		super();
 		this.player1 = player1;
 		this.player2 = player2;
 		board = new Board();
-		playerTurn = player1;
 		gameDate = java.util.Calendar.getInstance().getTime();
-		id=++Serial;
+		id = ++Serial;
+		isP1Turn = true;
 	}
 
 	// ------------------------Getters and Setters---------------------
@@ -76,14 +74,6 @@ public class Game {
 		this.winner = winner;
 	}
 
-	public Player getPlayerTurn() {
-		return playerTurn;
-	}
-
-	public void setPlayerTurn(Player playerTurn) {
-		this.playerTurn = playerTurn;
-	}
-
 	public Timer getGameDuration() {
 		return gameDuration;
 	}
@@ -91,6 +81,7 @@ public class Game {
 	public void setGameDuration(Timer gameDuration) {
 		this.gameDuration = gameDuration;
 	}
+
 	public boolean isP1Turn() {
 		return isP1Turn;
 	}
@@ -103,16 +94,45 @@ public class Game {
 	public void pauseGame() {
 	}
 
-	public void finishGame() {
+	/**
+	 * we check if the game is finished by the number of Soldiers for the players
+	 * 
+	 * @return true if the game has finished
+	 */
+	public boolean finishGame() {
+		if (board.checkAvailableMoves(isP1Turn).isEmpty() && board.checkAvailableSkips(isP1Turn).isEmpty()) {
+			if (player1.getScore() > player2.getScore())
+				winner = player1;
+			else
+				winner = player2;
+			return true;
+		}
+		return false;
 	}
 
 	public void popQuestion() {
 	}
+
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
-		return true;
-	}
-	public String getGameState() {
-		return "";
+		return board.move(xStart, yStart, xEnd, yEnd, isP1Turn);
 	}
 
+	public String getGameState() {
+		return board.toString();
+	}
+
+	public static void main(String[] args) {
+		Game n = new Game(new Player("qa"), new Player("aqaq"));
+//	while(!n.finishGame()) {
+		System.out.println(n.getGameState());
+		n.move(5, 0, 4, 1);
+		System.out.println(n.getGameState());
+		n.setP1Turn(false);
+		n.move(2, 3, 3, 2);
+		System.out.println(n.getGameState());
+		n.setP1Turn(true);
+		n.move(4, 1, 2, 3);
+		System.out.println(n.getGameState());
+		// }
+	}
 }
