@@ -9,16 +9,14 @@ import Utils.E_Teams;
 
 public class Question {
 
-	private int id;
 	private String text;
 	private ArrayList<String> answers;
 	private int rightAnswer;
 	private Difficulty difficulty;
 	private E_Teams team;
 
-	public Question(int id, String text, Difficulty difficulty, int rightAnswer,E_Teams team) {
+	public Question( String text, Difficulty difficulty, int rightAnswer,E_Teams team) {
 		super();
-		this.id = id;
 		this.text = text;
 		this.answers = new ArrayList<String>();
 		this.rightAnswer = rightAnswer;
@@ -58,13 +56,6 @@ public class Question {
 
 	/******************** Getters And Setters ******************************/
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getText() {
 		return text;
@@ -108,11 +99,10 @@ public class Question {
 		this.team = team;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", text=" + text + ", answers=" + answers + ", rightAnswer=" + rightAnswer
-				+ ", difficulty=" + difficulty + "]";
+		return "Question [text=" + text + ", answers=" + answers + ", rightAnswer=" + rightAnswer + ", difficulty="
+				+ difficulty + ", team=" + team + "]";
 	}
 
 	@Override
@@ -121,7 +111,6 @@ public class Question {
 		int result = 1;
 		result = prime * result + ((answers == null) ? 0 : answers.hashCode());
 		result = prime * result + ((difficulty == null) ? 0 : difficulty.hashCode());
-		result = prime * result + id;
 		result = prime * result + rightAnswer;
 		result = prime * result + ((team == null) ? 0 : team.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
@@ -144,8 +133,6 @@ public class Question {
 			return false;
 		if (difficulty != other.difficulty)
 			return false;
-		if (id != other.id)
-			return false;
 		if (rightAnswer != other.rightAnswer)
 			return false;
 		if (team != other.team)
@@ -157,6 +144,9 @@ public class Question {
 			return false;
 		return true;
 	}
+
+
+
 
 
 

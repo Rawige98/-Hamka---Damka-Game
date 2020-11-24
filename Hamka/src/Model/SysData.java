@@ -1,216 +1,265 @@
 package Model;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.Random;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import Controller.Logger;
 import Utils.Difficulty;
-import Utils.E_UserType;
+import Utils.E_Teams;
 
+public class SysData {
 
-public class SysData implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	/**instance object for the class.*/
-	transient private static SysData sysData;
-	
-	/**hashMap stores the questions for each level.*/
-	private HashMap<Difficulty, List<Question>> questions ;
-	transient private Game currentGame;
-	transient private User currentUser;
-	private Map<Integer, Game> gameData;
-	private List<User> playerData;
-	
-//	private ArrayList<Game> games ;
-//	private ArrayList<Game> pausedGames ;
-	
-/******************************Constructor***********************************************/
+	private static SysData SysData;
+	private static HashMap<Difficulty, ArrayList<Question>> questions;
+	private static ArrayList<Game> games;
+	private static ArrayList<Game> pausedGames;
+	private static String quesJsonPath = "/JSON/question_json.json"; // .txt
+	private static String originalPath = quesJsonPath;
 
 	public static SysData getInstance() {
-		if (sysData == null) {
-			sysData = importData();
-		}
-		return sysData;
+		if (SysData == null)
+			SysData = new SysData();
+		return SysData;
 	}
-	
-	
-	/**
-	 * private c'tor for singleton use.
-	 */
+
+//************************************** constructor*********************************************************************
 	private SysData() {
-		sysData = this;
-		playerData = new ArrayList<>();
-		this.questions= JSON.getInstance().loadQuestions(null);
-		//tileSet = new LinkedList<>();
-		gameData = new HashMap<>();
-		Logger.log("Finished creating new instance of DB");
-		currentGame = null;
+
+		questions = new HashMap<Difficulty, ArrayList<Question>>();
+		games = new ArrayList<Game>();
+		pausedGames = new ArrayList<Game>();
+	}
+
+//*********************************getters and setters********************************************************************
+	public static HashMap<Difficulty, ArrayList<Question>> getQuestions() {
+		return questions;
+	}
+
+	public static void setQuestions(HashMap<Difficulty, ArrayList<Question>> Questions) {
+		questions = Questions;
+	}
+
+	public static ArrayList<Game> getGames() {
+		return games;
+	}
+
+	public static void setGames(ArrayList<Game> Games) {
+		games = Games;
+	}
+
+	public static ArrayList<Game> getPausedGames() {
+		return pausedGames;
+	}
+
+	public static void setPausedGames(ArrayList<Game> PausedGames) {
+		pausedGames = PausedGames;
+	}
+	// *******************************************loadQuestions************************************************************************
+
+	@SuppressWarnings("unchecked")
+	public boolean loadQuestions(String externalPath) {
+
+		if (externalPath != null) {
+			quesJsonPath = externalPath;
+		}
+		Logger.log("Reading questions form path: " + quesJsonPath);
+		JSONParser parser = new JSONParser();
+
+		try {
+			// get question's JSON file
+			InputStream is = getClass().getResourceAsStream(originalPath);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			Object obj = parser.parse(reader);
+			JSONObject jo = (JSONObject) obj;
+
+			// convert question's JSON file to array .
+			JSONArray quesArray = (JSONArray) jo.get("questions");
+
+			// iterate over the values (questions).
+			Iterator<JSONObject> quesIterator = quesArray.iterator();
+			System.out.println(quesIterator.toString());
+			// get the questions data.
+			while (quesIterator.hasNext()) {
+
+				JSONObject q = quesIterator.next();
+
+				// get question's content
+				String text = (String) q.get("question");
+
+				// get correct answer's number.
+				int correctAnswerNum = Integer.valueOf(q.get("correct_ans").toString());
+
+				// get question's difficulty level.
+				Difficulty level = getQuestionLevel(Integer.valueOf(q.get("level").toString()));
+
+				// get question's created team name.
+				E_Teams team = E_Teams.valueOf((String) q.get("team"));
+				// create an new object of the question.
+				Question questionToAdd = new Question(text, level, correctAnswerNum, team);
+
+				// get question's answers.
+				JSONArray ansArray = (JSONArray) q.get("answers");
+
+				for (int i = 0; i < ansArray.size(); i++) {
+					String a = (String) ansArray.get(i);
+					// add answers to the queston's answers array.
+					questionToAdd.addAnswer(a);
+				}
+
+				// Add the question to questions according to the question level.
+				if (!questions.containsKey(questionToAdd.getDifficulty())) {
+					questions.put(questionToAdd.getDifficulty(), new ArrayList<Question>());
+					questions.get(questionToAdd.getDifficulty()).add(questionToAdd);
+
+				} else {
+					questions.get(questionToAdd.getDifficulty()).add(questionToAdd);
+
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}
+		resetPathToDefault();
+		return true;
+	}
+
+//***********************************************SaveQuestions****************************************************************************
+	@SuppressWarnings({ "unchecked", "resource" })
+	public void saveQuestions(String externalPath) {
+
+		if (externalPath != null) {
+			quesJsonPath = externalPath;
+		}
+		Logger.log("Reading questions form path: " + quesJsonPath);
+		try {
+			JSONParser parser = new JSONParser();
+
+			// get question's JSON file
+			InputStream is = getClass().getResourceAsStream(originalPath);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			Object obj = parser.parse(reader);
+			JSONObject jo = (JSONObject) obj;
+			jo.clear();
+			Logger.log("Saving questions from path: " + quesJsonPath);
+			JSONArray JSONquestions = new JSONArray();
+			JSONObject toWrite = new JSONObject();
+
+			// go over all questions and add every question to json file
+			for (ArrayList<Question> list : questions.values()) {
+				if (list == null)
+					continue;
+
+				// get each question from the ArrayList
+				for (Question q : list) {
+					JSONObject ja = new JSONObject();
+
+					// get all answers
+					JSONArray answers = new JSONArray();
+					for (String a : q.getAnswers()) {
+						answers.add(a);
+					}
+
+					// put fields in the object
+					ja.put("question", q.getText());
+					ja.put("correct_ans", q.getRightAnswer());
+					ja.put("level", q.getDifficulty());
+					ja.put("team", q.getTeam().toString());
+					ja.put("answers", answers);
+
+					// add the object to json array
+					JSONquestions.add(ja);
+				}
+
+				// add json array to object question
+				toWrite.put("questions", JSONquestions);
+			}
+			// write the JSONObject to .json file
+			FileWriter file = new FileWriter("./bin" + originalPath);
+			file.write(toWrite.toJSONString());
+			file.flush();
+			Logger.log("Question JSON was saved");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		resetPathToDefault();
+	}
+
+//************************************************add Question****************************************************************************
+	public void addQuestion(Question question) {
+		ArrayList<Question> myArray = questions.get(question.getDifficulty());
+		if (myArray == null) {
+			myArray = new ArrayList<Question>();
+			myArray.add(question);
+		} else if (!myArray.contains(question)) {
+			myArray.add(question);
+		}
+		questions.put(question.getDifficulty(), myArray);
 
 	}
 
-	//-------------------------------------------------------------------
-	//-------------------------functionality-----------------------------
-	//-------------------------------------------------------------------
-	/**
-	 * add a new question to json file
-	 * @param questionToAdd
-	 * @return
-	 */
-	public boolean addQuestion(Question questionToAdd){
-		if(questionToAdd==null) return false;
-		List<Question> qList=this.questions.get(questionToAdd.getDifficulty());
-		if(qList==null)
-			qList=new ArrayList<Question>();
-		if(qList.add(questionToAdd)){
-	      JSON.getInstance().saveQuestions(this.questions,null);
-		  return true;}
-		
+//************************************************remove question***************************************************************************
+	public boolean removeQuestion(Question question) {
+		ArrayList<Question> myArray = questions.get(question.getDifficulty());
+		if (myArray.contains(question)) {
+			questions.get(question.getDifficulty()).remove(question);
+			return true;
+		}
 		return false;
 	}
-    
-	/**
-	 * remove a new question to json file
-	 * @param questionToAdd
-	 * @return
-	 */
-	public boolean removeQuestion(Question questionToRemove){
-		if(questionToRemove==null) return false;
-		List<Question> qList=this.questions.get(questionToRemove.getDifficulty());
-		if(qList==null)return false;
-	    int index=qList.indexOf(questionToRemove);
-	    if(index>-1){
-		 qList.remove(index);	
-	      JSON.getInstance().saveQuestions(this.questions,null);
-		  return true;
-	    }
-	    return false;
-	
-	}
-	
-	public void closeGame() {
+
+//*********************************************Edit Question******************************************************************************
+	public boolean editQuestion(Question question, Question newQuestion) {
+		if (removeQuestion(question)) {
+			addQuestion(newQuestion);
+			return true;
+		}
+		return false;
 
 	}
-	
-	public String login(String nickname){
-		if (getCurrentUser() == null)
-			setCurrentUser(new User(verifyPlayer(nickname)));
-		else
-			verifyPlayer(nickname);
-		return nickname;
-		
-		
+
+//***********************************************popQuestion*****************************************************************************
+	public Question popQuestion() {
+		Object[] diff = questions.keySet().toArray();
+		Difficulty key = (Difficulty) diff[new Random().nextInt(diff.length)];
+		ArrayList<Question> myArray = questions.get(key);
+		Question q = myArray.get(new Random().nextInt(myArray.size()));
+		return q;
 	}
-	
-	public void setCurrentUser(User currentPlayer) {
-		this.currentUser = currentPlayer;
+
+//****************************************************************************************************************************	
+	static Difficulty getQuestionLevel(int level) { // Helper method to define question's difficulty level
+		if (level == 1)
+			return Difficulty.EASY;
+		else if (level == 2)
+			return Difficulty.MEDIUM;
+		else if (level == 3)
+			return Difficulty.HARD;
+
+		return Difficulty.MEDIUM;
 	}
-	public void login(String nickname, Boolean force) {
-		this.currentUser = null;
-		login(nickname);
-		
+
+	private void resetPathToDefault() {
+		quesJsonPath = originalPath;
+		System.out.println("Restting JSON Path: " + quesJsonPath);
 	}
-	
-	public String verifyPlayer(String nickname) {
-		if (playerData == null)
-			playerData = new ArrayList<>();
-		if (!playerData.contains(new User(nickname))) {
-			Logger.log("Added player " + nickname + " to database.");
-			playerData.add(new User(nickname, E_UserType.PLAYER));
-//			exportData();
-		}
-
-		return playerData.get(playerData.indexOf(new User(nickname))).getNickName();
-	}
-	
-	//-------------------------------------------------------------------
-		//----------------------------utility--------------------------------
-		//-------------------------------------------------------------------
-		/**
-		 * Seraialize all relevant data
-		 *
-		 * @return
-		 */
-		private static SysData importData() {
-			try {
-				String fileName = "SysData.cer";
-				FileInputStream input = new FileInputStream(fileName);
-				ObjectInputStream objInput = new ObjectInputStream(input);
-				SysData Data = (SysData) objInput.readObject();
-				Logger.log("Successfully imported Data.cer");
-				Data.questions = JSON.getInstance().loadQuestions(null);
-				
-				objInput.close();
-
-				return Data;
-			} catch (Exception e) {
-				Logger.log("Failed to import database");
-				return new SysData();
-			}
-		}
-		/**
-		 * Deserialize data
-		 */
-		public static void exportData() {
-			try {
-				String fileName = "SysData.cer";
-				FileOutputStream output = new FileOutputStream(fileName);
-				ObjectOutputStream objoutput = new ObjectOutputStream(output);
-				objoutput.writeObject(sysData);
-				objoutput.close();
-				Logger.log("Exported Data to \"" + fileName + "\"");
-
-			} catch (Exception e) {
-				System.err.println("Could not export database\n" + e.toString());
-
-			}
-		}
-		public boolean AdminLogin(String username,String password) {
-			// TODO Auto-generated method stub
-			if(username.equals("Admin") && password.equals("Admin"))
-				return true;
-			return false;
-		}
-		
-		public Map<Difficulty, List<Question>> getQuestions() {
-			return questions;
-		}
-		public boolean editQuestion(Question qBefore, Question qAfter) {
-			// TODO Auto-generated method stub
-			if (removeQuestion(qBefore))
-				if (addQuestion(qAfter))
-					return true;
-
-			return false;
-		}
-		public int getNextQuestionNum() {
-			// TODO Auto-generated method stub
-			int num=0;
-			for(List<Question> list:questions.values())
-				num+=list.size();
-			return num++;
-		}
-		
-		public Difficulty getQuestionLevel(int level) {
-			// TODO Auto-generated method stub
-			return   JSON.getQuestionLevel(level);
-		}
-		public User getCurrentUser() {
-			return currentUser;
-		}
-
-
-	
-	
-	
-	
-	
 
 }
