@@ -3,6 +3,7 @@ package Model;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Board {
@@ -29,9 +30,11 @@ public class Board {
 			for (int j = 0; j < 8; j++) {
 				if (toIndex(i, j) >= 0 && toIndex(i, j) <= 11) {
 					myBoard[i][j] = new Tile(2, Color.black, i, j);
+
 				} else {
 					if (toIndex(i, j) >= 20 && toIndex(i, j) <= 31) {
 						myBoard[i][j] = new Tile(1, Color.black, i, j);
+
 					} else {
 						if (i % 2 != j % 2)
 							myBoard[i][j] = new Tile(0, Color.white, i, j);
@@ -91,7 +94,24 @@ public class Board {
 	 * @return true if the soldier move successfully
 	 */
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
-		return moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn);
+		if(moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn)) {
+			int dx = xEnd - xStart;
+			// if its not a skip
+			if (Math.abs(dx) != 2) {
+			myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
+			myBoard[yStart][xStart].setValue(0);
+			return true;
+			}
+			else
+			{
+				int xmid = (xStart + xEnd) / 2;
+				int ymid = (yStart + yEnd) / 2;
+				myBoard[ymid][xmid].setValue(0);
+				myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
+				myBoard[yStart][xStart].setValue(0);
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -103,21 +123,31 @@ public class Board {
 	 * @return true if the move is legal according to the rules of checkers.
 	 */
 	public boolean moveValidation(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
-		if (toIndex(xStart, yStart) == toIndex(xEnd, yEnd))
+		if (toIndex(xStart, yStart) == toIndex(xEnd, yEnd)) {
+			System.out.println("you insert the same coordinates");
 			return false;
-		if (toIndex(xStart, yStart) == -1 || toIndex(xEnd, yEnd) == -1)
+		}
+		if (toIndex(xStart, yStart) == -1 || toIndex(xEnd, yEnd) == -1) {
+			System.out.println("you cant move to white Tile");
 			return false;
+		}
 		if (toIndex(xStart, yStart) < 0 || toIndex(xStart, yStart) > 31 || toIndex(xEnd, yEnd) < 0
-				|| toIndex(xEnd, yEnd) > 31)
+				|| toIndex(xEnd, yEnd) > 31) {
+			System.out.println("illegal coordinates");
 			return false;
+		}
 		if (!validateIDs(isP1Turn, xStart, yStart, xEnd, yEnd)) {
+			System.out.println("ValidID");
 			return false;
 		}
 		if (!validateDistance(isP1Turn, xStart, yStart, xEnd, yEnd)) {
+			System.out.println("validDistnace");
 			return false;
 		}
-		if (!skipValidation(isP1Turn, xStart, yStart, xEnd, yEnd))
+		if (!skipValidation(isP1Turn, xStart, yStart, xEnd, yEnd)) {
+			System.out.println("validSkip");
 			return false;
+		}
 		return true;
 	}
 
@@ -133,19 +163,22 @@ public class Board {
 	 */
 	public boolean skipValidation(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd) {
 		int dx = xEnd - xStart;
-		int dy = yEnd - yStart;
 		// if its not a skip
-		if (Math.abs(dx) != 2)
+		if (Math.abs(dx) != 2) {
 			return true;
+		}
+	
 		int xmid = (xStart + xEnd) / 2;
 		int ymid = (yStart + yEnd) / 2;
-		if ((myBoard[xStart][xEnd].getValue() == 1 && myBoard[xmid][ymid].getValue() != 2)
-				|| (myBoard[xStart][xEnd].getValue() == 2 && myBoard[xmid][ymid].getValue() != 1))
+		if ((myBoard[yStart][xStart].getValue() == 1 && myBoard[ymid][xmid].getValue() != 2)
+				|| (myBoard[yStart][xStart].getValue() == 2 && myBoard[ymid][xmid].getValue() != 1))
 			return false;
 		if (!isValidPoint(xEnd, yEnd))
 			return false;
-		if(myBoard[xEnd][yEnd].getValue()!=0)
+		if (myBoard[yEnd][xEnd].getValue() != 0)
 			return false;
+		
+		
 		return true;
 	}
 
@@ -161,11 +194,14 @@ public class Board {
 	 */
 	private boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd) {
 		// check if the end is empty
-		if (myBoard[xEnd][yEnd].getValue() != 0)
+		if (myBoard[yEnd][xEnd].getValue() != 0) {
+		System.out.println("Tile isnt empty");
 			return false;
+		}
 		// check if the the player play with his soldiers
-		if ((isP1Turn && myBoard[xStart][yStart].getValue() != 2 && myBoard[xStart][yStart].getValue() != 22)
-				|| (!isP1Turn && myBoard[xStart][yStart].getValue() != 1 && myBoard[xStart][yStart].getValue() != 11)) {
+		if ((!isP1Turn && myBoard[yStart][xStart].getValue() != 2 && myBoard[yStart][xStart].getValue() != 22)
+				|| (isP1Turn && myBoard[yStart][xStart].getValue() != 1 && myBoard[yStart][xStart].getValue() != 11)) {
+			System.out.println("thats not your soldier");
 			return false;
 		}
 		return true;
@@ -256,6 +292,7 @@ public class Board {
 			mymoves.add(myBoard[t.getX() - 1][t.getY() + 1]);
 		return mymoves;
 	}
+
 	/**
 	 * in this method we built a hash that have all the available moves for a player
 	 * 
@@ -303,4 +340,42 @@ public class Board {
 			mymoves.add(myBoard[t.getX() - 2][t.getY() + 2]);
 		return mymoves;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		String newLine = System.getProperty("line.separator");
+		String wall = "|";
+
+		builder.append(" ");
+		for (int i = 0; i < myBoard.length; i++) {
+			if (i < (myBoard.length - 1)) {
+				builder.append("____");
+			} else {
+				builder.append("___ ");
+			}
+		}
+		builder.append(newLine);
+
+		for (int i=0;i<myBoard.length;i++) {
+			for (int j = 0; j < myBoard.length; j++) {
+				builder.append(wall);
+				builder.append(" ");
+				builder.append(myBoard[j][i]);
+				builder.append(" ");
+			}
+			builder.append(wall);
+			builder.append(newLine);
+
+			for (int j = 0; j < myBoard.length; j++) {
+				builder.append(wall);
+				builder.append("___");
+			}
+			builder.append(wall);
+			builder.append(newLine);
+		}
+
+		return builder.toString();
+	}
+
 }
