@@ -1,6 +1,7 @@
- [
+{
+  "questions": [
     {
-      "text": "q1",
+      "question": "q1",
       "answers": [
         "answer1",
         "answer2",
@@ -24,3 +25,4 @@
       "team": "animal"
     }
   ]
+}
