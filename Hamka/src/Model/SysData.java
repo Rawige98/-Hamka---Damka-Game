@@ -5,9 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.json.simple.JSONArray;
@@ -18,6 +21,7 @@ import org.json.simple.parser.ParseException;
 import Controller.Logger;
 import Utils.Difficulty;
 import Utils.E_Teams;
+import Utils.JsonParser;
 
 public class SysData {
 
@@ -260,6 +264,49 @@ public class SysData {
 	private void resetPathToDefault() {
 		quesJsonPath = originalPath;
 		System.out.println("Restting JSON Path: " + quesJsonPath);
+	}
+	
+	
+	
+	
+	public boolean loadGames(String externalPath) {
+		// TODO Auto-generated catch block
+
+		if (externalPath != null) {
+			quesJsonPath = externalPath;
+		}
+
+		try {
+			String file = "src//JSON/game_json.txt";
+			String json = readFileAsString(file);
+			System.out.println(json);
+
+			List<Object> questions = JsonParser.parseToArray(json, new Question());
+			System.out.println("the questions are:" + questions);
+
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}
+
+		return false;
+	}
+
+	public static String readFileAsString(String file) throws Exception {
+		return new String(Files.readAllBytes(Paths.get(file)));
+	}
+	
+	
+	
+	public static void main(String[] args) {
+
+		SysData data = new SysData();
+
+		data.loadQuestions("src/JSON/question_json.txt");
+
 	}
 
 }
