@@ -30,6 +30,7 @@ public class SysData {
 	private static ArrayList<Game> games;
 	private static ArrayList<Game> pausedGames;
 	private static String quesJsonPath = "/JSON/question_json.json"; // .txt
+	private static String gameJsonPath="src/JSON/game_json.txt";
 	private static String originalPath = quesJsonPath;
 
 	public static SysData getInstance() {
@@ -277,7 +278,7 @@ public class SysData {
 		}
 
 		try {
-			String file = "src//JSON/game_json.txt";
+			String file = "src/JSON/question_json.txt";
 			String json = readFileAsString(file);
 			System.out.println(json);
 
@@ -305,7 +306,7 @@ public class SysData {
 
 		SysData data = new SysData();
 
-		data.loadQuestions("src/JSON/question_json.txt");
+		data.loadGames("src/JSON/question_json.txt");
 
 	}
 
