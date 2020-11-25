@@ -46,6 +46,8 @@ public final class Logger {
 	 */
 	public static void log(String message) {
 		// TODO Auto-generated method stub
+		System.out.println("here");
+		System.out.println(message);
 		Logger.log(message, false);
 	}
 	
