@@ -44,7 +44,7 @@ public Player(String username) {
 	}
 
 	public void setScore(int score) {
-		this.score = score;
+		this.score += score;
 	}
 //----------------------------------------------
 }
