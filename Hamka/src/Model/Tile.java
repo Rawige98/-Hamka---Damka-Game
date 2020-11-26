@@ -5,15 +5,17 @@ import javafx.scene.paint.Color;
 public class Tile {
 	private int value;
 	private java.awt.Color color;
-	private int x;
-	private int y;
-	public Tile(int value, java.awt.Color color, int x, int y) {
+	private int rows;
+	private int cols;
+
+	public Tile(int value, java.awt.Color color,  int cols,int rows) {
 		super();
 		this.value = value;
-		this.setColor(color);
-		this.x = x;
-		this.y = y;
+		this.color = color;
+		this.rows = rows;
+		this.cols = cols;
 	}
+
 	//-------------------Getters and Setters-----------
 	public int getValue() {
 		return value;
@@ -29,21 +31,23 @@ public class Tile {
 		this.color = color;
 	}
 
-	public int getX() {
-		return x;
+	
+	public int getRows() {
+		return rows;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setRows(int rows) {
+		this.rows = rows;
 	}
 
-	public int getY() {
-		return y;
+	public int getCols() {
+		return cols;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public void setCols(int cols) {
+		this.cols = cols;
 	}
+
 	//------------------------------------
 	/**
 	 * in this method we upgrade the soldier to queen
@@ -51,11 +55,11 @@ public class Tile {
 	 * @return true if the soldier upgraded successfully
 	 */
 	public boolean upgradeToQueen() {
-		if(this.getValue()==1) {
+		if(this.getValue()==1&&Board.toIndex(rows, cols)>=0&&Board.toIndex(rows, cols)<4) {
 			this.setValue(11);
 			return true;
 		}
-		if(this.getValue()==2) {
+		if(this.getValue()==2&&Board.toIndex(rows, cols)>=29&&Board.toIndex(rows, cols)<33) {
 			this.setValue(22);
 			return true;
 		}
@@ -65,14 +69,18 @@ public class Tile {
 	public String toString() {
 		return   value+"";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + cols;
+		result = prime * result + rows;
+		result = prime * result + value;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -82,13 +90,19 @@ public class Tile {
 		if (getClass() != obj.getClass())
 			return false;
 		Tile other = (Tile) obj;
-		if (x != other.x)
+		if (color == null) {
+			if (other.color != null)
+				return false;
+		} else if (!color.equals(other.color))
 			return false;
-		if (y != other.y)
+		if (cols != other.cols)
+			return false;
+		if (rows != other.rows)
+			return false;
+		if (value != other.value)
 			return false;
 		return true;
 	}
-
 
 	
 	

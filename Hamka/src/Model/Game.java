@@ -120,7 +120,12 @@ public class Game {
 	}
 
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
-		return board.move(xStart, yStart, xEnd, yEnd, isP1Turn);
+		Player p=null;
+		if(isP1Turn)
+			p=player1;
+		else
+			p=player2;
+		return board.move(xStart, yStart, xEnd, yEnd, isP1Turn,p);
 	}
 
 	public String getGameState() {
@@ -133,9 +138,9 @@ public class Game {
 		// System.out.println(n.getGameState());
 		n.move(5, 0, 4, 1);
 	//	System.out.println(n.getGameState());
-		for (Tile t : n.getBoard().avilableMovesForTile(n.getBoard().getMyBoard()[4][1], isP1Turn)) {
-			t.setValue(-1);
-		}
+//		for (Tile t : n.getBoard().avilableMovesForTile(n.getBoard().getMyBoard()[1][4], isP1Turn)) {
+//			t.setValue(-1);
+//		}
 		System.out.println(n.getGameState());
 		
 		// n.setP1Turn(false);
