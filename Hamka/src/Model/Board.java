@@ -3,7 +3,6 @@ package Model;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Board {
@@ -93,22 +92,22 @@ public class Board {
 	 * @param yEnd
 	 * @return true if the soldier move successfully
 	 */
-	public boolean move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
-		if(moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn)) {
+	public boolean move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
+		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn)) {
 			int dx = xEnd - xStart;
 			// if its not a skip
 			if (Math.abs(dx) != 2) {
-			myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
-			myBoard[yStart][xStart].setValue(0);
-			return true;
-			}
-			else
-			{
+				myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
+				myBoard[yStart][xStart].setValue(0);
+				return true;
+			} else {
 				int xmid = (xStart + xEnd) / 2;
 				int ymid = (yStart + yEnd) / 2;
 				myBoard[ymid][xmid].setValue(0);
 				myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 				myBoard[yStart][xStart].setValue(0);
+				p.setScore(100);
+				return true;
 			}
 		}
 		return false;
@@ -167,7 +166,7 @@ public class Board {
 		if (Math.abs(dx) != 2) {
 			return true;
 		}
-	
+
 		int xmid = (xStart + xEnd) / 2;
 		int ymid = (yStart + yEnd) / 2;
 		if ((myBoard[yStart][xStart].getValue() == 1 && myBoard[ymid][xmid].getValue() != 2)
@@ -177,8 +176,7 @@ public class Board {
 			return false;
 		if (myBoard[yEnd][xEnd].getValue() != 0)
 			return false;
-		
-		
+
 		return true;
 	}
 
@@ -195,7 +193,7 @@ public class Board {
 	private boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd) {
 		// check if the end is empty
 		if (myBoard[yEnd][xEnd].getValue() != 0) {
-		System.out.println("Tile isnt empty");
+			System.out.println("Tile isnt empty");
 			return false;
 		}
 		// check if the the player play with his soldiers
@@ -226,8 +224,8 @@ public class Board {
 			return false;
 		}
 		// Check that it was in the right direction
-		if ((myBoard[xStart][yStart].getValue() == 1 && dy > 0)
-				|| (myBoard[xStart][yStart].getValue() == 2 && dy < 0)) {
+		if ((myBoard[yStart][xStart].getValue() == 1 && dx > 0)
+				|| (myBoard[yStart][xStart].getValue() == 2 && dx < 0)) {
 			return false;
 		}
 		return true;
@@ -282,14 +280,14 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableMovesForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-		if (moveValidation(t.getX(), t.getY(), t.getX() + 1, t.getY() + 1, isP1Turn))
-			mymoves.add(myBoard[t.getX() + 1][t.getY() + 1]);
-		if (moveValidation(t.getX(), t.getY(), t.getX() - 1, t.getY() - 1, isP1Turn))
-			mymoves.add(myBoard[t.getX() - 1][t.getY() - 1]);
-		if (moveValidation(t.getX(), t.getY(), t.getX() + 1, t.getY() - 1, isP1Turn))
-			mymoves.add(myBoard[t.getX() + 1][t.getY() - 1]);
-		if (moveValidation(t.getX(), t.getY(), t.getX() - 1, t.getY() + 1, isP1Turn))
-			mymoves.add(myBoard[t.getX() - 1][t.getY() + 1]);
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() + 1, isP1Turn))
+			mymoves.add(myBoard[t.getCols() + 1][t.getRows() + 1]);
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() - 1, isP1Turn))
+			mymoves.add(myBoard[t.getCols() - 1][t.getRows() - 1]);
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() + 1, isP1Turn))
+			mymoves.add(myBoard[t.getCols() + 1][t.getRows() - 1]);
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() - 1, isP1Turn))
+			mymoves.add(myBoard[t.getCols() - 1][t.getRows() + 1]);
 		return mymoves;
 	}
 
@@ -315,8 +313,11 @@ public class Board {
 				}
 			}
 		}
+		ArrayList<Tile> tt = null;
 		for (Tile t : mySoldiers) {
-			availableMoves.put(t, avilableSkipsForTile(t, isP1Turn));
+			tt = avilableSkipsForTile(t, isP1Turn);
+			if (tt != null)
+				availableMoves.put(t, tt);
 		}
 		return availableMoves;
 	}
@@ -330,14 +331,14 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-		if (moveValidation(t.getX(), t.getY(), t.getX() + 2, t.getY() + 2, isP1Turn))
-			mymoves.add(myBoard[t.getX() + 2][t.getY() + 2]);
-		if (moveValidation(t.getX(), t.getY(), t.getX() - 2, t.getY() - 2, isP1Turn))
-			mymoves.add(myBoard[t.getX() - 2][t.getY() - 2]);
-		if (moveValidation(t.getX(), t.getY(), t.getX() + 2, t.getY() - 2, isP1Turn))
-			mymoves.add(myBoard[t.getX() + 2][t.getY() - 2]);
-		if (moveValidation(t.getX(), t.getY(), t.getX() - 2, t.getY() + 2, isP1Turn))
-			mymoves.add(myBoard[t.getX() - 2][t.getY() + 2]);
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn))
+			mymoves.add(myBoard[t.getCols() + 2][t.getRows() + 2]);
+		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn))
+			mymoves.add(myBoard[t.getCols() - 2][t.getRows() - 2]);
+		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn))
+			mymoves.add(myBoard[t.getCols() + 2][t.getRows() - 2]);
+		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn))
+			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
 		return mymoves;
 	}
 
@@ -356,8 +357,8 @@ public class Board {
 			}
 		}
 		builder.append(newLine);
-
-		for (int i=0;i<myBoard.length;i++) {
+		for (int i = 0; i < myBoard.length; i++) {
+			
 			for (int j = 0; j < myBoard.length; j++) {
 				builder.append(wall);
 				builder.append(" ");
@@ -366,7 +367,6 @@ public class Board {
 			}
 			builder.append(wall);
 			builder.append(newLine);
-
 			for (int j = 0; j < myBoard.length; j++) {
 				builder.append(wall);
 				builder.append("___");
@@ -374,8 +374,6 @@ public class Board {
 			builder.append(wall);
 			builder.append(newLine);
 		}
-
 		return builder.toString();
 	}
-
 }
