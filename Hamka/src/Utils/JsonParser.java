@@ -1,9 +1,13 @@
 package Utils;
 
 import java.lang.reflect.Type;
-
+import java.util.Collection;
 import java.util.List;
 
+import org.omg.CORBA.IRObject;
+
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -28,7 +32,18 @@ public class JsonParser {
 	private GsonBuilder builder;
 	private JsonParser() {
 		builder = new GsonBuilder();
-		gson = builder.create();
+		gson = builder.setExclusionStrategies(new ExclusionStrategy() {
+			@Override
+			public boolean shouldSkipField(FieldAttributes f) {
+				return f.getDeclaringClass().equals(IRObject.class);
+			}
+
+			@Override
+			public boolean shouldSkipClass(Class<?> clazz) {
+				return false;
+			}
+		})
+				.create();;
 	}
 
 	public static JsonParser getInstance() {
@@ -57,8 +72,10 @@ public class JsonParser {
 							type = new TypeToken<List<Question>>(){}.getType();
 							else if(clazz instanceof Tile)
 								type = new TypeToken<List<Tile>>(){}.getType();
-								List<T> parsedList = gson.fromJson(data, type);
-								return parsedList;
+								else if(clazz instanceof String)
+									type = new TypeToken<List<String>>(){}.getType();
+									List<T> parsedList = gson.fromJson(data, type);
+									return parsedList;
 		} catch (JsonParseException e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -88,8 +105,10 @@ public class JsonParser {
 							type = new TypeToken<Question>(){}.getType();
 							else if(clazz instanceof Tile)
 								type = new TypeToken<Tile>(){}.getType();
-								parsedObject = gson.fromJson(data, type);
-								return parsedObject;
+								else if(clazz instanceof String)
+									type = new TypeToken<String>(){}.getType();
+									parsedObject = gson.fromJson(data, type);
+									return parsedObject;
 		} catch (JsonParseException e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -117,8 +136,10 @@ public class JsonParser {
 							type = new TypeToken<List<Question>>(){}.getType();
 							else if(clazz instanceof Tile)
 								type = new TypeToken<List<Tile>>(){}.getType();
-								String parsedList = gson.toJson(objectsList, type);
-								return parsedList;
+								else if(clazz instanceof String)
+									type = new TypeToken<List<String>>(){}.getType();
+									String parsedList = gson.toJson(objectsList, Collection.class);
+									return parsedList;
 		} catch (JsonParseException e) {
 			// TODO: handle exception
 			e.printStackTrace();
