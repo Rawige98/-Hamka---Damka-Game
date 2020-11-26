@@ -26,7 +26,8 @@ public class Main {
 				System.out.println("Let's start the game ===>");
 				System.out.println(player1.getUsername() + " => Black , " + player2.getUsername() + " => White");
 				System.out.println();
-				main.runGame(player1, player2);
+				Game game = new Game(player1, player2);
+				main.runGame(game);
 				break;
 			case 2:
 				main.printRules();
@@ -47,9 +48,8 @@ public class Main {
 		}
 	}
 	
-	private void runGame(Player player1, Player player2) {
+	private void runGame(Game game) {
 		// TODO Auto-generated method stub
-		Game game = new Game(player1, player2);
 		boolean finished = false;
 		Scanner scanner = new Scanner(System.in);
 		String turnString, scoresStatus, moveInput;
@@ -58,11 +58,11 @@ public class Main {
 		while(!finished) {
 			System.err.println("NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume");
 			System.out.println();
-			playerToPlay = game.isP1Turn() ? player1 : player2;
+			playerToPlay = game.isP1Turn() ? game.getPlayer1() : game.getPlayer2();
 			turnString = String.format("%s's turn:", playerToPlay.getUsername());
 			System.out.println(turnString);
 			
-			scoresStatus = "Current scores status: "+ player1.getUsername() +": " + player1.getScore() + " , " +  player2.getUsername() +": " + player2.getScore();
+			scoresStatus = "Current scores status: "+ game.getPlayer1().getUsername() +": " + game.getPlayer1().getScore() + " , " +  game.getPlayer2().getUsername() +": " + game.getPlayer2().getScore();
 			System.out.println(scoresStatus);
 			System.out.println();
 			
@@ -72,7 +72,7 @@ public class Main {
 			moveInput = scanner.nextLine();
 			if(moveInput.equals("exit")) {
 				//game.finishGame();
-				Player winPlayer = game.isP1Turn() ? player2 : player1;
+				Player winPlayer = game.isP1Turn() ? game.getPlayer2() : game.getPlayer1();
 				game.setWinner(winPlayer);
 				System.out.println("Game finished. " + playerToPlay.getUsername() + " had quited");
 				System.out.println(winPlayer.getUsername() + " wins !!!");
