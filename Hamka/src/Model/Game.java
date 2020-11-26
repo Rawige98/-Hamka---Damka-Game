@@ -121,11 +121,12 @@ public class Game {
 
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
 		Player p=null;
-		if(isP1Turn)
-			p=player1;
-		else
-			p=player2;
-		return board.move(xStart, yStart, xEnd, yEnd, isP1Turn,p);
+		p = isP1Turn ? player1 : player2;
+		if(board.move(xStart, yStart, xEnd, yEnd, isP1Turn,p)){
+			isP1Turn = !isP1Turn;
+			return true;
+		}
+		return false;
 	}
 
 	public String getGameState() {
@@ -152,4 +153,11 @@ public class Game {
 
 		// }
 	}
+
+	@Override
+	public String toString() {
+		return "Game [id=" + id + ", player1=" + player1 + ", player2=" + player2 + ", gameDate=" + gameDate
+				+ ", board=" + board + ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
+	}
+	
 }

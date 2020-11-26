@@ -25,13 +25,11 @@ import Utils.JsonParser;
 
 public class SysData {
 	
-
-
-
 	private static SysData SysData;
 	private HashMap<Difficulty, ArrayList<Question>> questions;
 	private ArrayList<Game> games;
 	private ArrayList<Game> pausedGames;
+	private ArrayList<String> rules;
 
 	private String gameJsonPath="src/JSON/game_json.txt";
 
@@ -50,6 +48,7 @@ public class SysData {
 		questions = new HashMap<Difficulty, ArrayList<Question>>();
 		games = new ArrayList<Game>();
 		pausedGames = new ArrayList<Game>();
+		rules = new ArrayList<>();
 	}
 
 //*********************************getters and setters********************************************************************
@@ -75,6 +74,14 @@ public class SysData {
 
 	public void setPausedGames(ArrayList<Game> PausedGames) {
 		pausedGames = PausedGames;
+	}
+	
+	public ArrayList<String> getRules() {
+		return rules;
+	}
+	
+	public void setRules(ArrayList<String> rules) {
+		this.rules = rules;
 	}
 	// *******************************************loadQuestions************************************************************************
 
@@ -276,30 +283,22 @@ public class SysData {
 	
 	
 	
-	public boolean loadGames(String externalPath) {
+	public boolean loadPausedGames() {
 		// TODO Auto-generated catch block
-
-		if (externalPath != null) {
-			quesJsonPath = externalPath;
-		}
-
 		try {
-			String file = "src/JSON/question_json.txt";
+			String file = "src/JSON/pausedGames_json.txt";
 			String json = readFileAsString(file);
-			System.out.println(json);
 
-			List<Object> questions = JsonParser.getInstance().parseToList(json, new Question());
-			System.out.println("the questions are:" + questions);
-
-		}
-
-		catch (Exception e) {
+			List<Game> games = JsonParser.getInstance().parseToList(json, new Game());
+			pausedGames.clear();
+			pausedGames.addAll(games);
+			return true;
+		}catch (Exception e) {
 			e.printStackTrace();
 			resetPathToDefault();
 			return false;
 		}
 
-		return false;
 	}
 
 	public static String readFileAsString(String file) throws Exception {
@@ -309,22 +308,99 @@ public class SysData {
 	
 	
 	public boolean writePausedGames() {
+		FileWriter writer = null;
 		try {
-//			String file = "src/JSON/pausedGames_json.txt";
+			String filePath = "src/JSON/pausedGames_json.txt";
+			writer = new FileWriter(filePath);
 			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
-			System.out.println(parsedListToJson);
+			writer.write(parsedListToJson);
+			return true;
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
 			resetPathToDefault();
 			return false;
+		}finally {
+			try {
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public boolean loadFinishedGames() {
+		// TODO Auto-generated method stub
+//		FileWriter writer = null;
+//		try {
+//			String filePath = "src/JSON/finishedGames_json.txt";
+//			writer = new FileWriter(filePath);
+//			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
+//			writer.write(parsedListToJson);
+//			return true;
+//		}
+//
+//		catch (Exception e) {
+//			e.printStackTrace();
+//			resetPathToDefault();
+			return false;
+//		}finally {
+//			try {
+//				writer.flush();
+//				writer.close();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+	}
+
+	public boolean writeRules() {
+		// TODO Auto-generated method stub
+		FileWriter writer = null;
+		try {
+			String filePath = "src/JSON/rules_json.txt";
+			writer = new FileWriter(filePath);
+			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(rules, new String());
+			writer.write(parsedListToJson);
+			return true;
 		}
 
-		return false;
+		catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}finally {
+			try {
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
+	public boolean loadRules() {
+		// TODO Auto-generated method stub
+		try {
+			String file = "src/JSON/rules_json.txt";
+			String json = readFileAsString(file);
+//			System.out.println(json);
+			List<String> rules = JsonParser.getInstance().parseToList(json, new String());
+			this.rules.clear();
+			this.rules.addAll(rules);
+			return true;
+		}catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}
+	}
 	
 	
 	

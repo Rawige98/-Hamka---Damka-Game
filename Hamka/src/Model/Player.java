@@ -7,6 +7,11 @@ public class Player {
 	private int score;
 	
 
+@Override
+	public String toString() {
+		return "Player [id=" + id + ", username=" + username + ", score=" + score + "]";
+	}
+
 public Player(String username) {
 		super();
 		this.username = username;
