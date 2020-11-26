@@ -1,6 +1,7 @@
- [
+{
+  "questions": [
     {
-      "text": "q1",
+      "question": "q1",
       "answers": [
         "answer1",
         "answer2",
@@ -9,7 +10,7 @@
       ],
 	  "correct_ans": "2",
       "level": "1",
-      "team": "Wolf"
+      "team": "animal"
     },
     {
       "question": "q2",
@@ -21,6 +22,7 @@
       ],
       "correct_ans": "2",
       "level": "1",
-      "team": "Wolf"
+      "team": "animal"
     }
   ]
+}

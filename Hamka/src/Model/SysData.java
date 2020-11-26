@@ -1,13 +1,17 @@
 package Model;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.json.simple.JSONArray;
@@ -18,14 +22,20 @@ import org.json.simple.parser.ParseException;
 import Controller.Logger;
 import Utils.Difficulty;
 import Utils.E_Teams;
+import Utils.JsonParser;
 
 public class SysData {
+	
+
 
 	private static SysData SysData;
 	private static HashMap<Difficulty, ArrayList<Question>> questions;
 	private static ArrayList<Game> games;
 	private static ArrayList<Game> pausedGames;
-	private static String quesJsonPath = "/JSON/question_json.json"; // .txt
+
+	private static String gameJsonPath="src/JSON/game_json.txt";
+
+	private static String quesJsonPath = "src/JSON/question_json.txt"; // .txt
 	private static String originalPath = quesJsonPath;
 
 	public static SysData getInstance() {
@@ -69,18 +79,19 @@ public class SysData {
 	// *******************************************loadQuestions************************************************************************
 
 	@SuppressWarnings("unchecked")
-	public boolean loadQuestions(String externalPath) {
+	public  boolean loadQuestions(String externalPath) {
 
 		if (externalPath != null) {
 			quesJsonPath = externalPath;
 		}
-		Logger.log("Reading questions form path: " + quesJsonPath);
+		//Logger.log("Reading questions form path: " + quesJsonPath);
 		JSONParser parser = new JSONParser();
 
 		try {
 			// get question's JSON file
-			InputStream is = getClass().getResourceAsStream(originalPath);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			FileInputStream fis = new FileInputStream(originalPath);
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 			Object obj = parser.parse(reader);
 			JSONObject jo = (JSONObject) obj;
 
@@ -89,7 +100,6 @@ public class SysData {
 
 			// iterate over the values (questions).
 			Iterator<JSONObject> quesIterator = quesArray.iterator();
-			System.out.println(quesIterator.toString());
 			// get the questions data.
 			while (quesIterator.hasNext()) {
 
@@ -261,5 +271,47 @@ public class SysData {
 		quesJsonPath = originalPath;
 		System.out.println("Restting JSON Path: " + quesJsonPath);
 	}
+	
+	
+	
+	
+	public boolean loadGames(String externalPath) {
+		// TODO Auto-generated catch block
+
+		if (externalPath != null) {
+			quesJsonPath = externalPath;
+		}
+
+		try {
+			String file = "src/JSON/question_json.txt";
+			String json = readFileAsString(file);
+			System.out.println(json);
+
+			List<Object> questions = JsonParser.parseToArray(json, new Question());
+			System.out.println("the questions are:" + questions);
+
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}
+
+		return false;
+	}
+
+	public static String readFileAsString(String file) throws Exception {
+		return new String(Files.readAllBytes(Paths.get(file)));
+	}
+	
+	
+	
+	
+
+
+	
+	
+	
 
 }

@@ -24,6 +24,11 @@ public class Game {
 		id = ++Serial;
 		isP1Turn = true;
 	}
+	
+	public Game()
+	{
+		
+	}
 
 	// ------------------------Getters and Setters---------------------
 	public int getId() {
