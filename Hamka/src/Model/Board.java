@@ -315,12 +315,14 @@ public class Board {
 				}
 			}
 		}
+		ArrayList<Tile> tt=null;
 		for (Tile t : mySoldiers) {
-			availableMoves.put(t, avilableSkipsForTile(t, isP1Turn));
+			tt=avilableSkipsForTile(t, isP1Turn);
+			if(tt!=null)
+			availableMoves.put(t, tt);
 		}
 		return availableMoves;
 	}
-
 	/**
 	 * in this method we find the available moves for a specific soldier
 	 * 

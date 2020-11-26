@@ -1,7 +1,9 @@
 package Model;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Timer;
 
 public class Game {
@@ -13,7 +15,7 @@ public class Game {
 	private Board board;
 	private Player winner;
 	private Timer gameDuration;
-	private boolean isP1Turn;
+	private static boolean isP1Turn;
 
 	public Game(Player player1, Player player2) {
 		super();
@@ -24,10 +26,9 @@ public class Game {
 		id = ++Serial;
 		isP1Turn = true;
 	}
-	
-	public Game()
-	{
-		
+
+	public Game() {
+
 	}
 
 	// ------------------------Getters and Setters---------------------
@@ -129,15 +130,21 @@ public class Game {
 	public static void main(String[] args) {
 		Game n = new Game(new Player("qa"), new Player("aqaq"));
 //	while(!n.finishGame()) {
-		System.out.println(n.getGameState());
+		// System.out.println(n.getGameState());
 		n.move(5, 0, 4, 1);
+	//	System.out.println(n.getGameState());
+		for (Tile t : n.getBoard().avilableMovesForTile(n.getBoard().getMyBoard()[4][1], isP1Turn)) {
+			t.setValue(-1);
+		}
 		System.out.println(n.getGameState());
-		n.setP1Turn(false);
-		n.move(2, 3, 3, 2);
-		System.out.println(n.getGameState());
-		n.setP1Turn(true);
-		n.move(4, 1, 2, 3);
-		System.out.println(n.getGameState());
+		
+		// n.setP1Turn(false);
+		// n.move(2, 3, 3, 2);
+		// System.out.println(n.getGameState());
+		// n.setP1Turn(true);
+		// n.move(4, 1, 2, 3);
+		// System.out.println(n.getGameState());
+
 		// }
 	}
 }
