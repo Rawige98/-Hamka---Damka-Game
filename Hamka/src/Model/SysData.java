@@ -32,6 +32,9 @@ public class SysData {
 	private static HashMap<Difficulty, ArrayList<Question>> questions;
 	private static ArrayList<Game> games;
 	private static ArrayList<Game> pausedGames;
+
+	private static String gameJsonPath="src/JSON/game_json.txt";
+
 	private static String quesJsonPath = "src/JSON/question_json.txt"; // .txt
 	private static String originalPath = quesJsonPath;
 
@@ -281,11 +284,11 @@ public class SysData {
 		}
 
 		try {
-			String file = "src//JSON/game_json.txt";
+			String file = "src/JSON/question_json.txt";
 			String json = readFileAsString(file);
 			System.out.println(json);
 
-			List<Object> questions = JsonParser.parseToArray(json, new Question());
+			List<Object> questions = JsonParser.getInstance().parseToList(json, new Question());
 			System.out.println("the questions are:" + questions);
 
 		}
