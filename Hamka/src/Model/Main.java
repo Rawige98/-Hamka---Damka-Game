@@ -13,10 +13,19 @@ public class Main {
 		while(!exit) {
 			main.printDashboard();
 			option = scanner.nextInt();
-			
+			scanner.nextLine();
 			switch (option) {
 			case 1:
-				
+				System.out.println("Enter player1 username:");
+				String p1 = scanner.nextLine();
+				Player player1 = new Player(p1);
+				System.out.println("Enter player2 username:");
+				String p2 = scanner.nextLine();
+				Player player2 = new Player(p2);
+				System.out.println();
+				System.out.println("Let's start the game ===>");
+				System.out.println();
+				main.runGame(player1, player2);
 				break;
 			case 2:
 				main.printRules();
@@ -36,6 +45,27 @@ public class Main {
 		}
 	}
 	
+	private void runGame(Player player1, Player player2) {
+		// TODO Auto-generated method stub
+		Game game = new Game(player1, player2);
+		boolean finished = false;
+		Scanner scanner = new Scanner(System.in);
+		String turnString, scoresStatus;
+		while(!finished) {
+			turnString = String.format("%s turn:", (game.isP1Turn() ? player1.getUsername() : player2.getUsername()));
+			System.out.println(turnString);
+			
+			scoresStatus = "Current scores status:\n"+ player1.getUsername() +": " + player1.getScore() + " , " +  player2.getUsername() +": " + player2.getScore();
+			System.out.println(scoresStatus);
+			System.out.println();
+			
+			System.out.println(game.getGameState());
+			
+			System.out.println("");
+			
+		}
+	}
+
 	public void printDashboard() {
 		String toPrint = String.format("Please choose a game option:\n\t1.Play\n\t2.Game Rules\n\t3.Questions\n\t4.View History\n\t5.Exit");
 		System.out.println(toPrint);
