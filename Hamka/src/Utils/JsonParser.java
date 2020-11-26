@@ -44,7 +44,7 @@ public class JsonParser {
 	 * @param clazz		an object that describes witch class we want to parse the JsonArray to
 	 * @return			List contains parsed objects of the specific class
 	 */
-	public <T> List<T> parseToArray(String data, Object clazz){
+	public <T> List<T> parseToList(String data, Object clazz){
 		try {
 			Type type = null;
 			if(clazz instanceof Board)

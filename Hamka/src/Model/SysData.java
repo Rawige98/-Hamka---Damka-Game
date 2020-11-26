@@ -287,7 +287,7 @@ public class SysData {
 			String json = readFileAsString(file);
 			System.out.println(json);
 
-			List<Object> questions = JsonParser.parseToArray(json, new Question());
+			List<Object> questions = JsonParser.getInstance().parseToList(json, new Question());
 			System.out.println("the questions are:" + questions);
 
 		}
