@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,13 +18,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import Controller.Logger;
+
 import Utils.Difficulty;
 import Utils.E_Teams;
 import Utils.JsonParser;
 
 public class SysData {
 	
+
 
 
 	private static SysData SysData;
@@ -152,17 +152,17 @@ public class SysData {
 		if (externalPath != null) {
 			quesJsonPath = externalPath;
 		}
-		Logger.log("Reading questions form path: " + quesJsonPath);
+		
 		try {
 			JSONParser parser = new JSONParser();
 
 			// get question's JSON file
-			InputStream is = getClass().getResourceAsStream(originalPath);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			FileInputStream fis = new FileInputStream(originalPath);
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 			Object obj = parser.parse(reader);
 			JSONObject jo = (JSONObject) obj;
 			jo.clear();
-			Logger.log("Saving questions from path: " + quesJsonPath);
 			JSONArray JSONquestions = new JSONArray();
 			JSONObject toWrite = new JSONObject();
 
@@ -196,10 +196,11 @@ public class SysData {
 				toWrite.put("questions", JSONquestions);
 			}
 			// write the JSONObject to .json file
-			FileWriter file = new FileWriter("./bin" + originalPath);
+			FileWriter file = new FileWriter(originalPath);
 			file.write(toWrite.toJSONString());
 			file.flush();
-			Logger.log("Question JSON was saved");
+			System.out.println("Question JSON was saved");
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
