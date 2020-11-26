@@ -2,6 +2,8 @@ package Model;
 
 import java.util.Scanner;
 
+import Utils.JsonParser;
+
 public class Main {
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -24,7 +26,7 @@ public class Main {
 				Player player2 = new Player(p2);
 				System.out.println();
 				System.out.println("Let's start the game ===>");
-				System.out.println(player1.getUsername() + " => Black , " + player2.getUsername() + " => White");
+				System.out.println(player1.getUsername() + " => White (1) , " + player2.getUsername() + " => Black (2)");
 				System.out.println();
 				main.runGame(player1, player2);
 				break;
@@ -39,6 +41,7 @@ public class Main {
 				exit = true;
 				scanner.close();
 				System.out.println("Game ended.\nSee you later");
+				SysData.getInstance().writePausedGames();
 				break;
 			default:
 				System.err.println("Illegal option! Try again.");
@@ -77,15 +80,23 @@ public class Main {
 				System.out.println("Game finished. " + playerToPlay.getUsername() + " had quited");
 				System.out.println(winPlayer.getUsername() + " wins !!!");
 				finished = true;
+				SysData.getInstance().getPausedGames().add(game);
+//				for(int i=0 ; i<8 ; i++) {
+//					for(int j=0 ; j<8 ; j++) {
+//						System.out.println(JsonParser.getInstance().parseObjectToJsonObject(game.getBoard().getMyBoard()[i][j]));
+//					}
+//				}
 			}else {
 				if(validateMoveInput(moveInput)) {
-					fromX = Integer.valueOf(moveInput.toCharArray()[1]);
-					fromY = Integer.valueOf(moveInput.toCharArray()[3]);
+					char[] moveArr = moveInput.toCharArray(); 
+					fromX = Integer.parseInt(String.valueOf(moveArr[1]));
+					fromY = Integer.parseInt(String.valueOf(moveArr[3]));
 					System.out.println("Please enter the indexes (row,col) of the distination tile:");
 					moveInput = scanner.nextLine();
 					if(validateMoveInput(moveInput)) {
-						toX = Integer.valueOf(moveInput.toCharArray()[1]);
-						toY= Integer.valueOf(moveInput.toCharArray()[3]);
+						moveArr = moveInput.toCharArray(); 
+						toX = Integer.parseInt(String.valueOf(moveArr[1]));
+						toY = Integer.parseInt(String.valueOf(moveArr[3]));
 						game.move(fromX, fromY, toX, toY);
 					}
 				}

@@ -29,14 +29,14 @@ public class SysData {
 
 
 	private static SysData SysData;
-	private static HashMap<Difficulty, ArrayList<Question>> questions;
-	private static ArrayList<Game> games;
-	private static ArrayList<Game> pausedGames;
+	private HashMap<Difficulty, ArrayList<Question>> questions;
+	private ArrayList<Game> games;
+	private ArrayList<Game> pausedGames;
 
-	private static String gameJsonPath="src/JSON/game_json.txt";
+	private String gameJsonPath="src/JSON/game_json.txt";
 
-	private static String quesJsonPath = "src/JSON/question_json.txt"; // .txt
-	private static String originalPath = quesJsonPath;
+	private String quesJsonPath = "src/JSON/question_json.txt"; // .txt
+	private String originalPath = quesJsonPath;
 
 	public static SysData getInstance() {
 		if (SysData == null)
@@ -53,27 +53,27 @@ public class SysData {
 	}
 
 //*********************************getters and setters********************************************************************
-	public static HashMap<Difficulty, ArrayList<Question>> getQuestions() {
+	public HashMap<Difficulty, ArrayList<Question>> getQuestions() {
 		return questions;
 	}
 
-	public static void setQuestions(HashMap<Difficulty, ArrayList<Question>> Questions) {
+	public void setQuestions(HashMap<Difficulty, ArrayList<Question>> Questions) {
 		questions = Questions;
 	}
 
-	public static ArrayList<Game> getGames() {
+	public ArrayList<Game> getGames() {
 		return games;
 	}
 
-	public static void setGames(ArrayList<Game> Games) {
+	public void setGames(ArrayList<Game> Games) {
 		games = Games;
 	}
 
-	public static ArrayList<Game> getPausedGames() {
+	public ArrayList<Game> getPausedGames() {
 		return pausedGames;
 	}
 
-	public static void setPausedGames(ArrayList<Game> PausedGames) {
+	public void setPausedGames(ArrayList<Game> PausedGames) {
 		pausedGames = PausedGames;
 	}
 	// *******************************************loadQuestions************************************************************************
@@ -307,7 +307,21 @@ public class SysData {
 	
 	
 	
-	
+	public boolean writePausedGames() {
+		try {
+//			String file = "src/JSON/pausedGames_json.txt";
+			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
+			System.out.println(parsedListToJson);
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}
+
+		return false;
+	}
 
 
 	
