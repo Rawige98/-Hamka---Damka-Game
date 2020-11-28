@@ -123,7 +123,6 @@ public class Main {
 					finished = true;
 					SysData.getInstance().addFinishedGame(game);
 					legalFirstMoveInput = true;
-					runGameScanner.close();
 				}else if(moveInput.equals("save game")) {
 					SysData.getInstance().addPausedGame(game);
 					System.out.println("This game had been paused and saved\nSee you later");
