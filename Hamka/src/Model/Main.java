@@ -112,7 +112,7 @@ public class Main {
 			System.out.println(game.getGameState());
 			boolean legalFirstMoveInput = false;
 			while(!legalFirstMoveInput) {
-				System.out.println("Please enter the indexes (row,col) of the soldier that you want to move:");
+				System.out.println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:");
 				moveInput = runGameScanner.nextLine();
 				if(moveInput.equals("quit")) {
 					//game.finishGame();
@@ -124,7 +124,7 @@ public class Main {
 					SysData.getInstance().addFinishedGame(game);
 					legalFirstMoveInput = true;
 				}else if(moveInput.equals("save game")) {
-					SysData.getInstance().addPausedGame(game);
+					SysData.getInstance().addFinishedGame(game);
 					System.out.println("This game had been paused and saved\nSee you later");
 					finished = true;
 					legalFirstMoveInput = true;
@@ -135,7 +135,7 @@ public class Main {
 						fromX = Integer.parseInt(String.valueOf(moveArr[1]));
 						fromY = Integer.parseInt(String.valueOf(moveArr[3]));
 						while(!legalSecondMoveInput) {
-							System.out.println("Please enter the indexes (row,col) of the distination tile:");
+							System.out.println("Please enter the indexes [format: (row,col)] of the distination tile:");
 							moveInput = runGameScanner.nextLine();
 							if(validateMoveInput(moveInput)) {
 								moveArr = moveInput.toCharArray(); 
