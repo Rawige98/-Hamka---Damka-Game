@@ -41,7 +41,7 @@ public class SysData {
 		return SysData;
 	}
 
-//************************************** constructor*********************************************************************
+	//************************************** constructor*********************************************************************
 	private SysData() {
 
 		questions = new HashMap<Difficulty, ArrayList<Question>>();
@@ -50,7 +50,7 @@ public class SysData {
 		rules = new ArrayList<>();
 	}
 
-//*********************************getters and setters********************************************************************
+	//*********************************getters and setters********************************************************************
 	public HashMap<Difficulty, ArrayList<Question>> getQuestions() {
 		return questions;
 	}
@@ -154,7 +154,7 @@ public class SysData {
 		return true;
 	}
 
-//***********************************************SaveQuestions****************************************************************************
+	//***********************************************SaveQuestions****************************************************************************
 	@SuppressWarnings({ "unchecked", "resource" })
 	public void saveQuestions(String externalPath) {
 
@@ -220,7 +220,7 @@ public class SysData {
 		resetPathToDefault();
 	}
 
-//************************************************add Question****************************************************************************
+	//************************************************add Question****************************************************************************
 	public void addQuestion(Question question) {
 		ArrayList<Question> myArray = questions.get(question.getDifficulty());
 		if (myArray == null) {
@@ -233,7 +233,7 @@ public class SysData {
 
 	}
 
-//************************************************remove question***************************************************************************
+	//************************************************remove question***************************************************************************
 	public boolean removeQuestion(Question question) {
 		ArrayList<Question> myArray = questions.get(question.getDifficulty());
 		if (myArray.contains(question)) {
@@ -243,7 +243,7 @@ public class SysData {
 		return false;
 	}
 
-//*********************************************Edit Question******************************************************************************
+	//*********************************************Edit Question******************************************************************************
 	public boolean editQuestion(Question question, Question newQuestion) {
 		if (removeQuestion(question)) {
 			addQuestion(newQuestion);
@@ -253,7 +253,7 @@ public class SysData {
 
 	}
 
-//***********************************************popQuestion*****************************************************************************
+	//***********************************************popQuestion*****************************************************************************
 	public Question popQuestion() {
 		Object[] diff = questions.keySet().toArray();
 		Difficulty key = (Difficulty) diff[new Random().nextInt(diff.length)];
@@ -262,7 +262,7 @@ public class SysData {
 		return q;
 	}
 
-//****************************************************************************************************************************	
+	//****************************************************************************************************************************	
 	static Difficulty getQuestionLevel(int level) { // Helper method to define question's difficulty level
 		if (level == 1)
 			return Difficulty.EASY;
@@ -273,11 +273,10 @@ public class SysData {
 
 		return Difficulty.MEDIUM;
 	}
-//*****************************************************************************************************************************	
+	//*****************************************************************************************************************************	
 
 	private void resetPathToDefault() {
 		quesJsonPath = originalPath;
-		System.out.println("Restting JSON Path: " + quesJsonPath);
 	}
 
 	public boolean loadPausedGames() {
@@ -329,28 +328,28 @@ public class SysData {
 
 	public boolean loadFinishedGames() {
 		// TODO Auto-generated method stub
-//		FileWriter writer = null;
-//		try {
-//			String filePath = "src/JSON/finishedGames_json.txt";
-//			writer = new FileWriter(filePath);
-//			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
-//			writer.write(parsedListToJson);
-//			return true;
-//		}
-//
-//		catch (Exception e) {
-//			e.printStackTrace();
-//			resetPathToDefault();
-		return false;
-//		}finally {
-//			try {
-//				writer.flush();
-//				writer.close();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+		FileWriter writer = null;
+		try {
+			String filePath = "src/JSON/finishedGames_json.txt";
+			writer = new FileWriter(filePath);
+			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
+			writer.write(parsedListToJson);
+			return true;
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}finally {
+			try {
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public boolean writeRules() {
@@ -384,7 +383,7 @@ public class SysData {
 		try {
 			String file = "src/JSON/rules_json.txt";
 			String json = readFileAsString(file);
-//			System.out.println(json);
+			//			System.out.println(json);
 			List<String> rules = JsonParser.getInstance().parseToList(json, new String());
 			this.rules.clear();
 			this.rules.addAll(rules);
@@ -438,21 +437,21 @@ public class SysData {
 			return false;
 		}
 	}
-	
+
 	public boolean writeData(String data)
 	{
 		if(data==null)
 			return false;
 		FileWriter writer = null;
-		
+
 		try {
 			if(data.equals("Rules"))
 			{
-			String filePath = "src/JSON/rules_json.txt";
-			writer = new FileWriter(filePath);
-			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(rules, new String());
-			writer.write(parsedListToJson);
-			return true;
+				String filePath = "src/JSON/rules_json.txt";
+				writer = new FileWriter(filePath);
+				String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(rules, new String());
+				writer.write(parsedListToJson);
+				return true;
 			}
 			else if(data.equals("PausedGames"))
 			{
@@ -462,12 +461,18 @@ public class SysData {
 				writer.write(parsedListToJson);
 				return true;
 			}
+			else if(data.equals("FinishedGames"))
+			{
+				String filePath = "src/JSON/finishedGames_json.txt";
+				writer = new FileWriter(filePath);
+				String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(games, new Game());
+				writer.write(parsedListToJson);
+				return true;
+			}
 			else 
 				return false;
-		
-		}
 
-		catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			resetPathToDefault();
 			return false;
@@ -481,6 +486,25 @@ public class SysData {
 			}
 		}
 
+	}
+
+
+	public void addPausedGame(Game game) {
+		// TODO Auto-generated method stub
+		if(!pausedGames.contains(game))
+			pausedGames.add(game);
+	}
+
+	public void addFinishedGame(Game game) {
+		if(!games.contains(game)) {
+			games.add(game);
+		}
+	}
+
+	public boolean existGame() {
+		// TODO Auto-generated method stub
+		saveQuestions(null);
+		return writeData("Rules") && writeData("PausedGames") && writeData("FinishedGames");
 	}
 
 }

@@ -1,28 +1,30 @@
 package Model;
 
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import Utils.Difficulty;
-import Utils.JsonParser;
 
+/**
+ * Main class is the class that responsable for activate the whole application
+ * @author rawix
+ *
+ */
 public class Main {
 	public static void main(String[] args) {
 		Main main = new Main();
 		Scanner scanner = new Scanner(System.in);
-		int option;
+		String option;
+		int optionNumbr;
 		System.out.println("~~ Welcome to Hamka ~~");
-		System.out.println();
-		SysData.getInstance().loadPausedGames();
-		SysData.getInstance().loadQuestions(null);
-		SysData.getInstance().loadFinishedGames();
-		SysData.getInstance().loadRules();
+		initSysData();
 		boolean exit = false;
 		while(!exit) {
 			main.printDashboard();
-			option = scanner.nextInt();
-			scanner.nextLine();
-			switch (option) {
+			System.out.println();
+			option = scanner.nextLine();
+			optionNumbr = validateOptionInput(option);
+			switch (optionNumbr) {
 			case 1:
 				System.out.println("Enter player1 username:");
 				String p1 = scanner.nextLine();
@@ -32,7 +34,6 @@ public class Main {
 				Player player2 = new Player(p2);
 				System.out.println();
 				System.out.println("Let's start the game ===>");
-				System.out.println();
 				System.out.println(player1.getUsername() + " => White (1) , " + player2.getUsername() + " => Black (2)");
 				System.out.println();
 				Game game = new Game(player1, player2);
@@ -42,64 +43,110 @@ public class Main {
 				main.printRules();
 				break;
 			case 3:
-				main.printQuestions();
+				System.out.println("Paused games:");
+				int i=1;
+				for(Game g : SysData.getInstance().getPausedGames()) {
+					System.out.println(i++ + ". "+ g.toString());
+				}
 				break;
 			case 4:
+				main.printQuestions();
 				break;
 			case 5:
+				System.out.println("Finished games history:");
+				int j=1;
+				for(Game g : SysData.getInstance().getGames()) {
+					System.out.println(j++ + ". "+ g.toString());
+				}
+				break;
+				
+			case 6:
 				exit = true;
 				scanner.close();
-				System.out.println("Game ended.\nSee you later");
-				SysData.getInstance().writePausedGames();
+				System.out.println("Thanks for playing.\nSee you later");
+				if(SysData.getInstance().existGame())
+					System.out.println("\nSuccessfully saved game data");
+				else
+					System.err.println("\nFailed to save game data");
 				break;
 			default:
-				System.err.println("Illegal option! Try again.");
+				System.err.println("Illegal option! Try again.\n");
 				break;
 			}
 		}
 	}
 
 
+	private static int validateOptionInput(String option) {
+		// TODO Auto-generated method stub
+		if (!option.matches("[0-9]+") || option.length() > 1)
+			return -1;
+		return Integer.parseInt(option);
+	}
+
+
+	private static void initSysData() {
+		// TODO Auto-generated method stub
+		SysData.getInstance().loadPausedGames();
+		SysData.getInstance().loadQuestions(null);
+		SysData.getInstance().loadFinishedGames();
+		SysData.getInstance().loadRules();
+	}
+
+
 	private void runGame(Game game) {
 		// TODO Auto-generated method stub
 		boolean finished = false;
-		Scanner scanner = new Scanner(System.in);
+		Scanner runGameScanner = new Scanner(System.in);
 		String turnString, scoresStatus, moveInput;
 		Player playerToPlay;
 		int fromX, fromY, toX, toY;
-		System.out.println("NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume");
+		System.out.println("NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game");
 		System.out.println();
 		while(!finished) {
 			playerToPlay = game.isP1Turn() ? game.getPlayer1() : game.getPlayer2();
 			turnString = String.format("%s's turn:", playerToPlay.getUsername());
 			System.out.println(turnString);
-
 			scoresStatus = "Current scores status: "+ game.getPlayer1().getUsername() +": " + game.getPlayer1().getScore() + " , " +  game.getPlayer2().getUsername() +": " + game.getPlayer2().getScore();
 			System.out.println(scoresStatus);			
 			System.out.println(game.getGameState());
-			System.out.println("Please enter the indexes (row,col) of the soldier that you want to move:");
-			moveInput = scanner.nextLine();
-			if(moveInput.equals("quit")) {
-				//game.finishGame();
-				Player winPlayer = game.isP1Turn() ? game.getPlayer2() : game.getPlayer1();
-				game.setWinner(winPlayer);
-				System.out.println("Game finished. " + playerToPlay.getUsername() + " had quited");
-				System.out.println(winPlayer.getUsername() + " wins !!!");
-				finished = true;
-				SysData.getInstance().getPausedGames().add(game);
-			}else {
-				if(validateMoveInput(moveInput)) {
-					char[] moveArr = moveInput.toCharArray(); 
-					fromX = Integer.parseInt(String.valueOf(moveArr[1]));
-					fromY = Integer.parseInt(String.valueOf(moveArr[3]));
-					System.out.println("Please enter the indexes (row,col) of the distination tile:");
-					moveInput = scanner.nextLine();
+			boolean legalFirstMoveInput = false;
+			while(!legalFirstMoveInput) {
+				System.out.println("Please enter the indexes (row,col) of the soldier that you want to move:");
+				moveInput = runGameScanner.nextLine();
+				if(moveInput.equals("quit")) {
+					//game.finishGame();
+					Player winPlayer = game.isP1Turn() ? game.getPlayer2() : game.getPlayer1();
+					game.setWinner(winPlayer);
+					System.out.println("Game finished. " + playerToPlay.getUsername() + " had quited");
+					System.out.println(winPlayer.getUsername() + " wins !!!");
+					finished = true;
+					SysData.getInstance().addFinishedGame(game);
+					legalFirstMoveInput = true;
+				}else if(moveInput.equals("save game")) {
+					SysData.getInstance().addPausedGame(game);
+					System.out.println("This game had been paused and saved\nSee you later");
+					legalFirstMoveInput = true;
+					runGameScanner.close();
+				}else {
 					if(validateMoveInput(moveInput)) {
-						moveArr = moveInput.toCharArray(); 
-						toX = Integer.parseInt(String.valueOf(moveArr[1]));
-						toY = Integer.parseInt(String.valueOf(moveArr[3]));
-						game.move(fromX, fromY, toX, toY);
-					}
+						boolean legalSecondMoveInput = false;
+						char[] moveArr = moveInput.toCharArray(); 
+						fromX = Integer.parseInt(String.valueOf(moveArr[1]));
+						fromY = Integer.parseInt(String.valueOf(moveArr[3]));
+						while(!legalSecondMoveInput) {
+							System.out.println("Please enter the indexes (row,col) of the distination tile:");
+							moveInput = runGameScanner.nextLine();
+							if(validateMoveInput(moveInput)) {
+								moveArr = moveInput.toCharArray(); 
+								toX = Integer.parseInt(String.valueOf(moveArr[1]));
+								toY = Integer.parseInt(String.valueOf(moveArr[3]));
+								game.move(fromX, fromY, toX, toY);
+								legalSecondMoveInput = true;
+							} 
+						}
+						legalFirstMoveInput = true;
+					} 
 				}
 			}
 		}
@@ -108,11 +155,24 @@ public class Main {
 	private boolean validateMoveInput(String moveInput) {
 		// TODO Auto-generated method stub
 		// format (x,y)
-		return true;
+		//		String regex = "/n(X,Y)/";
+		//		Pattern pattern = Pattern.compile(regex);
+		//		System.out.println(pattern.matcher(moveInput).find());
+		//		return pattern.matcher(moveInput).find();
+		if(moveInput.length() > 5)
+			return false;
+		if(moveInput.charAt(0) != '(' || moveInput.charAt(2) != ',' || moveInput.charAt(4) != ')' )
+			return false;
+		if(Character.isDigit(moveInput.charAt(1)) && Character.isDigit(moveInput.charAt(3))) {
+			int x = Integer.parseInt(String.valueOf(moveInput.charAt(1)));
+			int y = Integer.parseInt(String.valueOf(moveInput.charAt(3)));
+			return x >= 0 && x < 8 && y >= 0 && y < 8;  
+		}
+		return false;
 	}
 
 	public void printDashboard() {
-		String toPrint = String.format("Please choose a game option:\n\t1.Play\n\t2.Game Rules\n\t3.Questions\n\t4.View History\n\t5.Exit");
+		String toPrint = String.format("Please choose a game option:\n\t1.Play\n\t2.Game Rules\n\t3.Load games\n\t4.Questions\n\t5.View History\n\t6.Exit");
 		System.out.println(toPrint);
 	}
 
@@ -126,11 +186,11 @@ public class Main {
 
 	private void printQuestions() {
 		// TODO Auto-generated method stub
-		System.out.println();
+		System.out.println("Game questions:");
 		for(Difficulty difficulty : SysData.getInstance().getQuestions().keySet()) {
-			System.out.println("Difficulty level - " + difficulty + ":");
+			System.out.println("\tDifficulty level - " + difficulty + ":");
 			for(Question question : SysData.getInstance().getQuestions().get(difficulty)) {
-				System.out.println(question);
+				System.out.println("\t"+question);
 			}
 			System.out.println();
 		}
