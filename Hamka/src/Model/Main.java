@@ -126,8 +126,8 @@ public class Main {
 				}else if(moveInput.equals("save game")) {
 					SysData.getInstance().addPausedGame(game);
 					System.out.println("This game had been paused and saved\nSee you later");
+					finished = true;
 					legalFirstMoveInput = true;
-					runGameScanner.close();
 				}else {
 					if(validateMoveInput(moveInput)) {
 						boolean legalSecondMoveInput = false;
