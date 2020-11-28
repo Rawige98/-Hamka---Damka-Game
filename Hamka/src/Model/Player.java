@@ -9,7 +9,7 @@ public class Player {
 
 @Override
 	public String toString() {
-		return "Player [id=" + id + ", username=" + username + ", score=" + score + "]";
+		return "username=" + username + ", score=" + score ;
 	}
 
 public Player(String username) {

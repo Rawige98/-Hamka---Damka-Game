@@ -156,8 +156,13 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "Game [id=" + id + ", player1=" + player1 + ", player2=" + player2 + ", gameDate=" + gameDate
-				+ ", board=" + board + ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
+		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
+				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "\n"+board ;
+	}
+	
+	public String briefToString() {
+		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate +
+				", winner=" + winner + ", gameDuration=" + gameDuration + "]";
 	}
 	
 }
