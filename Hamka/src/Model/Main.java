@@ -3,7 +3,9 @@ package Model;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import Utils.DataType;
 import Utils.Difficulty;
+import Utils.GameStatus;
 
 /**
  * Main class is the class that responsable for activate the whole application
@@ -79,7 +81,7 @@ public class Main {
 
 	private static int validateOptionInput(String option) {
 		// TODO Auto-generated method stub
-		if (!option.matches("[0-9]+") || option.length() > 1)
+		if (!option.matches("[0-9]"))
 			return -1;
 		return Integer.parseInt(option);
 	}
@@ -87,23 +89,23 @@ public class Main {
 
 	private static void initSysData() {
 		// TODO Auto-generated method stub
-		SysData.getInstance().loadPausedGames();
+		SysData.getInstance().loadData(DataType.FINISHED_GAMES);
 		SysData.getInstance().loadQuestions(null);
-		SysData.getInstance().loadFinishedGames();
-		SysData.getInstance().loadRules();
+		SysData.getInstance().loadData(DataType.PAUSED_GAMES);
+		SysData.getInstance().loadData(DataType.RULES);
 	}
 
 
 	private void runGame(Game game) {
 		// TODO Auto-generated method stub
-		boolean finished = false;
+		GameStatus status = GameStatus.FINISH;
 		Scanner runGameScanner = new Scanner(System.in);
 		String turnString, scoresStatus, moveInput;
 		Player playerToPlay;
 		int fromX, fromY, toX, toY;
 		System.out.println("NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game");
 		System.out.println();
-		while(!finished) {
+		while(!game.finishGame(status)) {
 			playerToPlay = game.isP1Turn() ? game.getPlayer1() : game.getPlayer2();
 			turnString = String.format("%s's turn:", playerToPlay.getUsername());
 			System.out.println(turnString);
@@ -112,21 +114,19 @@ public class Main {
 			System.out.println(game.getGameState());
 			boolean legalFirstMoveInput = false;
 			while(!legalFirstMoveInput) {
-				System.out.println("Please enter the indexes (row,col) of the soldier that you want to move:");
+				System.out.println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:");
 				moveInput = runGameScanner.nextLine();
 				if(moveInput.equals("quit")) {
-					//game.finishGame();
-					Player winPlayer = game.isP1Turn() ? game.getPlayer2() : game.getPlayer1();
-					game.setWinner(winPlayer);
+					status = GameStatus.QUIT;
+					game.finishGame(status);
 					System.out.println("Game finished. " + playerToPlay.getUsername() + " had quited");
-					System.out.println(winPlayer.getUsername() + " wins !!!");
-					finished = true;
+					System.out.println(game.getWinner().getUsername() + " wins !!!");
 					SysData.getInstance().addFinishedGame(game);
 					legalFirstMoveInput = true;
 				}else if(moveInput.equals("save game")) {
 					SysData.getInstance().addPausedGame(game);
 					System.out.println("This game had been paused and saved\nSee you later");
-					finished = true;
+					status = GameStatus.PAUSE;
 					legalFirstMoveInput = true;
 				}else {
 					if(validateMoveInput(moveInput)) {
@@ -135,7 +135,7 @@ public class Main {
 						fromX = Integer.parseInt(String.valueOf(moveArr[1]));
 						fromY = Integer.parseInt(String.valueOf(moveArr[3]));
 						while(!legalSecondMoveInput) {
-							System.out.println("Please enter the indexes (row,col) of the distination tile:");
+							System.out.println("Please enter the indexes [format: (row,col)] of the distination tile:");
 							moveInput = runGameScanner.nextLine();
 							if(validateMoveInput(moveInput)) {
 								moveArr = moveInput.toCharArray(); 
@@ -143,7 +143,9 @@ public class Main {
 								toY = Integer.parseInt(String.valueOf(moveArr[3]));
 								game.move(fromX, fromY, toX, toY);
 								legalSecondMoveInput = true;
-							} 
+							}else {
+								System.out.println("Illegal move input! Try Again");
+							}
 						}
 						legalFirstMoveInput = true;
 					} 
