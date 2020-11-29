@@ -114,13 +114,13 @@ public class Game {
 		}
 		else if(status.equals(GameStatus.PAUSE))
 			return true;
-//		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty() && board.checkAvailableSkips(isP1Turn).isEmpty()) {
-//			if (player1.getScore() > player2.getScore())
-//				winner = player1;
-//			else
-//				winner = player2;
-//			return true;
-//		}
+		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty() && board.checkAvailableSkips(isP1Turn).isEmpty()) {
+			if (player1.getScore() > player2.getScore())
+				winner = player1;
+			else
+				winner = player2;
+			return true;
+		}
 		else return false;
 	}
 
