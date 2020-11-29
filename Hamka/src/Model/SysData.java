@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import Utils.DataType;
 import Utils.Difficulty;
 import Utils.E_Teams;
 import Utils.JsonParser;
@@ -279,104 +280,104 @@ public class SysData {
 		quesJsonPath = originalPath;
 	}
 
-	public boolean loadPausedGames() {
-		// TODO Auto-generated catch block
-		try {
-			String file = "src/JSON/pausedGames_json.txt";
-			String json = readFileAsString(file);
-
-			List<Game> games = JsonParser.getInstance().parseToList(json, new Game());
-			pausedGames.clear();
-			pausedGames.addAll(games);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			resetPathToDefault();
-			return false;
-		}
-
-	}
+	//	public boolean loadPausedGames() {
+	//		// TODO Auto-generated catch block
+	//		try {
+	//			String file = "src/JSON/pausedGames_json.txt";
+	//			String json = readFileAsString(file);
+	//
+	//			List<Game> games = JsonParser.getInstance().parseToList(json, new Game());
+	//			pausedGames.clear();
+	//			pausedGames.addAll(games);
+	//			return true;
+	//		} catch (Exception e) {
+	//			e.printStackTrace();
+	//			resetPathToDefault();
+	//			return false;
+	//		}
+	//
+	//	}
 
 	public static String readFileAsString(String file) throws Exception {
 		return new String(Files.readAllBytes(Paths.get(file)));
 	}
 
-	public boolean writePausedGames() {
-		FileWriter writer = null;
-		try {
-			String filePath = "src/JSON/pausedGames_json.txt";
-			writer = new FileWriter(filePath);
-			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
-			writer.write(parsedListToJson);
-			return true;
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-			resetPathToDefault();
-			return false;
-		} finally {
-			try {
-				writer.flush();
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public boolean loadFinishedGames() {
-		// TODO Auto-generated method stub
-		FileWriter writer = null;
-		try {
-			String filePath = "src/JSON/finishedGames_json.txt";
-			writer = new FileWriter(filePath);
-			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
-			writer.write(parsedListToJson);
-			return true;
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-			resetPathToDefault();
-			return false;
-		}finally {
-			try {
-				writer.flush();
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public boolean writeRules() {
-		// TODO Auto-generated method stub
-		FileWriter writer = null;
-		try {
-			String filePath = "src/JSON/rules_json.txt";
-			writer = new FileWriter(filePath);
-			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(rules, new String());
-			writer.write(parsedListToJson);
-			return true;
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-			resetPathToDefault();
-			return false;
-		} finally {
-			try {
-				writer.flush();
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+	//	public boolean writePausedGames() {
+	//		FileWriter writer = null;
+	//		try {
+	//			String filePath = "src/JSON/pausedGames_json.txt";
+	//			writer = new FileWriter(filePath);
+	//			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
+	//			writer.write(parsedListToJson);
+	//			return true;
+	//		}
+	//
+	//		catch (Exception e) {
+	//			e.printStackTrace();
+	//			resetPathToDefault();
+	//			return false;
+	//		} finally {
+	//			try {
+	//				writer.flush();
+	//				writer.close();
+	//			} catch (IOException e) {
+	//				// TODO Auto-generated catch block
+	//				e.printStackTrace();
+	//			}
+	//		}
+	//	}
+	//
+	//	public boolean loadFinishedGames() {
+	//		// TODO Auto-generated method stub
+	//		FileWriter writer = null;
+	//		try {
+	//			String filePath = "src/JSON/finishedGames_json.txt";
+	//			writer = new FileWriter(filePath);
+	//			String parsedListToJson = JsonParser.getInstance().pa(, new Game());
+	//			writer.write(parsedListToJson);
+	//			return true;
+	//		}
+	//
+	//		catch (Exception e) {
+	//			e.printStackTrace();
+	//			resetPathToDefault();
+	//			return false;
+	//		}finally {
+	//			try {
+	//				writer.flush();
+	//				writer.close();
+	//			} catch (IOException e) {
+	//				// TODO Auto-generated catch block
+	//				e.printStackTrace();
+	//			}
+	//		}
+	//	}
+	//
+	//	public boolean writeRules() {
+	//		// TODO Auto-generated method stub
+	//		FileWriter writer = null;
+	//		try {
+	//			String filePath = "src/JSON/rules_json.txt";
+	//			writer = new FileWriter(filePath);
+	//			String parsedListToJson = JsonParser.getInstance().parseListToJsonArray(rules, new String());
+	//			writer.write(parsedListToJson);
+	//			return true;
+	//		}
+	//
+	//		catch (Exception e) {
+	//			e.printStackTrace();
+	//			resetPathToDefault();
+	//			return false;
+	//		} finally {
+	//			try {
+	//				writer.flush();
+	//				writer.close();
+	//			} catch (IOException e) {
+	//				// TODO Auto-generated catch block
+	//				e.printStackTrace();
+	//			}
+	//		}
+	//	}
 
 	public boolean loadRules() {
 		// TODO Auto-generated method stub
@@ -395,38 +396,53 @@ public class SysData {
 		}
 	}
 
-	public boolean loadData(String data) {
+	public boolean loadData(DataType type) {
 		// TODO Auto-generated method stub
 
-		if (data == null)
+		if (type == null)
 			return false;
 		try {
 
-			if (data.equals("Rules")) {
+			if (type.equals(DataType.RULES)) {
 				String file = "src/JSON/rules_json.txt";
 				String json = readFileAsString(file);
 				List<String> rules = JsonParser.getInstance().parseToList(json, new String());
-				this.rules.clear();
-				this.rules.addAll(rules);
+				if(rules != null) {
+					this.rules.clear();
+					this.rules.addAll(rules);
+				}
 				return true;
 
-			} else if (data.equals("PausedGame")) {
+			} else if (type.equals(DataType.PAUSED_GAMES)) {
 				String file = "src/JSON/pausedGames_json.txt";
 				String json = readFileAsString(file);
 				List<Game> games = JsonParser.getInstance().parseToList(json, new Game());
-				pausedGames.clear();
-				pausedGames.addAll(games);
+				if(games != null) {
+					pausedGames.clear();
+					pausedGames.addAll(games);
+				}
 				return true;
 			}
 
-			else if (data.equals("Questions")) {
-				String file = "src/JSON/question_json.txt";
+			//			else if (type.equals(DataType.QUESTIONS)) {
+			//				String file = "src/JSON/question_json.txt";
+			//				String json = readFileAsString(file);
+			//				List<Question> questions = JsonParser.getInstance().parseToList(json, new Question());
+			//							if(questions != null){
+			//				this.questions.clear();
+			//				this.questions.addAll(questions);
+			//				}
+			//				return true;
+			//				}
+			else if (type.equals(DataType.FINISHED_GAMES)) {
+				String file = "src/JSON/finishedGames_json.txt";
 				String json = readFileAsString(file);
-				List<Question> questions = JsonParser.getInstance().parseToList(json, new Question());
-				questions.clear();
-				questions.addAll(questions);
+				List<Game> finishedGames = JsonParser.getInstance().parseToList(json, new Game());
+				if(finishedGames != null) {
+					this.games.clear();
+					this.games.addAll(finishedGames);
+				}
 				return true;
-
 			}
 			else
 				return false;
@@ -438,14 +454,14 @@ public class SysData {
 		}
 	}
 
-	public boolean writeData(String data)
+	public boolean writeData(DataType type)
 	{
-		if(data==null)
+		if(type==null)
 			return false;
 		FileWriter writer = null;
 
 		try {
-			if(data.equals("Rules"))
+			if(type.equals(DataType.RULES))
 			{
 				String filePath = "src/JSON/rules_json.txt";
 				writer = new FileWriter(filePath);
@@ -453,7 +469,7 @@ public class SysData {
 				writer.write(parsedListToJson);
 				return true;
 			}
-			else if(data.equals("PausedGames"))
+			else if(type.equals(DataType.PAUSED_GAMES))
 			{
 				String filePath = "src/JSON/pausedGames_json.txt";
 				writer = new FileWriter(filePath);
@@ -461,7 +477,7 @@ public class SysData {
 				writer.write(parsedListToJson);
 				return true;
 			}
-			else if(data.equals("FinishedGames"))
+			else if(type.equals(DataType.FINISHED_GAMES))
 			{
 				String filePath = "src/JSON/finishedGames_json.txt";
 				writer = new FileWriter(filePath);
@@ -504,7 +520,7 @@ public class SysData {
 	public boolean existGame() {
 		// TODO Auto-generated method stub
 		saveQuestions(null);
-		return writeData("Rules") && writeData("PausedGames") && writeData("FinishedGames");
+		return writeData(DataType.FINISHED_GAMES) && writeData(DataType.PAUSED_GAMES) && writeData(DataType.RULES);
 	}
 
 }

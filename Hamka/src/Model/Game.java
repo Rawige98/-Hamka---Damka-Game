@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 
+import Utils.GameStatus;
+
 public class Game {
 	private static int Serial = 0;
 	private int id;
@@ -102,18 +104,24 @@ public class Game {
 
 	/**
 	 * we check if the game is finished by the number of Soldiers for the players
-	 * 
-	 * @return true if the game has finished
+	 * @param isQuit	flag to know is the gamed had finished after a player quit
+	 * @return
 	 */
-	public boolean finishGame() {
-		if (board.checkAvailableMoves(isP1Turn).isEmpty() && board.checkAvailableSkips(isP1Turn).isEmpty()) {
-			if (player1.getScore() > player2.getScore())
-				winner = player1;
-			else
-				winner = player2;
+	public boolean finishGame(GameStatus status) {
+		if(status.equals(GameStatus.QUIT)) {
+			winner = isP1Turn ? player2 : player1;
 			return true;
 		}
-		return false;
+		else if(status.equals(GameStatus.PAUSE))
+			return true;
+//		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty() && board.checkAvailableSkips(isP1Turn).isEmpty()) {
+//			if (player1.getScore() > player2.getScore())
+//				winner = player1;
+//			else
+//				winner = player2;
+//			return true;
+//		}
+		else return false;
 	}
 
 	public void popQuestion() {
@@ -135,15 +143,15 @@ public class Game {
 
 	public static void main(String[] args) {
 		Game n = new Game(new Player("qa"), new Player("aqaq"));
-//	while(!n.finishGame()) {
+		//	while(!n.finishGame()) {
 		// System.out.println(n.getGameState());
 		n.move(5, 0, 4, 1);
-	//	System.out.println(n.getGameState());
-//		for (Tile t : n.getBoard().avilableMovesForTile(n.getBoard().getMyBoard()[1][4], isP1Turn)) {
-//			t.setValue(-1);
-//		}
+		//	System.out.println(n.getGameState());
+		//		for (Tile t : n.getBoard().avilableMovesForTile(n.getBoard().getMyBoard()[1][4], isP1Turn)) {
+		//			t.setValue(-1);
+		//		}
 		System.out.println(n.getGameState());
-		
+
 		// n.setP1Turn(false);
 		// n.move(2, 3, 3, 2);
 		// System.out.println(n.getGameState());
@@ -159,10 +167,10 @@ public class Game {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
 				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "\n"+board ;
 	}
-	
+
 	public String briefToString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate +
 				", winner=" + winner + ", gameDuration=" + gameDuration + "]";
 	}
-	
+
 }
