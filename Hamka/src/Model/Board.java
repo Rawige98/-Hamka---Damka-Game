@@ -93,7 +93,7 @@ public class Board {
 	 * @return true if the soldier move successfully
 	 */
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
-		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn)) {
+		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn, false)) {
 			int dx = xEnd - xStart;
 			// if its not a skip
 			if (Math.abs(dx) != 2) {
@@ -121,29 +121,41 @@ public class Board {
 	 * @param endIndex   the end index of the move.
 	 * @return true if the move is legal according to the rules of checkers.
 	 */
-	public boolean moveValidation(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
+	public boolean moveValidation(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, boolean finish) {
 		if (toIndex(xStart, yStart) == toIndex(xEnd, yEnd)) {
+			if (finish)
+				return false;
 			System.out.println("you insert the same coordinates");
 			return false;
 		}
 		if (toIndex(xStart, yStart) == -1 || toIndex(xEnd, yEnd) == -1) {
+			if (finish)
+				return false;
 			System.out.println("you cant move to white Tile");
 			return false;
 		}
 		if (toIndex(xStart, yStart) < 0 || toIndex(xStart, yStart) > 31 || toIndex(xEnd, yEnd) < 0
 				|| toIndex(xEnd, yEnd) > 31) {
+			if (finish)
+				return false;
 			System.out.println("illegal coordinates");
 			return false;
 		}
-		if (!validateIDs(isP1Turn, xStart, yStart, xEnd, yEnd)) {
+		if (!validateIDs(isP1Turn, xStart, yStart, xEnd, yEnd, finish)) {
+			if (finish)
+				return false;
 			System.out.println("ValidID");
 			return false;
 		}
 		if (!validateDistance(isP1Turn, xStart, yStart, xEnd, yEnd)) {
+			if (finish)
+				return false;
 			System.out.println("validDistnace");
 			return false;
 		}
 		if (!skipValidation(isP1Turn, xStart, yStart, xEnd, yEnd)) {
+			if (finish)
+				return false;
 			System.out.println("validSkip");
 			return false;
 		}
@@ -190,15 +202,19 @@ public class Board {
 	 * @param endIndex   the end index of the move.
 	 * @return true if and only if all IDs are valid.
 	 */
-	private boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd) {
+	private boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd, boolean finish) {
 		// check if the end is empty
 		if (myBoard[yEnd][xEnd].getValue() != 0) {
+			if (finish)
+				return false;
 			System.out.println("Tile isnt empty");
 			return false;
 		}
 		// check if the the player play with his soldiers
 		if ((!isP1Turn && myBoard[yStart][xStart].getValue() != 2 && myBoard[yStart][xStart].getValue() != 22)
 				|| (isP1Turn && myBoard[yStart][xStart].getValue() != 1 && myBoard[yStart][xStart].getValue() != 11)) {
+			if (finish)
+				return false;
 			System.out.println("thats not your soldier");
 			return false;
 		}
@@ -280,13 +296,13 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableMovesForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() + 1, isP1Turn))
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() + 1, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() + 1][t.getRows() + 1]);
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() - 1, isP1Turn))
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() - 1, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() - 1][t.getRows() - 1]);
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() + 1, isP1Turn))
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() + 1, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() + 1][t.getRows() - 1]);
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() - 1, isP1Turn))
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() - 1, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() - 1][t.getRows() + 1]);
 		return mymoves;
 	}
@@ -331,13 +347,13 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn))
+		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() + 2][t.getRows() + 2]);
-		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn))
+		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() - 2][t.getRows() - 2]);
-		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn))
+		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() + 2][t.getRows() - 2]);
-		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn))
+		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn, true))
 			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
 		return mymoves;
 	}
@@ -358,7 +374,7 @@ public class Board {
 		}
 		builder.append(newLine);
 		for (int i = 0; i < myBoard.length; i++) {
-			
+
 			for (int j = 0; j < myBoard.length; j++) {
 				builder.append(wall);
 				builder.append(" ");
