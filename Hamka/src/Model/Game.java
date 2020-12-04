@@ -104,33 +104,34 @@ public class Game {
 
 	/**
 	 * we check if the game is finished by the number of Soldiers for the players
-	 * @param isQuit	flag to know is the gamed had finished after a player quit
+	 * 
+	 * @param isQuit flag to know is the gamed had finished after a player quit
 	 * @return
 	 */
 	public boolean finishGame(GameStatus status) {
-		if(status.equals(GameStatus.QUIT)) {
+		if (status.equals(GameStatus.QUIT)) {
 			winner = isP1Turn ? player2 : player1;
 			return true;
-		}
-		else if(status.equals(GameStatus.PAUSE))
+		} else if (status.equals(GameStatus.PAUSE))
 			return true;
-		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty() && board.checkAvailableSkips(isP1Turn).isEmpty()) {
+		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()
+				&& board.checkAvailableSkips(isP1Turn).isEmpty()) {
 			if (player1.getScore() > player2.getScore())
 				winner = player1;
 			else
 				winner = player2;
 			return true;
-		}
-		else return false;
+		} else
+			return false;
 	}
 
 	public void popQuestion() {
 	}
 
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
-		Player p=null;
+		Player p = null;
 		p = isP1Turn ? player1 : player2;
-		if(board.move(xStart, yStart, xEnd, yEnd, isP1Turn,p)){
+		if (board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p)) {
 			isP1Turn = !isP1Turn;
 			return true;
 		}
@@ -144,12 +145,12 @@ public class Game {
 	@Override
 	public String toString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
-				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "\n"+board ;
+				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "\n" + board;
 	}
 
 	public String briefToString() {
-		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate +
-				", winner=" + winner + ", gameDuration=" + gameDuration + "]";
+		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
+				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
 	}
 
 }

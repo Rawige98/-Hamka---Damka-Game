@@ -4,7 +4,7 @@ public class Player {
 	private static int Serial = 0;
 	private int id;
 	private String username;
-	private int score;
+	private  int score;
 	
 
 @Override
