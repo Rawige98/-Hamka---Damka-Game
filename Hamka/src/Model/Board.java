@@ -3,7 +3,11 @@ package Model;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
+
+import Utils.Consts;
 
 public class Board {
 	private Tile[][] myBoard;
@@ -357,6 +361,73 @@ public class Board {
 			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
 		return mymoves;
 	}
+
+
+	// *******************  Colord tiles methods  *******************************************************
+
+	/**
+	 * this methods randomly choose tile and if her color is black, then it will be changed to yellow
+	 */
+	public void showYellowTiles() {
+		int x, y, yellowCount=0;
+		Random random = new Random();
+		boolean done = false;
+		while(!done) {
+			if(yellowCount == Consts.MAX_YELLOW_TILE)
+				done = true;
+			else {
+				x = random.nextInt(Consts.ROWS);
+				y = random.nextInt(Consts.COLS);
+				Tile randomTile = myBoard[x][y];
+				if(!randomTile.getColor().equals(Color.white) && randomTile.getColor().equals(Color.black) && !randomTile.getColor().equals(Color.yellow)) {
+					randomTile.setColor(Color.yellow);
+					yellowCount++;
+				}
+			}
+		}
+	}
+
+
+//	public void showRedGreenTile(boolean isP1Turn , Color color) {
+//		HashMap<Tile, ArrayList<Tile>> suggested = checkAvailableMoves(isP1Turn);
+//		Tile randomTile = getRandomTile((Tile[])suggested.values().toArray());
+//		randomTile.setColor(color);
+//	}
+//
+//	public void showBlueTile(boolean isP1Turn) {
+//		HashMap<Tile, ArrayList<Tile>> suggested = checkAvailableMoves(isP1Turn);
+//		Tile randomTile = getRandomTile((Tile[])suggested.values().toArray());
+//		randomTile.setColor(Color.blue);
+//	}
+
+
+	public void colorRandomTile(Tile[] tiles, Color color) {
+		Random random = new Random();
+		int index = random.nextInt(tiles.length);
+		tiles[index].setColor(color);
+	}
+
+//	private Tile getRandomTile(Tile[] tiles) {
+//		Random random = new Random();
+//		int index = random.nextInt(tiles.length);
+//		return tiles[index];
+//	}
+
+	public void turnOffTileColor(Tile tile) {
+		tile.setColor(Color.black);
+	}
+
+	public void turnOffAllTilesColor() {
+		Tile tile;
+		for(int i=0 ; i<myBoard.length ; i++) {
+			for (int j = 0; j < myBoard[i].length; j++) {
+				tile = myBoard[i][j];
+				if(!tile.getColor().equals(Color.white))
+					tile.setColor(Color.black);
+			}
+		}
+	}
+
 
 	@Override
 	public String toString() {
