@@ -14,6 +14,8 @@ import Utils.GameStatus;
  *
  */
 public class Main {
+	
+
 	public static void main(String[] args) {
 		Main main = new Main();
 		Scanner scanner = new Scanner(System.in);
@@ -102,10 +104,7 @@ public class Main {
 
 	private void runGame(Game game) {
 		// TODO Auto-generated method stub
-		int Time1 = 0;
-		int Time2 = 0;
 		GameStatus status = GameStatus.FINISH;
-		Player p;
 		Scanner runGameScanner = new Scanner(System.in);
 		String turnString, scoresStatus, moveInput;
 		Player playerToPlay;
@@ -115,16 +114,14 @@ public class Main {
 		System.out.println();
 		while (!game.finishGame(status)) {
 			playerToPlay = game.isP1Turn() ? game.getPlayer1() : game.getPlayer2();
-			p = playerToPlay;
 			turnString = String.format("%s's turn:", playerToPlay.getUsername());
 			System.out.println(turnString);
+			System.out.println("Time for previos turn : "+game.getTime());
 			scoresStatus = "Current scores status: " + game.getPlayer1().getUsername() + ": "
-					+ game.getPlayer1().getScore() + "," + Time1 + " , " + game.getPlayer2().getUsername() + ": "
-					+ game.getPlayer2().getScore() + "," + Time2;
+					+ game.getPlayer1().getScore()  + " , " + game.getPlayer2().getUsername() + ": "
+					+ game.getPlayer2().getScore() ;
 			System.out.println(scoresStatus);
 			System.out.println(game.getGameState());
-			TimeForPlayer myTimer = new TimeForPlayer();
-			Runtime(myTimer);
 			boolean legalFirstMoveInput = false;
 			while (!legalFirstMoveInput) {
 				System.out
@@ -155,7 +152,7 @@ public class Main {
 								moveArr = moveInput.toCharArray();
 								toX = Integer.parseInt(String.valueOf(moveArr[1]));
 								toY = Integer.parseInt(String.valueOf(moveArr[3]));
-								game.move(fromX, fromY, toX, toY);
+								game.move(fromX, fromY, toX, toY);//////////
 								legalSecondMoveInput = true;
 							} else {
 								System.out.println("Illegal move input! Try Again");
@@ -165,26 +162,12 @@ public class Main {
 					}
 				}
 			}
-			if (p.equals(game.getPlayer1())) {
-				Time1 = myTimer.getSecond();
-				int score = game.getPlayer1().getScore();
-				score += scoreForPlayer(Time1);
-				game.getPlayer1().setScore(score);
-
-			} else {
-				Time2 = myTimer.getSecond();
-				int score = game.getPlayer2().getScore();
-				score += scoreForPlayer(Time2);
-				game.getPlayer2().setScore(score);
-			}
+		
 
 		}
 	}
 
-	private int scoreForPlayer(int time) {
 
-		return 60 - time;
-	}
 
 	private boolean validateMoveInput(String moveInput) {
 		// TODO Auto-generated method stub
