@@ -13,6 +13,11 @@ public class TimeForPlayer implements Runnable {
 		this.second = second;
 	}
 
+	public void reset() {
+		this.second = 0;
+		this.mints = 0;
+	}
+
 	public TimeForPlayer() {
 		this.second = 0;
 		this.mints = 0;
@@ -20,7 +25,7 @@ public class TimeForPlayer implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (Game.notFinished) {
 			second++;
 			if (second >= 60) {
 				second = 0;

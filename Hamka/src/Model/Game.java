@@ -18,6 +18,9 @@ public class Game {
 	private Player winner;
 	private Timer gameDuration;
 	private static boolean isP1Turn;
+	private TimeForPlayer myTimer;
+    static boolean notFinished=false;
+    private int Time = 0;
 
 	public Game(Player player1, Player player2) {
 		super();
@@ -27,13 +30,27 @@ public class Game {
 		gameDate = java.util.Calendar.getInstance().getTime();
 		id = ++Serial;
 		isP1Turn = true;
+		notFinished = true;
+	    myTimer = new TimeForPlayer();
+		Runtime(myTimer);
+		
 	}
+
+
 
 	public Game() {
 
 	}
 
 	// ------------------------Getters and Setters---------------------
+
+	public int getTime() {
+		return Time;
+	}
+
+	public void setTime(int time) {
+		Time = time;
+	}
 	public int getId() {
 		return id;
 	}
@@ -127,12 +144,29 @@ public class Game {
 
 	public void popQuestion() {
 	}
+	
+	public void Runtime(TimeForPlayer myTimer) {
+		Thread t = new Thread(myTimer);
+		t.start();
+	}
+	private int scoreForPlayer(int time) {
+
+		return 60 - time;
+	}
 
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
 		Player p = null;
 		p = isP1Turn ? player1 : player2;
 		if (board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p)) {
-			isP1Turn = !isP1Turn;
+			
+			Time = myTimer.getSecond();
+			int score = p.getScore();
+			score += scoreForPlayer(Time);
+			p.setScore(score);
+            isP1Turn = !isP1Turn;
+            notFinished=true;
+            myTimer.reset();
+			Runtime(myTimer);
 			return true;
 		}
 		return false;
