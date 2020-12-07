@@ -114,7 +114,7 @@ public class Game {
 		}
 		else if(status.equals(GameStatus.PAUSE))
 			return true;
-		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty() && board.checkAvailableSkips(isP1Turn).isEmpty()) {
+		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()) {
 			if (player1.getScore() > player2.getScore())
 				winner = player1;
 			else
@@ -139,27 +139,6 @@ public class Game {
 
 	public String getGameState() {
 		return board.toString();
-	}
-
-	public static void main(String[] args) {
-		Game n = new Game(new Player("qa"), new Player("aqaq"));
-		//	while(!n.finishGame()) {
-		// System.out.println(n.getGameState());
-		n.move(5, 0, 4, 1);
-		//	System.out.println(n.getGameState());
-		//		for (Tile t : n.getBoard().avilableMovesForTile(n.getBoard().getMyBoard()[1][4], isP1Turn)) {
-		//			t.setValue(-1);
-		//		}
-		System.out.println(n.getGameState());
-
-		// n.setP1Turn(false);
-		// n.move(2, 3, 3, 2);
-		// System.out.println(n.getGameState());
-		// n.setP1Turn(true);
-		// n.move(4, 1, 2, 3);
-		// System.out.println(n.getGameState());
-
-		// }
 	}
 
 	@Override

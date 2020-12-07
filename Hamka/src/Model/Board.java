@@ -95,19 +95,76 @@ public class Board {
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
 		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn, false)) {
 			int dx = xEnd - xStart;
-			// if its not a skip
-			if (Math.abs(dx) != 2) {
-				myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
-				myBoard[yStart][xStart].setValue(0);
-				return true;
-			} else {
-				int xmid = (xStart + xEnd) / 2;
-				int ymid = (yStart + yEnd) / 2;
-				myBoard[ymid][xmid].setValue(0);
-				myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
-				myBoard[yStart][xStart].setValue(0);
-				p.setScore(100);
-				return true;
+			int dy = yEnd - yStart;
+			if (myBoard[yStart][xStart].getValue() != 22 || myBoard[yStart][xStart].getValue() != 11) {
+				// if its not a skip
+				if (Math.abs(dx) != 2) {
+					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
+					myBoard[yStart][xStart].setValue(0);
+					myBoard[yEnd][xEnd].upgradeToQueen();
+					return true;
+				} else {
+					int xmid = (xStart + xEnd) / 2;
+					int ymid = (yStart + yEnd) / 2;
+					myBoard[ymid][xmid].setValue(0);
+					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
+					myBoard[yStart][xStart].setValue(0);
+					p.setScore(100);
+					myBoard[yEnd][xEnd].upgradeToQueen();
+					return true;
+				}
+			}
+			// Queen
+			else {
+				int i = xStart, j = yStart;
+				boolean isSkip = false;
+				int col = -1, row = -1;
+				// check if the road to the target is clear
+				while ((i != xEnd && j != yEnd)) {
+					if (dx > 0 && dy > 0) {
+						i++;
+						j++;
+					}
+					if (dx < 0 && dy > 0) {
+						i--;
+						j++;
+					}
+					if (dx > 0 && dy < 0) {
+						j--;
+						i++;
+
+					}
+					if (dx < 0 && dy < 0) {
+						i--;
+						j--;
+
+					}
+					if(i==-1)
+						i=7;
+					if(i==8)
+						i=0;
+					if(j==-1)
+						j=7;
+					if(j==8)
+						j=0;
+					if (isP1Turn && (myBoard[j][i].getValue() == 1 || myBoard[j][i].getValue() == 11)
+							|| !isP1Turn && (myBoard[j][i].getValue() == 2 || myBoard[j][i].getValue() == 22)) {
+						col = j;
+						row = i;
+						isSkip = true;
+					}
+				}
+				if (isSkip) {
+					myBoard[col][row].setValue(0);
+					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
+					myBoard[yStart][xStart].setValue(0);
+					p.setScore(100);
+					return true;
+				} else {
+					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
+					myBoard[yStart][xStart].setValue(0);
+					return true;
+				}
 			}
 		}
 		return false;
@@ -122,16 +179,16 @@ public class Board {
 	 * @return true if the move is legal according to the rules of checkers.
 	 */
 	public boolean moveValidation(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, boolean finish) {
-		if (toIndex(xStart, yStart) == toIndex(xEnd, yEnd)) {
-			if (finish)
-				return false;
-			System.out.println("you insert the same coordinates");
-			return false;
-		}
 		if (toIndex(xStart, yStart) == -1 || toIndex(xEnd, yEnd) == -1) {
 			if (finish)
 				return false;
 			System.out.println("you cant move to white Tile");
+			return false;
+		}
+		if (toIndex(xStart, yStart) == toIndex(xEnd, yEnd)) {
+			if (finish)
+				return false;
+			System.out.println("you insert the same coordinates");
 			return false;
 		}
 		if (toIndex(xStart, yStart) < 0 || toIndex(xStart, yStart) > 31 || toIndex(xEnd, yEnd) < 0
@@ -147,7 +204,7 @@ public class Board {
 			System.out.println("ValidID");
 			return false;
 		}
-		if (!validateDistance(isP1Turn, xStart, yStart, xEnd, yEnd)) {
+		if (!validateDistance(xStart, yStart, xEnd, yEnd,isP1Turn)) {
 			if (finish)
 				return false;
 			System.out.println("validDistnace");
@@ -174,24 +231,63 @@ public class Board {
 	 */
 	public boolean skipValidation(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd) {
 		int dx = xEnd - xStart;
+		int dy = yEnd - yStart;
+		if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
 		// if its not a skip
 		if (Math.abs(dx) != 2) {
 			return true;
 		}
+			int xmid = (xStart + xEnd) / 2;
+			int ymid = (yStart + yEnd) / 2;
+			if ((myBoard[yStart][xStart].getValue() == 1 && myBoard[ymid][xmid].getValue() != 2)
+					|| (myBoard[yStart][xStart].getValue() == 2 && myBoard[ymid][xmid].getValue() != 1))
+				return false;
+			if (!isValidPoint(xEnd, yEnd))
+				return false;
+			if (myBoard[yEnd][xEnd].getValue() != 0)
+				return false;
+		} else {
+			//Walls
+			//Queen Skip Validate
+			int i = xStart, j = yStart;
+			int c = 0;
+			// check if the road to the target is clear
+			while ((i != xEnd && j != yEnd)) {
+				if (dx > 0 && dy > 0) {
+					i++;
+					j++;
+				}
+				if (dx < 0 && dy > 0) {
+					i--;
+					j++;
+				}
+				if (dx > 0 && dy < 0) {
+					j--;
+					i++;
 
-		int xmid = (xStart + xEnd) / 2;
-		int ymid = (yStart + yEnd) / 2;
-		if ((myBoard[yStart][xStart].getValue() == 1 && myBoard[ymid][xmid].getValue() != 2)
-				|| (myBoard[yStart][xStart].getValue() == 2 && myBoard[ymid][xmid].getValue() != 1))
-			return false;
-		if (!isValidPoint(xEnd, yEnd))
-			return false;
-		if (myBoard[yEnd][xEnd].getValue() != 0)
-			return false;
+				}
+				if (dx < 0 && dy < 0) {
+					i--;
+					j--;
 
+				}
+				if(i==-1)
+					i=7;
+				if(i==8)
+					i=0;
+				if(j==-1)
+					j=7;
+				if(j==8)
+					j=0;
+				if ((isP1Turn && (myBoard[j][i].getValue() == 1) || myBoard[j][i].getValue() == 11)
+						|| !isP1Turn && ((myBoard[j][i].getValue() == 2) || myBoard[j][i].getValue() == 22))
+					c++;
+			}
+			if (c != 1)
+				return false;
+		}
 		return true;
-	}
-
+	}	
 	/**
 	 * Validates all ID related values for the start, end, and middle (if the move
 	 * is a skip).
@@ -204,6 +300,8 @@ public class Board {
 	 */
 	private boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd, boolean finish) {
 		// check if the end is empty
+		if(!finish)
+			System.out.println(myBoard[yEnd][xEnd].getValue());
 		if (myBoard[yEnd][xEnd].getValue() != 0) {
 			if (finish)
 				return false;
@@ -220,7 +318,6 @@ public class Board {
 		}
 		return true;
 	}
-
 	/**
 	 * Checks that the move is diagonal and magnitude 1 or 2 in the correct
 	 * direction. If the magnitude is not 2 (i.e. not a skip), it checks that no
@@ -232,17 +329,71 @@ public class Board {
 	 * @param endIndex   the end index of the move.
 	 * @return true if and only if the move distance is valid.
 	 */
-	private boolean validateDistance(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd) {
+	private boolean validateDistance(int xStart, int yStart, int xEnd, int yEnd,boolean isP1Turn) {
 		// Check that it was a diagonal move
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
-		if (Math.abs(dx) != Math.abs(dy) || Math.abs(dx) > 2 || dx == 0) {
-			return false;
+		if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
+			if (Math.abs(dx) != Math.abs(dy) || Math.abs(dx) > 2 || dx == 0) {
+				return false;
+			}
+			// Check that it was in the right direction
+			if ((myBoard[yStart][xStart].getValue() == 1 && dx > 0)
+					|| (myBoard[yStart][xStart].getValue() == 2 && dx < 0)) {
+				return false;
+			}
+		} else {
+			// Queen
+			//Walls
+			if (!ValidateQueenMove(xStart, yStart, xEnd, yEnd,isP1Turn))
+				return false;
 		}
-		// Check that it was in the right direction
-		if ((myBoard[yStart][xStart].getValue() == 1 && dx > 0)
-				|| (myBoard[yStart][xStart].getValue() == 2 && dx < 0)) {
-			return false;
+		return true;
+	}
+
+	/**
+	 * in this method we check the validate of the queen move
+	 * 
+	 * @param xStart
+	 * @param yStart
+	 * @param xEnd
+	 * @param yEnd
+	 * @return True if the move is legal
+	 */
+	private boolean ValidateQueenMove(int xStart, int yStart, int xEnd, int yEnd,boolean isP1Turn) {
+		int dy = yEnd - yStart;
+		int dx = xEnd - xStart;
+		int i = xStart, j = yStart;
+		// check if the road to the target is clear
+		while ((i != xEnd && j != yEnd)) {
+			if (dx > 0 && dy > 0) {
+				i++;
+				j++;
+			}
+			if (dx < 0 && dy > 0) {
+				i--;
+				j++;
+			}
+			if (dx > 0 && dy < 0) {
+				j--;
+				i++;
+
+			}
+			if (dx < 0 && dy < 0) {
+				i--;
+				j--;
+
+			}
+			if(i==-1)
+				i=7;
+			if(i==8)
+				i=0;
+			if(j==-1)
+				j=7;
+			if(j==8)
+				j=0;
+			if( (isP1Turn&&(myBoard[j][i].getValue()==11||myBoard[j][i].getValue()==1))||!isP1Turn&&(myBoard[j][i].getValue()==22||myBoard[j][i].getValue()==2))
+				return false;
 		}
 		return true;
 	}
@@ -296,67 +447,79 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableMovesForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() + 1, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() + 1][t.getRows() + 1]);
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() - 1, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() - 1][t.getRows() - 1]);
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() + 1, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() + 1][t.getRows() - 1]);
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() - 1, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() - 1][t.getRows() + 1]);
-		return mymoves;
-	}
-
-	/**
-	 * in this method we built a hash that have all the available moves for a player
-	 * 
-	 * @param isP1Turn
-	 * @return hashmap with a key is a soldier in the board for the player and value
-	 *         is a list that have the available moves for that soldier
-	 */
-	public HashMap<Tile, ArrayList<Tile>> checkAvailableSkips(boolean isP1Turn) {
-		ArrayList<Tile> mySoldiers = new ArrayList<Tile>();
-		HashMap<Tile, ArrayList<Tile>> availableMoves = new HashMap<Tile, ArrayList<Tile>>();
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (isP1Turn) {
-					if (myBoard[i][j].getValue() == 1 || myBoard[i][j].getValue() == 11)
-						mySoldiers.add(myBoard[i][j]);
-				} else {
-					if (myBoard[i][j].getValue() == 2 || myBoard[i][j].getValue() == 22)
-						mySoldiers.add(myBoard[i][j]);
-
-				}
+//		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() + 1, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() + 1][t.getRows() + 1]);
+//		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() - 1, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() - 1][t.getRows() - 1]);
+//		if (moveValidation(t.getRows(), t.getCols(), t.getRows() - 1, t.getCols() + 1, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() + 1][t.getRows() - 1]);
+//		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 1, t.getCols() - 1, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() - 1][t.getRows() + 1]);
+		for (int i = 0; i < myBoard.length; i++) {
+			for (int j = 0; j < myBoard.length; j++) {
+				if (moveValidation(t.getRows(), t.getCols(), i, j, isP1Turn, true))
+					mymoves.add(myBoard[j][i]);
 			}
 		}
-		ArrayList<Tile> tt = null;
-		for (Tile t : mySoldiers) {
-			tt = avilableSkipsForTile(t, isP1Turn);
-			if (tt != null)
-				availableMoves.put(t, tt);
-		}
-		return availableMoves;
-	}
-
-	/**
-	 * in this method we find the available moves for a specific soldier
-	 * 
-	 * @param t
-	 * @param isP1Turn
-	 * @return array list that have all the permitted moves for a soldier
-	 */
-	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
-		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() + 2][t.getRows() + 2]);
-		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() - 2][t.getRows() - 2]);
-		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() + 2][t.getRows() - 2]);
-		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn, true))
-			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
 		return mymoves;
 	}
+//
+//	/**
+//	 * in this method we built a hash that have all the available moves for a player
+//	 * 
+//	 * @param isP1Turn
+//	 * @return hashmap with a key is a soldier in the board for the player and value
+//	 *         is a list that have the available moves for that soldier
+//	 */
+//	public HashMap<Tile, ArrayList<Tile>> checkAvailableSkips(boolean isP1Turn) {
+//		ArrayList<Tile> mySoldiers = new ArrayList<Tile>();
+//		HashMap<Tile, ArrayList<Tile>> availableMoves = new HashMap<Tile, ArrayList<Tile>>();
+//		for (int i = 0; i < 8; i++) {
+//			for (int j = 0; j < 8; j++) {
+//				if (isP1Turn) {
+//					if (myBoard[i][j].getValue() == 1 || myBoard[i][j].getValue() == 11)
+//						mySoldiers.add(myBoard[i][j]);
+//				} else {
+//					if (myBoard[i][j].getValue() == 2 || myBoard[i][j].getValue() == 22)
+//						mySoldiers.add(myBoard[i][j]);
+//
+//				}
+//			}
+//		}
+//		ArrayList<Tile> tt = null;
+//		for (Tile t : mySoldiers) {
+//			tt = avilableSkipsForTile(t, isP1Turn);
+//			if (tt != null)
+//				availableMoves.put(t, tt);
+//		}
+//		return availableMoves;
+//	}
+//
+//	/**
+//	 * in this method we find the available moves for a specific soldier
+//	 * 
+//	 * @param t
+//	 * @param isP1Turn
+//	 * @return array list that have all the permitted moves for a soldier
+//	 */
+//	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
+//		ArrayList<Tile> mymoves = new ArrayList<Tile>();
+////		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn, true))
+////			mymoves.add(myBoard[t.getCols() + 2][t.getRows() + 2]);
+////		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn, true))
+////			mymoves.add(myBoard[t.getCols() - 2][t.getRows() - 2]);
+////		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn, true))
+////			mymoves.add(myBoard[t.getCols() + 2][t.getRows() - 2]);
+////		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn, true))
+////			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
+//		for (int i = 0; i < myBoard.length; i++) {
+//			for (int j = 0; j < myBoard.length; j++) {
+//			if(moveValidation(t.getRows(),t.getCols(),i,j,isP1Turn,true))
+//				mymoves.add(myBoard[j][i]);
+//			}
+//		}
+//		return mymoves;
+//	}
 
 	@Override
 	public String toString() {
