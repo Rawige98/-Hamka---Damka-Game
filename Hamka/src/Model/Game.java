@@ -18,6 +18,9 @@ public class Game {
 	private Player winner;
 	private Timer gameDuration;
 	private static boolean isP1Turn;
+	private TimeForPlayer myTimer;
+    static boolean notFinished=false;
+    private int Time = 0;
 
 	public Game(Player player1, Player player2) {
 		super();
@@ -27,13 +30,27 @@ public class Game {
 		gameDate = java.util.Calendar.getInstance().getTime();
 		id = ++Serial;
 		isP1Turn = true;
+		notFinished = true;
+	    myTimer = new TimeForPlayer();
+		Runtime(myTimer);
+		
 	}
+
+
 
 	public Game() {
 
 	}
 
 	// ------------------------Getters and Setters---------------------
+
+	public int getTime() {
+		return Time;
+	}
+
+	public void setTime(int time) {
+		Time = time;
+	}
 	public int getId() {
 		return id;
 	}
@@ -114,7 +131,8 @@ public class Game {
 			return true;
 		} else if (status.equals(GameStatus.PAUSE))
 			return true;
-		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()) {
+		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()
+				&& board.checkAvailableSkips(isP1Turn).isEmpty()) {
 			if (player1.getScore() > player2.getScore())
 				winner = player1;
 			else
@@ -126,13 +144,29 @@ public class Game {
 
 	public void popQuestion() {
 	}
+	
+	public void Runtime(TimeForPlayer myTimer) {
+		Thread t = new Thread(myTimer);
+		t.start();
+	}
+	private int scoreForPlayer(int time) {
+
+		return 60 - time;
+	}
 
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
 		Player p = null;
 		p = isP1Turn ? player1 : player2;
 		if (board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p)) {
-			board.upgradeQueen(xEnd, yEnd);
-			isP1Turn = !isP1Turn;
+			
+			Time = myTimer.getSecond();
+			int score = p.getScore();
+			score += scoreForPlayer(Time);
+			p.setScore(score);
+            isP1Turn = !isP1Turn;
+            notFinished=true;
+            myTimer.reset();
+			Runtime(myTimer);
 			return true;
 		}
 		return false;
@@ -153,29 +187,4 @@ public class Game {
 				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
 	}
 
-	public static void main(String[] args) {
-		Game n = new Game(new Player("Nagwan"), new Player("Tony"));
-		n.move(5, 0, 4, 1);
-		n.move(2, 3, 3, 2);
-		n.move(4, 1, 2, 3);
-		n.move(2, 5, 3, 4);
-		n.move(5, 2, 4, 1);
-		n.move(1, 6, 2, 5);
-		n.move(4, 1, 3, 2);
-		n.move(0, 5, 1, 6);
-		n.move(2, 3, 0, 5);
-		n.move(1, 2, 2, 3);
-		n.move(5, 6, 4, 7);
-		n.move(2, 1, 3, 0);
-		n.move(3, 2, 2, 1);
-		n.move(3, 0, 4, 1);
-		n.move(0, 5, 3, 2);
-		n.move(3, 4, 4, 5);
-		n.move(3, 2, 5, 0);
-		n.move(4,5,5,6);
-		n.move(4, 7, 3, 6);
-		n.move(2, 5, 4, 7);
-		n.move(5, 0, 3, 6);
-		System.out.println(n.getGameState());
-	}
 }

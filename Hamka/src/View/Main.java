@@ -17,12 +17,12 @@ public class Main extends Application {
 	Stage window;
 
 	// @SuppressWarnings("deprecation")
-	public static void main(String[] args) throws SQLException, IOException, ParseException {
-
-		
-		launch(args);
-
-	}
+//	public static void main(String[] args) throws SQLException, IOException, ParseException {
+//
+//		
+//		launch(args);
+//
+//	}
 
 	@Override
 	public void start(Stage primaryStage) {
