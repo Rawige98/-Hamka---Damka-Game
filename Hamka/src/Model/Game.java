@@ -104,15 +104,15 @@ public class Game {
 
 	/**
 	 * we check if the game is finished by the number of Soldiers for the players
-	 * @param isQuit	flag to know is the gamed had finished after a player quit
+	 * 
+	 * @param isQuit flag to know is the gamed had finished after a player quit
 	 * @return
 	 */
 	public boolean finishGame(GameStatus status) {
-		if(status.equals(GameStatus.QUIT)) {
+		if (status.equals(GameStatus.QUIT)) {
 			winner = isP1Turn ? player2 : player1;
 			return true;
-		}
-		else if(status.equals(GameStatus.PAUSE))
+		} else if (status.equals(GameStatus.PAUSE))
 			return true;
 		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()) {
 			if (player1.getScore() > player2.getScore())
@@ -120,17 +120,18 @@ public class Game {
 			else
 				winner = player2;
 			return true;
-		}
-		else return false;
+		} else
+			return false;
 	}
 
 	public void popQuestion() {
 	}
 
 	public boolean move(int xStart, int yStart, int xEnd, int yEnd) {
-		Player p=null;
+		Player p = null;
 		p = isP1Turn ? player1 : player2;
-		if(board.move(xStart, yStart, xEnd, yEnd, isP1Turn,p)){
+		if (board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p)) {
+			board.upgradeQueen(xEnd, yEnd);
 			isP1Turn = !isP1Turn;
 			return true;
 		}
@@ -144,12 +145,37 @@ public class Game {
 	@Override
 	public String toString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
-				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "\n"+board ;
+				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "\n" + board;
 	}
 
 	public String briefToString() {
-		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate +
-				", winner=" + winner + ", gameDuration=" + gameDuration + "]";
+		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
+				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
 	}
 
+	public static void main(String[] args) {
+		Game n = new Game(new Player("Nagwan"), new Player("Tony"));
+		n.move(5, 0, 4, 1);
+		n.move(2, 3, 3, 2);
+		n.move(4, 1, 2, 3);
+		n.move(2, 5, 3, 4);
+		n.move(5, 2, 4, 1);
+		n.move(1, 6, 2, 5);
+		n.move(4, 1, 3, 2);
+		n.move(0, 5, 1, 6);
+		n.move(2, 3, 0, 5);
+		n.move(1, 2, 2, 3);
+		n.move(5, 6, 4, 7);
+		n.move(2, 1, 3, 0);
+		n.move(3, 2, 2, 1);
+		n.move(3, 0, 4, 1);
+		n.move(0, 5, 3, 2);
+		n.move(3, 4, 4, 5);
+		n.move(3, 2, 5, 0);
+		n.move(4,5,5,6);
+		n.move(4, 7, 3, 6);
+		n.move(2, 5, 4, 7);
+		n.move(5, 0, 3, 6);
+		System.out.println(n.getGameState());
+	}
 }

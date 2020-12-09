@@ -28,17 +28,17 @@ public class Board {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (toIndex(i, j) >= 0 && toIndex(i, j) <= 11) {
-					myBoard[i][j] = new Tile(2, Color.black, i, j);
+					myBoard[j][i] = new Tile(2, Color.black, j, i);
 
 				} else {
 					if (toIndex(i, j) >= 20 && toIndex(i, j) <= 31) {
-						myBoard[i][j] = new Tile(1, Color.black, i, j);
+						myBoard[j][i] = new Tile(1, Color.black, j, i);
 
 					} else {
 						if (i % 2 != j % 2)
-							myBoard[i][j] = new Tile(0, Color.white, i, j);
+							myBoard[j][i] = new Tile(0, Color.white, j, i);
 						else
-							myBoard[i][j] = new Tile(0, Color.black, i, j);
+							myBoard[j][i] = new Tile(0, Color.black,  j, i);
 					}
 				}
 			}
@@ -59,7 +59,7 @@ public class Board {
 		if (!isValidPoint(x, y)) {
 			return -1;
 		}
-		return y * 4 + x / 2;
+		return x * 4 + y / 2;
 	}
 
 	/**
@@ -96,12 +96,11 @@ public class Board {
 		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn, false)) {
 			int dx = xEnd - xStart;
 			int dy = yEnd - yStart;
-			if (myBoard[yStart][xStart].getValue() != 22 || myBoard[yStart][xStart].getValue() != 11) {
+			if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
 				// if its not a skip
 				if (Math.abs(dx) != 2) {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
-					myBoard[yEnd][xEnd].upgradeToQueen();
 					return true;
 				} else {
 					int xmid = (xStart + xEnd) / 2;
@@ -110,7 +109,6 @@ public class Board {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
 					p.setScore(100);
-					myBoard[yEnd][xEnd].upgradeToQueen();
 					return true;
 				}
 			}
@@ -120,35 +118,59 @@ public class Board {
 				boolean isSkip = false;
 				int col = -1, row = -1;
 				// check if the road to the target is clear
+
 				while ((i != xEnd && j != yEnd)) {
-					if (dx > 0 && dy > 0) {
-						i++;
-						j++;
-					}
-					if (dx < 0 && dy > 0) {
-						i--;
-						j++;
-					}
-					if (dx > 0 && dy < 0) {
-						j--;
-						i++;
+					if (Math.abs(dx) == Math.abs(dy)) {
+						if (dx > 0 && dy > 0) {
+							i++;
+							j++;
+						}
+						if (dx < 0 && dy > 0) {
+							i--;
+							j++;
+						}
+						if (dx > 0 && dy < 0) {
+							j--;
+							i++;
 
-					}
-					if (dx < 0 && dy < 0) {
-						i--;
-						j--;
+						}
+						if (dx < 0 && dy < 0) {
+							i--;
+							j--;
 
+						}
+					} else {
+						if (Math.abs(dx) + Math.abs(dy) == 8) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						}
 					}
-					if(i==-1)
-						i=7;
-					if(i==8)
-						i=0;
-					if(j==-1)
-						j=7;
-					if(j==8)
-						j=0;
-					if (isP1Turn && (myBoard[j][i].getValue() == 1 || myBoard[j][i].getValue() == 11)
-							|| !isP1Turn && (myBoard[j][i].getValue() == 2 || myBoard[j][i].getValue() == 22)) {
+					if (i == -1)
+						i = 7;
+					if (i == 8)
+						i = 0;
+					if (j == -1)
+						j = 7;
+					if (j == 8)
+						j = 0;
+					dy = yEnd - j;
+					dx = xEnd - i;
+					if (!isP1Turn && (myBoard[j][i].getValue() == 1 || myBoard[j][i].getValue() == 11)
+							|| isP1Turn && (myBoard[j][i].getValue() == 2 || myBoard[j][i].getValue() == 22)) {
 						col = j;
 						row = i;
 						isSkip = true;
@@ -204,7 +226,7 @@ public class Board {
 			System.out.println("ValidID");
 			return false;
 		}
-		if (!validateDistance(xStart, yStart, xEnd, yEnd,isP1Turn)) {
+		if (!validateDistance(xStart, yStart, xEnd, yEnd, isP1Turn)) {
 			if (finish)
 				return false;
 			System.out.println("validDistnace");
@@ -233,10 +255,10 @@ public class Board {
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
 		if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
-		// if its not a skip
-		if (Math.abs(dx) != 2) {
-			return true;
-		}
+			// if its not a skip
+			if (Math.abs(dx) != 2) {
+				return true;
+			}
 			int xmid = (xStart + xEnd) / 2;
 			int ymid = (yStart + yEnd) / 2;
 			if ((myBoard[yStart][xStart].getValue() == 1 && myBoard[ymid][xmid].getValue() != 2)
@@ -247,47 +269,71 @@ public class Board {
 			if (myBoard[yEnd][xEnd].getValue() != 0)
 				return false;
 		} else {
-			//Walls
-			//Queen Skip Validate
+			// Walls
+			// Queen Skip Validate
 			int i = xStart, j = yStart;
 			int c = 0;
 			// check if the road to the target is clear
 			while ((i != xEnd && j != yEnd)) {
-				if (dx > 0 && dy > 0) {
-					i++;
-					j++;
-				}
-				if (dx < 0 && dy > 0) {
-					i--;
-					j++;
-				}
-				if (dx > 0 && dy < 0) {
-					j--;
-					i++;
+				if (Math.abs(dx) == Math.abs(dy)) {
+					if (dx > 0 && dy > 0) {
+						i++;
+						j++;
+					}
+					if (dx < 0 && dy > 0) {
+						i--;
+						j++;
+					}
+					if (dx > 0 && dy < 0) {
+						j--;
+						i++;
 
-				}
-				if (dx < 0 && dy < 0) {
-					i--;
-					j--;
+					}
+					if (dx < 0 && dy < 0) {
+						i--;
+						j--;
 
+					}
+				} else {
+					if (Math.abs(dx) + Math.abs(dy) == 8) {
+						if (dx > 0 && dy > 0) {
+							i++;
+							j--;
+						}
+						if (dx < 0 && dy > 0) {
+							i--;
+							j--;
+						}
+						if (dx > 0 && dy < 0) {
+							j++;
+							i++;
+						}
+						if (dx < 0 && dy < 0) {
+							i--;
+							j++;
+						}
+					}
 				}
-				if(i==-1)
-					i=7;
-				if(i==8)
-					i=0;
-				if(j==-1)
-					j=7;
-				if(j==8)
-					j=0;
-				if ((isP1Turn && (myBoard[j][i].getValue() == 1) || myBoard[j][i].getValue() == 11)
-						|| !isP1Turn && ((myBoard[j][i].getValue() == 2) || myBoard[j][i].getValue() == 22))
+				if (i == -1)
+					i = 7;
+				if (i == 8)
+					i = 0;
+				if (j == -1)
+					j = 7;
+				if (j == 8)
+					j = 0;
+				dy = yEnd - j;
+				dx = xEnd - i;
+				if ((!isP1Turn && (myBoard[j][i].getValue() == 1) || myBoard[j][i].getValue() == 11)
+						|| isP1Turn && ((myBoard[j][i].getValue() == 2) || myBoard[j][i].getValue() == 22))
 					c++;
 			}
 			if (c != 1)
 				return false;
 		}
 		return true;
-	}	
+	}
+
 	/**
 	 * Validates all ID related values for the start, end, and middle (if the move
 	 * is a skip).
@@ -300,8 +346,6 @@ public class Board {
 	 */
 	private boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd, boolean finish) {
 		// check if the end is empty
-		if(!finish)
-			System.out.println(myBoard[yEnd][xEnd].getValue());
 		if (myBoard[yEnd][xEnd].getValue() != 0) {
 			if (finish)
 				return false;
@@ -318,6 +362,7 @@ public class Board {
 		}
 		return true;
 	}
+
 	/**
 	 * Checks that the move is diagonal and magnitude 1 or 2 in the correct
 	 * direction. If the magnitude is not 2 (i.e. not a skip), it checks that no
@@ -329,7 +374,7 @@ public class Board {
 	 * @param endIndex   the end index of the move.
 	 * @return true if and only if the move distance is valid.
 	 */
-	private boolean validateDistance(int xStart, int yStart, int xEnd, int yEnd,boolean isP1Turn) {
+	private boolean validateDistance(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
 		// Check that it was a diagonal move
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
@@ -344,8 +389,8 @@ public class Board {
 			}
 		} else {
 			// Queen
-			//Walls
-			if (!ValidateQueenMove(xStart, yStart, xEnd, yEnd,isP1Turn))
+			// Walls
+			if (!ValidateQueenMove(xStart, yStart, xEnd, yEnd, isP1Turn))
 				return false;
 		}
 		return true;
@@ -360,41 +405,66 @@ public class Board {
 	 * @param yEnd
 	 * @return True if the move is legal
 	 */
-	private boolean ValidateQueenMove(int xStart, int yStart, int xEnd, int yEnd,boolean isP1Turn) {
+	private boolean ValidateQueenMove(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
 		int dy = yEnd - yStart;
 		int dx = xEnd - xStart;
 		int i = xStart, j = yStart;
-		// check if the road to the target is clear
-		while ((i != xEnd && j != yEnd)) {
-			if (dx > 0 && dy > 0) {
-				i++;
-				j++;
-			}
-			if (dx < 0 && dy > 0) {
-				i--;
-				j++;
-			}
-			if (dx > 0 && dy < 0) {
-				j--;
-				i++;
+		if (Math.abs(dx) != Math.abs(dy) && Math.abs(dx) + Math.abs(dy) != 8)
+			// check if the road to the target is clear
+			while ((i != xEnd && j != yEnd)) {
+				if (Math.abs(dx) == Math.abs(dy)) {
+					if (dx > 0 && dy > 0) {
+						i++;
+						j++;
+					}
+					if (dx < 0 && dy > 0) {
+						i--;
+						j++;
+					}
+					if (dx > 0 && dy < 0) {
+						j--;
+						i++;
 
-			}
-			if (dx < 0 && dy < 0) {
-				i--;
-				j--;
+					}
+					if (dx < 0 && dy < 0) {
+						i--;
+						j--;
 
+					}
+				} else {
+					if (Math.abs(dx) + Math.abs(dy) == 8) {
+						if (dx > 0 && dy > 0) {
+							i++;
+							j--;
+						}
+						if (dx < 0 && dy > 0) {
+							i--;
+							j--;
+						}
+						if (dx > 0 && dy < 0) {
+							j++;
+							i++;
+						}
+						if (dx < 0 && dy < 0) {
+							i--;
+							j++;
+						}
+					}
+				}
+				if (i == -1)
+					i = 7;
+				if (i == 8)
+					i = 0;
+				if (j == -1)
+					j = 7;
+				if (j == 8)
+					j = 0;
+				dy = yEnd - j;
+				dx = xEnd - i;
+				if ((!isP1Turn && (myBoard[j][i].getValue() == 11 || myBoard[j][i].getValue() == 1))
+						|| isP1Turn && (myBoard[j][i].getValue() == 22 || myBoard[j][i].getValue() == 2))
+					return false;
 			}
-			if(i==-1)
-				i=7;
-			if(i==8)
-				i=0;
-			if(j==-1)
-				j=7;
-			if(j==8)
-				j=0;
-			if( (isP1Turn&&(myBoard[j][i].getValue()==11||myBoard[j][i].getValue()==1))||!isP1Turn&&(myBoard[j][i].getValue()==22||myBoard[j][i].getValue()==2))
-				return false;
-		}
 		return true;
 	}
 
@@ -407,7 +477,7 @@ public class Board {
 	 * @return true if the soldier upgraded successfully
 	 */
 	public boolean upgradeQueen(int x, int y) {
-		return myBoard[x][y].upgradeToQueen();
+		return myBoard[y][x].upgradeToQueen();
 	}
 
 	/**
@@ -463,6 +533,7 @@ public class Board {
 		}
 		return mymoves;
 	}
+
 //
 //	/**
 //	 * in this method we built a hash that have all the available moves for a player
@@ -520,7 +591,6 @@ public class Board {
 //		}
 //		return mymoves;
 //	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
