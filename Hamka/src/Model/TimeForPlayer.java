@@ -1,9 +1,12 @@
 package Model;
 
+import java.awt.Color;
+
 public class TimeForPlayer implements Runnable {
 
 	private int second;
 	private int mints;
+	ColorTilesHandler handler;
 
 	public int getSecond() {
 		return second;
@@ -18,9 +21,10 @@ public class TimeForPlayer implements Runnable {
 		this.mints = 0;
 	}
 
-	public TimeForPlayer() {
+	public TimeForPlayer(ColorTilesHandler handler) {
 		this.second = 0;
 		this.mints = 0;
+		this.handler = handler;
 	}
 
 	@Override
@@ -31,7 +35,11 @@ public class TimeForPlayer implements Runnable {
 				second = 0;
 				mints++;
 			}
-
+			if(second == 30 && mints ==0) 
+				handler.showColor(Color.green);
+			if(second == 30 && mints == 1)
+				handler.showColor(Color.orange);
+			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -41,5 +49,5 @@ public class TimeForPlayer implements Runnable {
 		}
 
 	}
-
+	
 }
