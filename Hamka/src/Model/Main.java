@@ -43,7 +43,8 @@ public class Main {
 						.println(player1.getUsername() + " => White (1) , " + player2.getUsername() + " => Black (2)");
 				System.out.println();
 				Game game = new Game(player1, player2);
-				main.runGame(game);
+//				main.runGame(game);
+				game.run();
 				break;
 			case 2:
 				main.printRules();
@@ -96,12 +97,7 @@ public class Main {
 		SysData.getInstance().loadData(DataType.PAUSED_GAMES);
 		SysData.getInstance().loadData(DataType.RULES);
 	}
-
-	public void Runtime(TimeForPlayer myTimer) {
-		Thread t = new Thread(myTimer);
-		t.start();
-	}
-
+/*
 	private void runGame(Game game) {
 		// TODO Auto-generated method stub
 		GameStatus status = GameStatus.FINISH;
@@ -187,7 +183,7 @@ public class Main {
 		}
 		return false;
 	}
-
+*/
 	public void printDashboard() {
 		String toPrint = String.format(
 				"Please choose a game option:\n\t1.Play\n\t2.Game Rules\n\t3.Load games\n\t4.Questions\n\t5.View History\n\t6.Exit");
