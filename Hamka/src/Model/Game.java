@@ -1,5 +1,6 @@
 package Model;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Timer;
 
 import Utils.GameStatus;
 
-public class Game {
+public class Game implements ColorTilesHandler{
 	private static int Serial = 0;
 	private int id;
 	private Player player1;
@@ -176,6 +177,34 @@ public class Game {
 		return board.toString();
 	}
 
+	
+	// ************************************** Colord tiles ****************************************
+	
+	@Override
+	public void showColor(Color color) {
+		// TODO Auto-generated method stub
+		Tile[] tiles;
+		if(color.equals(Color.YELLOW)) 
+			board.showYellowTiles();
+		else if(color.equals(Color.green)) {
+			HashMap<Tile, ArrayList<Tile>> suggested = board.checkAvailableMoves(isP1Turn);
+			tiles = (Tile[])suggested.values().toArray();
+		}else if(color.equals(Color.red)) {
+			HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
+			if(suggestedSkips.isEmpty()) {
+				HashMap<Tile, ArrayList<Tile>> suggested = board.checkAvailableMoves(isP1Turn);
+				tiles = (Tile[])suggested.values().toArray();
+			}
+		}else if(color.equals(Color.blue)) {
+			
+			
+			HashMap<Tile, ArrayList<Tile>> suggested = board.checkAvailableMoves(isP1Turn);
+			tiles = (Tile[])suggested.values().toArray();
+		}
+	}
+	
+	
+	
 	@Override
 	public String toString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
