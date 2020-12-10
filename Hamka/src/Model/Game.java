@@ -131,8 +131,7 @@ public class Game {
 			return true;
 		} else if (status.equals(GameStatus.PAUSE))
 			return true;
-		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()
-				&& board.checkAvailableSkips(isP1Turn).isEmpty()) {
+		else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()) {
 			if (player1.getScore() > player2.getScore())
 				winner = player1;
 			else
@@ -158,7 +157,7 @@ public class Game {
 		Player p = null;
 		p = isP1Turn ? player1 : player2;
 		if (board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p)) {
-			
+			board.upgradeQueen(xEnd, yEnd);	
 			Time = myTimer.getSecond();
 			int score = p.getScore();
 			score += scoreForPlayer(Time);
@@ -185,6 +184,31 @@ public class Game {
 	public String briefToString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
 				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
+	}
+	public static void main(String[] args) {
+		Game n = new Game(new Player("Nagwan"), new Player("Tony"));
+		n.move(5, 0, 4, 1);
+		n.move(2, 3, 3, 2);
+		n.move(4, 1, 2, 3);
+		n.move(2, 5, 3, 4);
+		n.move(5, 2, 4, 1);
+		n.move(1, 6, 2, 5);
+		n.move(4, 1, 3, 2);
+		n.move(0, 5, 1, 6);
+		n.move(2, 3, 0, 5);
+		n.move(1, 2, 2, 3);
+		n.move(5, 6, 4, 7);
+		n.move(2, 1, 3, 0);
+		n.move(3, 2, 2, 1);
+		n.move(3, 0, 4, 1);
+		n.move(0, 5, 3, 2);
+		n.move(3, 4, 4, 5);
+		n.move(3, 2, 5, 0);
+		n.move(4,5,5,6);
+		n.move(4, 7, 3, 6);
+		n.move(2, 5, 4, 7);
+		n.move(5, 0, 3, 6);
+		System.out.println(n.getGameState());
 	}
 
 }
