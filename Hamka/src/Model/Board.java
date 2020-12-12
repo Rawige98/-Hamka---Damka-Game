@@ -3,7 +3,11 @@ package Model;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
+
+import Utils.Consts;
 
 public class Board {
 	private Tile[][] myBoard;
@@ -534,63 +538,138 @@ public class Board {
 		return mymoves;
 	}
 
-//
-//	/**
-//	 * in this method we built a hash that have all the available moves for a player
-//	 * 
-//	 * @param isP1Turn
-//	 * @return hashmap with a key is a soldier in the board for the player and value
-//	 *         is a list that have the available moves for that soldier
-//	 */
-//	public HashMap<Tile, ArrayList<Tile>> checkAvailableSkips(boolean isP1Turn) {
-//		ArrayList<Tile> mySoldiers = new ArrayList<Tile>();
-//		HashMap<Tile, ArrayList<Tile>> availableMoves = new HashMap<Tile, ArrayList<Tile>>();
-//		for (int i = 0; i < 8; i++) {
-//			for (int j = 0; j < 8; j++) {
-//				if (isP1Turn) {
-//					if (myBoard[i][j].getValue() == 1 || myBoard[i][j].getValue() == 11)
-//						mySoldiers.add(myBoard[i][j]);
-//				} else {
-//					if (myBoard[i][j].getValue() == 2 || myBoard[i][j].getValue() == 22)
-//						mySoldiers.add(myBoard[i][j]);
-//
-//				}
-//			}
-//		}
-//		ArrayList<Tile> tt = null;
-//		for (Tile t : mySoldiers) {
-//			tt = avilableSkipsForTile(t, isP1Turn);
-//			if (tt != null)
-//				availableMoves.put(t, tt);
-//		}
-//		return availableMoves;
+
+	// *******************  Colord tiles methods  *******************************************************
+
+	/**
+	 * this methods randomly choose tile and if her color is black, then it will be changed to yellow
+	 */
+	public void showYellowTiles() {
+		int x, y, yellowCount=0;
+		Random random = new Random();
+		boolean done = false;
+		while(!done) {
+			if(yellowCount == Consts.MAX_YELLOW_TILE)
+				done = true;
+			else {
+				x = random.nextInt(Consts.ROWS);
+				y = random.nextInt(Consts.COLS);
+				Tile randomTile = myBoard[x][y];
+				if(!randomTile.getColor().equals(Color.white) && randomTile.getColor().equals(Color.black) && !randomTile.getColor().equals(Color.yellow)) {
+					randomTile.setColor(Color.yellow);
+					yellowCount++;
+				}
+			}
+		}
+	}
+
+
+//	public void showRedGreenTile(boolean isP1Turn , Color color) {
+//		HashMap<Tile, ArrayList<Tile>> suggested = checkAvailableMoves(isP1Turn);
+//		Tile randomTile = getRandomTile((Tile[])suggested.values().toArray());
+//		randomTile.setColor(color);
 //	}
 //
-//	/**
-//	 * in this method we find the available moves for a specific soldier
-//	 * 
-//	 * @param t
-//	 * @param isP1Turn
-//	 * @return array list that have all the permitted moves for a soldier
-//	 */
-//	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
-//		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-////		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn, true))
-////			mymoves.add(myBoard[t.getCols() + 2][t.getRows() + 2]);
-////		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn, true))
-////			mymoves.add(myBoard[t.getCols() - 2][t.getRows() - 2]);
-////		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn, true))
-////			mymoves.add(myBoard[t.getCols() + 2][t.getRows() - 2]);
-////		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn, true))
-////			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
-//		for (int i = 0; i < myBoard.length; i++) {
-//			for (int j = 0; j < myBoard.length; j++) {
-//			if(moveValidation(t.getRows(),t.getCols(),i,j,isP1Turn,true))
-//				mymoves.add(myBoard[j][i]);
-//			}
-//		}
-//		return mymoves;
+//	public void showBlueTile(boolean isP1Turn) {
+//		HashMap<Tile, ArrayList<Tile>> suggested = checkAvailableMoves(isP1Turn);
+//		Tile randomTile = getRandomTile((Tile[])suggested.values().toArray());
+//		randomTile.setColor(Color.blue);
 //	}
+
+
+	public void colorRandomTile(ArrayList<Tile> tiles, Color color) {
+		Random random = new Random();
+		int index = random.nextInt(tiles.size());
+		tiles.get(index).setColor(color);
+	}
+	
+	public void colorAllTiles(ArrayList<Tile> tiles, Color color) {
+		for(int i=0 ; i<tiles.size() ; i++) {
+			tiles.get(i).setColor(color);
+		}
+	}
+
+//	private Tile getRandomTile(Tile[] tiles) {
+//		Random random = new Random();
+//		int index = random.nextInt(tiles.length);
+//		return tiles[index];
+//	}
+
+	public void turnOffTileColor(Tile tile) {
+		tile.setColor(Color.black);
+	}
+
+	public void turnOffAllTilesColor() {
+		Tile tile;
+		for(int i=0 ; i<myBoard.length ; i++) {
+			for (int j = 0; j < myBoard[i].length; j++) {
+				tile = myBoard[i][j];
+				if(!tile.getColor().equals(Color.white))
+					tile.setColor(Color.black);
+			}
+		}
+	}
+
+
+
+	/**
+	 * in this method we built a hash that have all the available moves for a player
+	 * 
+	 * @param isP1Turn
+	 * @return hashmap with a key is a soldier in the board for the player and value
+	 *         is a list that have the available moves for that soldier
+	 */
+	public HashMap<Tile, ArrayList<Tile>> checkAvailableSkips(boolean isP1Turn) {
+		ArrayList<Tile> mySoldiers = new ArrayList<Tile>();
+		HashMap<Tile, ArrayList<Tile>> availableMoves = new HashMap<Tile, ArrayList<Tile>>();
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (isP1Turn) {
+					if (myBoard[i][j].getValue() == 1 || myBoard[i][j].getValue() == 11)
+						mySoldiers.add(myBoard[i][j]);
+				} else {
+					if (myBoard[i][j].getValue() == 2 || myBoard[i][j].getValue() == 22)
+						mySoldiers.add(myBoard[i][j]);
+
+				}
+			}
+		}
+		ArrayList<Tile> tt = null;
+		for (Tile t : mySoldiers) {
+			tt = avilableSkipsForTile(t, isP1Turn);
+			if (tt != null)
+				availableMoves.put(t, tt);
+		}
+		return availableMoves;
+	}
+
+	/**
+	 * in this method we find the available moves for a specific soldier
+	 * 
+	 * @param t
+	 * @param isP1Turn
+	 * @return array list that have all the permitted moves for a soldier
+	 */
+	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
+		ArrayList<Tile> mymoves = new ArrayList<Tile>();
+//		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() + 2][t.getRows() + 2]);
+//		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() - 2][t.getRows() - 2]);
+//		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() + 2][t.getRows() - 2]);
+//		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn, true))
+//			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
+		for (int i = 0; i < myBoard.length; i++) {
+			for (int j = 0; j < myBoard.length; j++) {
+			if(moveValidation(t.getRows(),t.getCols(),i,j,isP1Turn,true))
+				mymoves.add(myBoard[j][i]);
+			}
+		}
+		return mymoves;
+	}
+	
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
