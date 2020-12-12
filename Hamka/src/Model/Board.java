@@ -670,6 +670,10 @@ public class Board {
 	}
 	
 	
+	public Tile getTile(int x, int y) {
+		return myBoard[x][y];
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

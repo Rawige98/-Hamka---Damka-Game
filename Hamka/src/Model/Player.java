@@ -5,14 +5,14 @@ public class Player {
 	private int id;
 	private String username;
 	private  int score;
-	
 
-@Override
+
+	@Override
 	public String toString() {
 		return "username=" + username + ", score=" + score ;
 	}
 
-public Player(String username) {
+	public Player(String username) {
 		super();
 		this.username = username;
 		id=++Serial;
@@ -51,5 +51,9 @@ public Player(String username) {
 	public void setScore(int score) {
 		this.score += score;
 	}
-//----------------------------------------------
+	
+	public void updateScore(int scoreToAdd) {
+		score += scoreToAdd;
+	}
+	//----------------------------------------------
 }
