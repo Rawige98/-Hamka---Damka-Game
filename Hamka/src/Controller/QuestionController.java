@@ -1,15 +1,19 @@
-package View;
+package Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.animation.PathTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -39,13 +43,23 @@ public class QuestionController implements Initializable {
     {
 		((Stage) back.getScene().getWindow()).close();
 	}
+    
+	public void back(ActionEvent event) throws Exception {
+		closeWindow();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
+		Scene scene = new Scene(root, 581, 449);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Hamka Game");
+		primaryStage.show();
+	}
 
 	
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//Circle req = new Circle(30);
-		Line l = new Line(3,50, 150, 50);
+		Circle l = new Circle(20);
+		//Line l = new Line(3,50, 150, 50);
 		
 		PathTransition transition = new PathTransition();
 		transition.setNode(image);

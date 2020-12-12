@@ -12,11 +12,23 @@ public class TimeForPlayer implements Runnable {
 		return second;
 	}
 
+	public int getMints() {
+		return mints;
+	}
+
+	public void setMints(int mints) {
+		this.mints = mints;
+	}
+
 	public void setSecond(int second) {
 		this.second = second;
 	}
 
 	public void reset() {
+		this.second = 0;
+		this.mints = 0;
+	}
+	public TimeForPlayer() {
 		this.second = 0;
 		this.mints = 0;
 	}

@@ -1,8 +1,9 @@
-package View;
+package Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Model.Player;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
@@ -19,6 +21,22 @@ import javafx.util.Duration;
 
 public class MainPageController implements Initializable {
 	
+	public static Player getPlayer1() {
+		return player1;
+	}
+
+	public static void setPlayer1(Player player1) {
+		MainPageController.player1 = player1;
+	}
+
+	public static Player getPlayer2() {
+		return player2;
+	}
+
+	public static void setPlayer2(Player player2) {
+		MainPageController.player2 = player2;
+	}
+
 	@FXML
     private Button play;
 
@@ -60,6 +78,15 @@ public class MainPageController implements Initializable {
     private Button closeInst;
 
     @FXML
+    private TextField p1;
+
+    @FXML
+    private TextField p2;
+    
+    private static Player player1;
+    private static Player player2;
+
+    @FXML
     void closeWindowInst(ActionEvent event) {
     	((Stage) closeInst.getScene().getWindow()).close();
     }
@@ -86,9 +113,18 @@ public class MainPageController implements Initializable {
 	public void ColorBack()  {
 		play.setStyle("-fx-background-color: silver;"+"-fx-background-radius: 30;");
 		rules.setStyle("-fx-background-color: silver;"+"-fx-background-radius: 30;");
-		question.setStyle("-fx-background-color: silver;"+"-fx-background-radius: 30;");
 		history.setStyle("-fx-background-color: silver;"+"-fx-background-radius: 30;");
 		
+	}
+	
+	public void Admin(ActionEvent event) throws Exception {
+		closeWindow();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/AdminLogin.fxml"));
+		Scene scene = new Scene(root, 454, 236);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("login");
+		primaryStage.show();
 	}
 	
 	public void Question(ActionEvent event) throws Exception {
@@ -120,12 +156,14 @@ public class MainPageController implements Initializable {
 	}
 	
 	public void Start(ActionEvent event) throws Exception {
+		player1 = new Player(p1.getText());
+		player2 = new Player(p2.getText());
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
 		Scene scene = new Scene(root, 650, 600);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("enter nick Name");
+		primaryStage.setTitle("Play");
 		primaryStage.show();
 	}
 	public void back(ActionEvent event) throws Exception {

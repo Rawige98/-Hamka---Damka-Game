@@ -21,8 +21,18 @@ public class Game{
 	private Player winner;
 	private Timer gameDuration;
 	private static boolean isP1Turn;
-	private TimeForPlayer myTimer;
-    static boolean notFinished=false;
+	private static TimeForPlayer myTimer;
+	
+    public static TimeForPlayer getMyTimer() {
+		return myTimer;
+	}
+
+
+
+	public static void setMyTimer(TimeForPlayer myTimer) {
+		Game.myTimer = myTimer;
+	}
+	static boolean notFinished=false;
     private int Time = 0;
 
 	public Game(Player player1, Player player2) {
@@ -223,7 +233,7 @@ public class Game{
 	}
 
 	public void setP1Turn(boolean isP1Turn) {
-		this.isP1Turn = isP1Turn;
+		Game.isP1Turn = isP1Turn;
 	}
 	// ---------------------------------------------------
 
