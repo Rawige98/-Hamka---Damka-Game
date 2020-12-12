@@ -8,17 +8,6 @@ public class Tile {
 	private int rows;
 	private int cols;
 	
-	public static final String TEXT_RESET = "\u001B[0m";
-	public static final String TEXT_BLACK = "\u001B[30m";
-	public static final String TEXT_RED = "\u001B[31m";
-	public static final String TEXT_GREEN = "\u001B[32m";
-	public static final String TEXT_YELLOW = "\u001B[33m";
-	public static final String TEXT_BLUE = "\u001B[34m";
-	public static final String ANSI_PURPLE = "\u001B[35m";
-	public static final String TEXT_WHITE = "\u001B[37m";
-	public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-
 	public Tile(int value, java.awt.Color color,  int cols,int rows) {
 		super();
 		this.value = value;
@@ -78,25 +67,25 @@ public class Tile {
 	}
 	@Override
 	public String toString() {
-//		String colorTxt;
-//		if(this.color.equals(Color.yellow))
-//			colorTxt = "YELLOW";
-//		else if(this.color.equals(Color.red))
-//			colorTxt = "RED";
-//		else if(this.color.equals(Color.blue))
-//			colorTxt = "BLUE";
-//		else if(this.color.equals(Color.orange))
-//			colorTxt = "ORANGE" ;
-//		else if(this.color.equals(Color.green))
-//			colorTxt = "GREEN";
-//		else if(this.color.equals(Color.white)) {
-//			colorTxt = "WHITE";
-//		}
-//		else
-//			colorTxt = "BLACK";
+		String colorTxt;
+		if(this.color.equals(Color.yellow))
+			colorTxt = "YELLOW";
+		else if(this.color.equals(Color.red))
+			colorTxt = "RED";
+		else if(this.color.equals(Color.blue))
+			colorTxt = "BLUE";
+		else if(this.color.equals(Color.orange))
+			colorTxt = "ORANGE" ;
+		else if(this.color.equals(Color.green))
+			colorTxt = "GREEN";
+		else if(this.color.equals(Color.white)) {
+			colorTxt = "WHITE";
+		}
+		else
+			colorTxt = "BLACK";
 		
 		
-		return  value+""/*+colorTxt*/;
+		return  value+" - "+colorTxt;
 	}
 
 	@Override

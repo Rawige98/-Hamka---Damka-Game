@@ -21,19 +21,10 @@ public class Game{
 	private Player winner;
 	private Timer gameDuration;
 	private static boolean isP1Turn;
-	private static TimeForPlayer myTimer;
-	
-    public static TimeForPlayer getMyTimer() {
-		return myTimer;
-	}
-
-
-
-	public static void setMyTimer(TimeForPlayer myTimer) {
-		Game.myTimer = myTimer;
-	}
+	private TimeForPlayer myTimer;
 	static boolean notFinished=false;
-    private int Time = 0;
+	private int Time = 0;
+	Scanner runGameScanner;
 
 	public Game(Player player1, Player player2) {
 		super();
@@ -44,49 +35,40 @@ public class Game{
 		id = ++Serial;
 		isP1Turn = true;
 		notFinished = true;
-	    myTimer = new TimeForPlayer(new ColorTilesHandler() {
-			
+		runGameScanner = new Scanner(System.in);
+		myTimer = new TimeForPlayer(new ColorTilesHandler() {
 			@Override
 			public void showColor(Color color) {
 				// TODO Auto-generated method stub
 				ArrayList<Tile> suggestedTiles = getSuggestedTilesArray();
-				if(color.equals(Color.green)) {
+				if(color.equals(Color.green)) 
 					board.colorRandomTile(suggestedTiles, color);
-//					System.out.println("ADDED GREEN TILE ");
-//					System.out.println(getGameState());
-				}
-				else if(color.equals(Color.orange)) {
+				else if(color.equals(Color.orange)) 
 					board.colorAllTiles(suggestedTiles, color);
-//					System.out.println("ADDED ORANGE TILE ");
-//					System.out.println(getGameState());;
-				}
-				refreshBoard();
+				//				refreshBoard();
 			}
 
 			private void refreshBoard() {
 				// TODO Auto-generated method stub
-				
-				System.out.println(getGameState());
+				runGameScanner.close();
+				System.out.println("************************* Refreshing the board *******************************");
+				runGameScanner = new Scanner(System.in);
 			}
 		});
 		Runtime(myTimer);
 		checkColorsToShow();
 	}
 
-
-
 	public Game() {
 
 	}
-	
+
 	public void run() {
 		GameStatus status = GameStatus.FINISH;
-		Scanner runGameScanner = new Scanner(System.in);
 		String turnString, scoresStatus, moveInput;
 		Player playerToPlay;
 		int fromX, fromY, toX, toY;
-		System.out.println(
-				"NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game");
+		System.out.println("NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game");
 		System.out.println();
 		while (!finishGame(status)) {
 			playerToPlay = isP1Turn() ? getPlayer1() : getPlayer2();
@@ -97,11 +79,11 @@ public class Game{
 					+getPlayer1().getScore()  + " , " + getPlayer2().getUsername() + ": "
 					+ getPlayer2().getScore() ;
 			System.out.println(scoresStatus);
+			checkColorsToShow();
 			System.out.println(getGameState());
 			boolean legalFirstMoveInput = false;
 			while (!legalFirstMoveInput) {
-				System.out
-						.println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:");
+				System.out.println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:");
 				moveInput = runGameScanner.nextLine();
 				if (moveInput.equals("quit")) {
 					status = GameStatus.QUIT;
@@ -128,7 +110,8 @@ public class Game{
 								moveArr = moveInput.toCharArray();
 								toX = Integer.parseInt(String.valueOf(moveArr[1]));
 								toY = Integer.parseInt(String.valueOf(moveArr[3]));
-								move(fromX, fromY, toX, toY);//////////
+								move(fromX, fromY, toX, toY);
+								board.turnOffAllTilesColor();
 								legalSecondMoveInput = true;
 							} else {
 								System.out.println("Illegal move input! Try Again");
@@ -137,12 +120,14 @@ public class Game{
 						legalFirstMoveInput = true;
 					}
 				}
+				if(!legalFirstMoveInput)
+					System.out.println("Illegal move input! Try Again");
 			}
-		
+
 
 		}
 	}
-	
+
 	private boolean validateMoveInput(String moveInput) {
 		// TODO Auto-generated method stub
 		// format (x,y)
@@ -233,7 +218,7 @@ public class Game{
 	}
 
 	public void setP1Turn(boolean isP1Turn) {
-		Game.isP1Turn = isP1Turn;
+		this.isP1Turn = isP1Turn;
 	}
 	// ---------------------------------------------------
 
@@ -267,8 +252,28 @@ public class Game{
 	}
 
 	public void popQuestion() {
+		Question question = SysData.getInstance().popQuestion();
+		System.out.println("You Got a bunos question :D ===>");
+		System.out.println("Question: "+question.getText());
+		System.out.print("Answers: ");
+		int i=0;
+		for(String answer : question.getAnswers()) {
+			System.out.print("\t"+i + ". " + answer);
+		}
+		System.out.println();
+
+		System.out.println("Enter the number of the right question:");
+		Scanner scan = new Scanner(System.in);
+		int ans = scan.nextInt();
+		int score = question.checkAnswer(ans);
+		if(score > 0)
+			System.out.println("Good job!! You had earned: " + score + " points.");
+		else
+			System.out.println("Bad luck :( You had lost: " + score + " points.");
+		Player player = isP1Turn ? player1 : player2;
+		player.updateScore(score);
 	}
-	
+
 	public void Runtime(TimeForPlayer myTimer) {
 		Thread t = new Thread(myTimer);
 		t.start();
@@ -284,39 +289,90 @@ public class Game{
 		if (board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p)) {
 			board.upgradeQueen(xEnd, yEnd);	
 			Time = myTimer.getSecond();
-			int score = p.getScore();
-			score += scoreForPlayer(Time);
-			p.setScore(score);
-            isP1Turn = !isP1Turn;
-            notFinished=true;
-            myTimer.reset();
+			p.setScore(scoreForPlayer(Time));
+			Tile destinationTile = board.getTile(xEnd, yEnd);
+			checkDestinatonTile(destinationTile);
+			isP1Turn = !isP1Turn;
+			notFinished=true;
+			myTimer.reset();
 			Runtime(myTimer);
-			
+
 			return true;
 		}
 		return false;
+	}
+
+	private void checkDestinatonTile(Tile destinationTile) {
+		// TODO Auto-generated method stub
+		if(destinationTile.getColor().equals(Color.yellow))
+			popQuestion();
+		else if(destinationTile.getColor().equals(Color.blue)) {
+			System.out.println("Congrats! you had earned a chance to bring back a soldier from death.");
+			String tileInput;
+			boolean leaglTile = false;
+			Scanner scanner = new Scanner(System.in);
+			while(!leaglTile) {
+				do {
+					System.out.println("Please enter the tile coordinates [format: (row,col)] that you want the soldier to return to:");
+					tileInput = scanner.nextLine();
+				} while (!validateMoveInput(tileInput));
+				scanner.close();
+				char[] moveArr = tileInput.toCharArray();
+				int x = Integer.parseInt(String.valueOf(moveArr[1]));
+				int y = Integer.parseInt(String.valueOf(moveArr[3]));
+				Tile tile = board.getTile(x, y);
+				if(tile.getColor().equals(Color.white)) {
+					System.out.println("You must choose a black tile. Try again!");
+				}else {
+					HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
+					if(suggestedSkips.containsKey(tile))
+						System.out.println("Illegal tile! You are to close of the contest's soldiers");
+					else {
+						leaglTile=true;
+						tile.setValue(isP1Turn ? 1:2);
+					}
+				}
+			}
+		}else if(destinationTile.getColor().equals(Color.green)) {
+			Player player = isP1Turn ? player1 : player2;
+			player.updateScore(Consts.POINTS_FOR_GREEN_TILE);
+			System.out.println("You had earned " + Consts.POINTS_FOR_GREEN_TILE + " points.");
+		}else if(destinationTile.getColor().equals(Color.red)) {
+			System.out.println("You had won a one more turn with the same soldier. [indexes: (" + destinationTile.getRows() + "," + destinationTile.getCols() + ")");
+			myTimer.reset();
+			Scanner scanner = new Scanner(System.in);
+			String input;
+			do {
+				System.out.println("Enter a new destination tile");
+				input = scanner.nextLine();
+			} while (!validateMoveInput(input));
+			char[] moveArr = input.toCharArray();
+			int x = Integer.parseInt(String.valueOf(moveArr[1]));
+			int y = Integer.parseInt(String.valueOf(moveArr[3]));
+			move(destinationTile.getRows(), destinationTile.getCols(), x, y);
+		}
 	}
 
 	public String getGameState() {
 		return board.toString();
 	}
 
-	
+
 	// ************************************** Colord tiles ****************************************
-	
+
 	public void checkColorsToShow() {
 		// TODO Auto-generated method stub
 		board.turnOffAllTilesColor();
 		board.showYellowTiles();
-		
+
 		ArrayList<Tile> suggestedTiles = getSuggestedTilesArray() ;
-		
+
 		//************ Red tile **********
 		HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
 		if(suggestedSkips.isEmpty()) {
 			board.colorAllTiles(suggestedTiles, Color.red);
 		}
-		
+
 		//*********** Blue tile **********
 		int qCount=0, sCount=0 , queen, soldier;
 		if(isP1Turn) {
@@ -326,7 +382,7 @@ public class Game{
 			queen = 22;
 			soldier = 2;
 		}
-		
+
 		for(int i=0 ; i<Consts.ROWS ; i++) {
 			for(int j=0 ; j<Consts.COLS ; j++) {
 				Tile tile = board.getMyBoard()[i][j];
@@ -336,13 +392,13 @@ public class Game{
 					qCount++;
 			}
 		}
-		
+
 		if(sCount == 2 && qCount == 1)
 			board.colorRandomTile(suggestedTiles, Color.blue);
 	}
-	
-	
-	
+
+
+
 	private ArrayList<Tile> getSuggestedTilesArray() {
 		// TODO Auto-generated method stub
 		ArrayList<Tile> tiles = new ArrayList<>();
@@ -368,27 +424,27 @@ public class Game{
 	}
 	public static void main(String[] args) {
 		Game n = new Game(new Player("Nagwan"), new Player("Tony"));
-//		n.move(5, 0, 4, 1);
-//		n.move(2, 3, 3, 2);
-//		n.move(4, 1, 2, 3);
-//		n.move(2, 5, 3, 4);
-//		n.move(5, 2, 4, 1);
-//		n.move(1, 6, 2, 5);
-//		n.move(4, 1, 3, 2);
-//		n.move(0, 5, 1, 6);
-//		n.move(2, 3, 0, 5);
-//		n.move(1, 2, 2, 3);
-//		n.move(5, 6, 4, 7);
-//		n.move(2, 1, 3, 0);
-//		n.move(3, 2, 2, 1);
-//		n.move(3, 0, 4, 1);
-//		n.move(0, 5, 3, 2);
-//		n.move(3, 4, 4, 5);
-//		n.move(3, 2, 5, 0);
-//		n.move(4,5,5,6);
-//		n.move(4, 7, 3, 6);
-//		n.move(2, 5, 4, 7);
-//		n.move(5, 0, 3, 6);
+		//		n.move(5, 0, 4, 1);
+		//		n.move(2, 3, 3, 2);
+		//		n.move(4, 1, 2, 3);
+		//		n.move(2, 5, 3, 4);
+		//		n.move(5, 2, 4, 1);
+		//		n.move(1, 6, 2, 5);
+		//		n.move(4, 1, 3, 2);
+		//		n.move(0, 5, 1, 6);
+		//		n.move(2, 3, 0, 5);
+		//		n.move(1, 2, 2, 3);
+		//		n.move(5, 6, 4, 7);
+		//		n.move(2, 1, 3, 0);
+		//		n.move(3, 2, 2, 1);
+		//		n.move(3, 0, 4, 1);
+		//		n.move(0, 5, 3, 2);
+		//		n.move(3, 4, 4, 5);
+		//		n.move(3, 2, 5, 0);
+		//		n.move(4,5,5,6);
+		//		n.move(4, 7, 3, 6);
+		//		n.move(2, 5, 4, 7);
+		//		n.move(5, 0, 3, 6);
 		System.out.println("Bye");
 		System.out.println(n.getGameState());
 		System.out.println("BYEBYE");

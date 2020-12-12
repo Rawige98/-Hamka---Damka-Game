@@ -39,10 +39,10 @@ public class Board {
 						myBoard[j][i] = new Tile(1, Color.black, j, i);
 
 					} else {
-						if (i % 2 != j % 2)
+						if (toIndex(i, j) == -1)
 							myBoard[j][i] = new Tile(0, Color.white, j, i);
 						else
-							myBoard[j][i] = new Tile(0, Color.black,  j, i);
+							myBoard[j][i] = new Tile(0, Color.black, j, i);
 					}
 				}
 			}
@@ -538,31 +538,32 @@ public class Board {
 		return mymoves;
 	}
 
-
-	// *******************  Colord tiles methods  *******************************************************
+	// ******************* Colord tiles methods
+	// *******************************************************
 
 	/**
-	 * this methods randomly choose tile and if her color is black, then it will be changed to yellow
+	 * this methods randomly choose tile and if her color is black, then it will be
+	 * changed to yellow
 	 */
 	public void showYellowTiles() {
-		int x, y, yellowCount=0;
+		int x, y, yellowCount = 0;
 		Random random = new Random();
 		boolean done = false;
-		while(!done) {
-			if(yellowCount == Consts.MAX_YELLOW_TILE)
+		while (!done) {
+			if (yellowCount == Consts.MAX_YELLOW_TILE)
 				done = true;
 			else {
 				x = random.nextInt(Consts.ROWS);
 				y = random.nextInt(Consts.COLS);
 				Tile randomTile = myBoard[x][y];
-				if(!randomTile.getColor().equals(Color.white) && randomTile.getColor().equals(Color.black) && !randomTile.getColor().equals(Color.yellow)) {
+				if (!randomTile.getColor().equals(Color.white) && randomTile.getColor().equals(Color.black)
+						&& !randomTile.getColor().equals(Color.yellow)) {
 					randomTile.setColor(Color.yellow);
 					yellowCount++;
 				}
 			}
 		}
 	}
-
 
 //	public void showRedGreenTile(boolean isP1Turn , Color color) {
 //		HashMap<Tile, ArrayList<Tile>> suggested = checkAvailableMoves(isP1Turn);
@@ -576,15 +577,14 @@ public class Board {
 //		randomTile.setColor(Color.blue);
 //	}
 
-
 	public void colorRandomTile(ArrayList<Tile> tiles, Color color) {
 		Random random = new Random();
 		int index = random.nextInt(tiles.size());
 		tiles.get(index).setColor(color);
 	}
-	
+
 	public void colorAllTiles(ArrayList<Tile> tiles, Color color) {
-		for(int i=0 ; i<tiles.size() ; i++) {
+		for (int i = 0; i < tiles.size(); i++) {
 			tiles.get(i).setColor(color);
 		}
 	}
@@ -601,16 +601,14 @@ public class Board {
 
 	public void turnOffAllTilesColor() {
 		Tile tile;
-		for(int i=0 ; i<myBoard.length ; i++) {
+		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard[i].length; j++) {
 				tile = myBoard[i][j];
-				if(!tile.getColor().equals(Color.white))
+				if (!tile.getColor().equals(Color.white))
 					tile.setColor(Color.black);
 			}
 		}
 	}
-
-
 
 	/**
 	 * in this method we built a hash that have all the available moves for a player
@@ -652,24 +650,99 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-//		if (moveValidation(t.getRows(), t.getCols(), t.getRows() + 2, t.getCols() + 2, isP1Turn, true))
-//			mymoves.add(myBoard[t.getCols() + 2][t.getRows() + 2]);
-//		if (moveValidation(t.getCols(), t.getRows(), t.getCols() - 2, t.getRows() - 2, isP1Turn, true))
-//			mymoves.add(myBoard[t.getCols() - 2][t.getRows() - 2]);
-//		if (moveValidation(t.getCols(), t.getRows(), t.getCols() + 2, t.getRows() - 2, isP1Turn, true))
-//			mymoves.add(myBoard[t.getCols() + 2][t.getRows() - 2]);
-//		if (moveValidation(t.getCols(), t.getCols(), t.getCols() - 2, t.getRows() + 2, isP1Turn, true))
-//			mymoves.add(myBoard[t.getCols() - 2][t.getRows() + 2]);
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
-			if(moveValidation(t.getRows(),t.getCols(),i,j,isP1Turn,true))
-				mymoves.add(myBoard[j][i]);
+				if (moveValidation(t.getRows(), t.getCols(), i, j, isP1Turn, true)) {
+
+					if (isSkip(t.getRows(), t.getCols(), i, j, isP1Turn))
+						mymoves.add(myBoard[j][i]);
+				}
 			}
 		}
 		return mymoves;
 	}
 	
 	
+	public Tile getTile(int x, int y) {
+		return myBoard[x][y];
+	}
+	
+
+	private boolean isSkip(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
+		int dx = xEnd - xStart;
+		int dy = yEnd - yStart;
+		if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
+			// if its not a skip
+			if (Math.abs(dx) == 2) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		// Queen
+		else {
+			int i = xStart, j = yStart;
+			boolean isSkip = false;			// check if the road to the target is clear
+
+			while ((i != xEnd && j != yEnd)) {
+				if (Math.abs(dx) == Math.abs(dy)) {
+					if (dx > 0 && dy > 0) {
+						i++;
+						j++;
+					}
+					if (dx < 0 && dy > 0) {
+						i--;
+						j++;
+					}
+					if (dx > 0 && dy < 0) {
+						j--;
+						i++;
+
+					}
+					if (dx < 0 && dy < 0) {
+						i--;
+						j--;
+
+					}
+				} else {
+					if (Math.abs(dx) + Math.abs(dy) == 8) {
+						if (dx > 0 && dy > 0) {
+							i++;
+							j--;
+						}
+						if (dx < 0 && dy > 0) {
+							i--;
+							j--;
+						}
+						if (dx > 0 && dy < 0) {
+							j++;
+							i++;
+						}
+						if (dx < 0 && dy < 0) {
+							i--;
+							j++;
+						}
+					}
+				}
+				if (i == -1)
+					i = 7;
+				if (i == 8)
+					i = 0;
+				if (j == -1)
+					j = 7;
+				if (j == 8)
+					j = 0;
+				dy = yEnd - j;
+				dx = xEnd - i;
+				if (!isP1Turn && (myBoard[j][i].getValue() == 1 || myBoard[j][i].getValue() == 11)
+						|| isP1Turn && (myBoard[j][i].getValue() == 2 || myBoard[j][i].getValue() == 22)) {
+					isSkip = true;
+				}
+			}
+			return isSkip;
+	}
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
