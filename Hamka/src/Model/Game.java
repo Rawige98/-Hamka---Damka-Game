@@ -79,6 +79,7 @@ public class Game{
 					+getPlayer1().getScore()  + " , " + getPlayer2().getUsername() + ": "
 					+ getPlayer2().getScore() ;
 			System.out.println(scoresStatus);
+			checkColorsToShow();
 			System.out.println(getGameState());
 			boolean legalFirstMoveInput = false;
 			while (!legalFirstMoveInput) {
