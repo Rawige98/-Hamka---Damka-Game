@@ -88,7 +88,6 @@ public class SysData {
 	@SuppressWarnings("unchecked")
 	public boolean loadQuestions(String externalPath) {
 
-		ArrayList<Question> qtest = new ArrayList<Question>();
 		if (externalPath != null) {
 			quesJsonPath = externalPath;
 		}
@@ -135,8 +134,6 @@ public class SysData {
 					// add answers to the queston's answers array.
 					questionToAdd.addAnswer(a);
 				}
-				
-				qtest.add(questionToAdd);
 
 				// Add the question to questions according to the question level.
 				if (!questions.containsKey(questionToAdd.getDifficulty())) {
@@ -162,7 +159,6 @@ public class SysData {
 	@SuppressWarnings({ "unchecked", "resource" })
 	public void saveQuestions(String externalPath) {
 
-		
 		if (externalPath != null) {
 			quesJsonPath = externalPath;
 		}
@@ -187,7 +183,6 @@ public class SysData {
 
 				// get each question from the ArrayList
 				for (Question q : list) {
-					
 					JSONObject ja = new JSONObject();
 
 					// get all answers
@@ -195,7 +190,6 @@ public class SysData {
 					for (String a : q.getAnswers()) {
 						answers.add(a);
 					}
-					
 
 					// put fields in the object
 					ja.put("question", q.getText());
@@ -237,21 +231,16 @@ public class SysData {
 			myArray.add(question);
 		}
 		questions.put(question.getDifficulty(), myArray);
-		saveQuestions(null);
 
 	}
 
 	//************************************************remove question***************************************************************************
 	public boolean removeQuestion(Question question) {
 		ArrayList<Question> myArray = questions.get(question.getDifficulty());
-		if(myArray==null)
-			return false;
 		if (myArray.contains(question)) {
 			questions.get(question.getDifficulty()).remove(question);
-			saveQuestions(null);
 			return true;
 		}
-
 		return false;
 	}
 

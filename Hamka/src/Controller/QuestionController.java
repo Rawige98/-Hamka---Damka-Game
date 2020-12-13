@@ -94,7 +94,7 @@ public class QuestionController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-			sysData.loadQuestions(null);
+			SysData.getInstance().loadQuestions(null);
 	
 		questions = sysData.getQuestions();
 		for (Difficulty d : questions.keySet()) {
