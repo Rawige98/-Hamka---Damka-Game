@@ -86,7 +86,7 @@ public class SysData {
 	// *******************************************loadQuestions************************************************************************
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Question> loadQuestions(String externalPath) {
+	public boolean loadQuestions(String externalPath) {
 
 		ArrayList<Question> qtest = new ArrayList<Question>();
 		if (externalPath != null) {
@@ -152,10 +152,10 @@ public class SysData {
 		} catch (Exception e) {
 			e.printStackTrace();
 			resetPathToDefault();
-			return null;
+			return false;
 		}
 		resetPathToDefault();
-		return qtest;
+		return true;
 	}
 
 	//***********************************************SaveQuestions****************************************************************************
