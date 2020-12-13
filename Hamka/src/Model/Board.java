@@ -81,10 +81,10 @@ public class Board {
 
 		// Check that it is on a black tile
 		if (x % 2 == y % 2) {
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -348,7 +348,7 @@ public class Board {
 	 * @param endIndex   the end index of the move.
 	 * @return true if and only if all IDs are valid.
 	 */
-	private boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd, boolean finish) {
+	public boolean validateIDs(boolean isP1Turn, int xStart, int yStart, int xEnd, int yEnd, boolean finish) {
 		// check if the end is empty
 		if (myBoard[yEnd][xEnd].getValue() != 0) {
 			if (finish)

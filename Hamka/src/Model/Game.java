@@ -128,7 +128,9 @@ public class Game{
 		}
 	}
 
-	private boolean validateMoveInput(String moveInput) {
+	
+	public boolean validateMoveInput(String moveInput) {
+
 		// TODO Auto-generated method stub
 		// format (x,y)
 		// String regex = "/n(X,Y)/";
