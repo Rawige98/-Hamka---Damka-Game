@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
+import Utils.Consts;
 import Utils.Difficulty;
 import Utils.E_Teams;
 
@@ -104,6 +105,24 @@ public class Question {
 		this.team = team;
 	}
 
+	public int checkAnswer(int answer) {
+		if(answer == this.rightAnswer) {
+			if(difficulty == Difficulty.EASY)
+				return Consts.EASY_RIGHT;
+			else if(difficulty == Difficulty.MEDIUM)
+				return Consts.MEDUIM_RIGHT;
+			else
+				return Consts.HARD_RIGHT;
+		}else {
+			if(difficulty == Difficulty.EASY)
+				return Consts.EASY_WRONG;
+			else if(difficulty == Difficulty.MEDIUM)
+				return Consts.MEDUIM_WRONG;
+			else
+				return Consts.HARD_WRONG;
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "Question [text=" + text + ", answers=" + answers + ", rightAnswer=" + rightAnswer + ", difficulty="
