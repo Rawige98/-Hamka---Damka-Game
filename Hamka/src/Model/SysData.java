@@ -237,10 +237,13 @@ public class SysData {
 	//************************************************remove question***************************************************************************
 	public boolean removeQuestion(Question question) {
 		ArrayList<Question> myArray = questions.get(question.getDifficulty());
+		if(myArray==null)
+			return false;
 		if (myArray.contains(question)) {
 			questions.get(question.getDifficulty()).remove(question);
 			return true;
 		}
+
 		return false;
 	}
 

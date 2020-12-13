@@ -7,7 +7,7 @@ public class Tile {
 	private java.awt.Color color;
 	private int rows;
 	private int cols;
-	
+
 	public static final String TEXT_RESET = "\u001B[0m";
 	public static final String TEXT_BLACK = "\u001B[30m";
 	public static final String TEXT_RED = "\u001B[31m";
@@ -19,7 +19,7 @@ public class Tile {
 	public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
-	public Tile(int value, java.awt.Color color,  int cols,int rows) {
+	public Tile(int value, java.awt.Color color, int cols, int rows) {
 		super();
 		this.value = value;
 		this.color = color;
@@ -27,7 +27,7 @@ public class Tile {
 		this.cols = cols;
 	}
 
-	//-------------------Getters and Setters-----------
+	// -------------------Getters and Setters-----------
 	public int getValue() {
 		return value;
 	}
@@ -35,14 +35,15 @@ public class Tile {
 	public void setValue(int value) {
 		this.value = value;
 	}
+
 	public java.awt.Color getColor() {
 		return color;
 	}
+
 	public void setColor(java.awt.Color color) {
 		this.color = color;
 	}
 
-	
 	public int getRows() {
 		return rows;
 	}
@@ -59,23 +60,29 @@ public class Tile {
 		this.cols = cols;
 	}
 
-	//------------------------------------
+	// ------------------------------------
 	/**
 	 * in this method we upgrade the soldier to queen
+	 * 
 	 * @param Tile T
 	 * @return true if the soldier upgraded successfully
 	 */
 	public boolean upgradeToQueen() {
-		if(this.getValue()==1&&Board.toIndex(rows, cols)>=0&&Board.toIndex(rows, cols)<4) {
+
+		System.out.println(Board.toIndex(rows, cols));
+
+		if (this.getValue() == 1 && Board.toIndex(rows, cols) >= 0 && Board.toIndex(rows, cols) < 4) {
 			this.setValue(11);
 			return true;
 		}
-		if(this.getValue()==2&&Board.toIndex(rows, cols)>=29&&Board.toIndex(rows, cols)<33) {
+
+		if (this.getValue() == 2 && Board.toIndex(rows, cols) >= 29 && Board.toIndex(rows, cols) < 33) {
 			this.setValue(22);
 			return true;
 		}
 		return false;
 	}
+
 	@Override
 	public String toString() {
 //		String colorTxt;
@@ -94,9 +101,8 @@ public class Tile {
 //		}
 //		else
 //			colorTxt = "BLACK";
-		
-		
-		return  value+""/*+colorTxt*/;
+
+		return value + ""/* +colorTxt */;
 	}
 
 	@Override
@@ -133,6 +139,4 @@ public class Tile {
 		return true;
 	}
 
-	
-	
 }
