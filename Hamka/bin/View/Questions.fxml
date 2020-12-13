@@ -21,17 +21,17 @@
          </font>
       </Button>
       <ListView fx:id="list" layoutX="24.0" layoutY="77.0" prefHeight="308.0" prefWidth="247.0" style="-fx-background-color: white;" />
-      <Button fx:id="add" layoutX="286.0" layoutY="77.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Add Question" textFill="WHITE">
+      <Button fx:id="add" layoutX="286.0" layoutY="77.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Add Question" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="delete" layoutX="286.0" layoutY="181.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Delete Question" textFill="WHITE">
+      <Button fx:id="delete" layoutX="286.0" layoutY="181.0" mnemonicParsing="false" onAction="#deleteQuestion" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Delete Question" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="update" layoutX="286.0" layoutY="127.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Update Question" textFill="WHITE">
+      <Button fx:id="update" layoutX="286.0" layoutY="127.0" mnemonicParsing="false" onAction="#updateQuestion" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Update Question" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB Bold" size="14.0" />
          </font>

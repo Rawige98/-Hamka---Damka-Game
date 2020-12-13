@@ -15,12 +15,12 @@
             <Image url="@../images/board.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="15.0" layoutY="550.0" mnemonicParsing="false" style="-fx-background-radius: 30; -fx-background-color: #e9d29d;" text="EXIT">
+      <Button layoutX="574.0" layoutY="550.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-radius: 30; -fx-background-color: #e9d29d;" text="EXIT">
          <font>
             <Font name="Berlin Sans FB Bold" size="17.0" />
          </font>
       </Button>
-      <Button layoutX="93.0" layoutY="550.0" mnemonicParsing="false" style="-fx-background-radius: 30; -fx-background-color: #e9d29d;" text="PAUSE">
+      <Button layoutX="479.0" layoutY="550.0" mnemonicParsing="false" style="-fx-background-radius: 30; -fx-background-color: #e9d29d;" text="PAUSE">
          <font>
             <Font name="Berlin Sans FB Bold" size="17.0" />
          </font>
@@ -91,5 +91,10 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Label>
+      <Button layoutX="16.0" layoutY="550.0" mnemonicParsing="false" onAction="#back" style="-fx-background-radius: 30; -fx-background-color: #e9d29d;" text="back to Main Page">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="17.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -4,10 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="226.0" prefWidth="475.0" style="-fx-background-color: #59a6da;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainPageController">
+<AnchorPane onMouseClicked="#deletemenu" onMouseDragged="#deletemenu" onMouseEntered="#deletemenu" prefHeight="226.0" prefWidth="475.0" style="-fx-background-color: #59a6da;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainPageController">
    <children>
       <Label layoutX="99.0" layoutY="57.0" text="PLAYER 1 :" textFill="WHITE">
          <font>
@@ -31,6 +34,20 @@
             <Font name="Berlin Sans FB" size="15.0" />
          </font>
       </Button>
+      <Pane fx:id="newPane" layoutX="391.0" layoutY="-2.0" prefHeight="226.0" prefWidth="84.0" style="-fx-background-color: white;" visible="false">
+         <children>
+            <Button layoutX="-3.0" layoutY="49.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: transparent;" text="Load Game" textFill="#3ab1d6">
+               <font>
+                  <Font name="Berlin Sans FB Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <ImageView fx:id="menu" fitHeight="35.0" fitWidth="45.0" layoutX="426.0" layoutY="10.0" onMouseEntered="#menu" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/icons8-menu-480.png" />
+         </image>
+      </ImageView>
    </children>
    <effect>
       <Glow />

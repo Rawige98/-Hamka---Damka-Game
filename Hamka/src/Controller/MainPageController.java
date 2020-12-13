@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Model.Player;
+import Model.SysData;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,12 +16,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainPageController implements Initializable {
-	
+
 	public static Player getPlayer1() {
 		return player1;
 	}
@@ -38,61 +40,64 @@ public class MainPageController implements Initializable {
 	}
 
 	@FXML
-    private Button play;
+	private Button play;
+
+	@FXML
+	private Button rules;
+
+	@FXML
+	private Button question;
+
+	@FXML
+	private Button history;
+
+	@FXML
+	private Button exit;
+	@FXML
+	private ImageView cloud;
+
+	@FXML
+	private ImageView cloud1;
+
+	@FXML
+	private ImageView cloud2;
+
+	@FXML
+	private ImageView cloud21;
+	@FXML
+	private ImageView cloud3;
+	@FXML
+	private Button unmute;
+
+	@FXML
+	private Button mute;
+	@FXML
+	private Button start;
+
+	@FXML
+	private Button back;
+	@FXML
+	private Button closeInst;
+
+	@FXML
+	private TextField p1;
+
+	@FXML
+	private TextField p2;
+	@FXML
+    private Pane newPane;
 
     @FXML
-    private Button rules;
+    private ImageView menu;
 
-    @FXML
-    private Button question;
+	private static Player player1;
+	private static Player player2;
+	public static boolean isSoundOn = true;
 
-    @FXML
-    private Button history;
-
-    @FXML
-    private Button exit;
-    @FXML
-    private ImageView cloud;
-
-    @FXML
-    private ImageView cloud1;
-
-    @FXML
-    private ImageView cloud2;
-
-    @FXML
-    private ImageView cloud21;
-    @FXML
-    private ImageView cloud3;
-    @FXML
-    private Button unmute;
-
-    @FXML
-    private Button mute;
-    @FXML
-    private Button start;
-
-    @FXML
-    private Button back;
-    @FXML
-    private Button closeInst;
-
-    @FXML
-    private TextField p1;
-
-    @FXML
-    private TextField p2;
-    
-    private static Player player1;
-    private static Player player2;
-
-    @FXML
-    void closeWindowInst(ActionEvent event) {
-    	((Stage) closeInst.getScene().getWindow()).close();
-    }
-	
-    public void closeWindow()
-    {
+	/***************************************
+	 * main page
+	 *****************************************************/
+	public void closeWindow() {
 		((Stage) exit.getScene().getWindow()).close();
 	}
 
@@ -100,23 +105,37 @@ public class MainPageController implements Initializable {
 		unmute.setVisible(false);
 		mute.setVisible(true);
 	}
+
 	public void unmute(ActionEvent event) throws Exception {
 		mute.setVisible(false);
 		unmute.setVisible(true);
-	
+
 	}
-	public void playColor()  {
-		play.setStyle("-fx-background-color: transparent;"+"-fx-background-radius: 30;"+""
-				+ "-fx-border-color: silver;"+"-fx-border-radius: 30;"+"-fx-border-width: 3");
-		
+
+	public void playColor() {
+		play.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 30;" + ""
+				+ "-fx-border-color: silver;" + "-fx-border-radius: 30;" + "-fx-border-width: 3");
+
 	}
-	public void ColorBack()  {
-		play.setStyle("-fx-background-color: silver;"+"-fx-background-radius: 30;");
-		rules.setStyle("-fx-background-color: silver;"+"-fx-background-radius: 30;");
-		history.setStyle("-fx-background-color: silver;"+"-fx-background-radius: 30;");
-		
+
+	public void rulesColor() {
+		rules.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 30;" + ""
+				+ "-fx-border-color: silver;" + "-fx-border-radius: 30;" + "-fx-border-width: 3");
+
 	}
-	
+
+	public void historyColor() {
+		history.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 30;" + ""
+				+ "-fx-border-color: silver;" + "-fx-border-radius: 30;" + "-fx-border-width: 3");
+	}
+
+	public void ColorBack() {
+		play.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
+		rules.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
+		history.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
+
+	}
+
 	public void Admin(ActionEvent event) throws Exception {
 		closeWindow();
 		Stage primaryStage = new Stage();
@@ -126,18 +145,9 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("login");
 		primaryStage.show();
 	}
-	
-	public void Question(ActionEvent event) throws Exception {
-		closeWindow();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));
-		Scene scene = new Scene(root, 450, 456);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("questions");
-		primaryStage.show();
-	}
-	
+
 	public void Play(ActionEvent event) throws Exception {
+		isSoundOn=false;
 		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/NickName.fxml"));
@@ -146,7 +156,9 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("enter nick Name");
 		primaryStage.show();
 	}
+
 	public void Rules(ActionEvent event) throws Exception {
+		isSoundOn=false;
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Rules.fxml"));
 		Scene scene = new Scene(root, 625, 504);
@@ -154,7 +166,41 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("RULES");
 		primaryStage.show();
 	}
+
+	@FXML
+	void soundClicked(MouseEvent event) {
+		if (MainPageController.isSoundOn) {
+			unmute.setVisible(false);
+			mute.setVisible(true);
+			Sound.getInstance().stop("Piano Solo #1 RF.mp3");
+			MainPageController.isSoundOn = false;
+		} else {
+			unmute.setVisible(true);
+			mute.setVisible(false);
+			Sound.getInstance().play("Piano Solo #1 RF.mp3");
+			MainPageController.isSoundOn = true;
+		}
+	}
+
+	/**********************************************
+	 * nick name page
+	 *****************************************/
+
+	@FXML
+	void closeWindowInst(ActionEvent event) {
+		((Stage) closeInst.getScene().getWindow()).close();
+	}
 	
+	@FXML
+	void menu(MouseEvent event) {
+		newPane.setVisible(true);
+	}
+	
+	@FXML
+	void deletemenu(MouseEvent event) {
+		newPane.setVisible(false);
+	}
+
 	public void Start(ActionEvent event) throws Exception {
 		player1 = new Player(p1.getText());
 		player2 = new Player(p2.getText());
@@ -166,6 +212,7 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("Play");
 		primaryStage.show();
 	}
+
 	public void back(ActionEvent event) throws Exception {
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
@@ -175,21 +222,25 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("Hamka game");
 		primaryStage.show();
 	}
-	public void startColor()  {
-		start.setStyle("-fx-background-color: transparent;"+"-fx-background-radius: 30;"+""
-				+ "-fx-border-color: transparent;"+"-fx-border-radius: 30;"+"-fx-text-fill: #cd4f06");
-		
+
+	public void startColor() {
+		start.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 30;" + ""
+				+ "-fx-border-color: transparent;" + "-fx-border-radius: 30;" + "-fx-text-fill: #cd4f06");
+
 	}
-	
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		Line l = new Line(3,50, 150, 50);
-		Line l2 = new Line(50,10, 100, 10);
-		Line l3 = new Line(100,40, 3, 40);
-		//Line l4 = new Line(50,50, 150, 150);
-		
-		
+		if (MainPageController.isSoundOn)
+			Sound.getInstance().play("Piano Solo #1 RF.mp3");
+		else
+			Sound.getInstance().stop("Piano Solo #1 RF.mp3");
+
+		Line l = new Line(3, 50, 150, 50);
+		Line l2 = new Line(50, 10, 100, 10);
+		Line l3 = new Line(100, 40, 3, 40);
+		// Line l4 = new Line(50,50, 150, 150);
+
 		PathTransition transition = new PathTransition();
 		transition.setNode(cloud);
 		transition.setDuration(Duration.seconds(10));
@@ -232,13 +283,12 @@ public class MainPageController implements Initializable {
 		transition5.setCycleCount(PathTransition.INDEFINITE);
 		transition5.setAutoReverse(true);
 		transition5.play();
-		
+
 	}
 
-    @FXML
-    void ColorBackWhite(MouseEvent event) {
-    	start.setStyle("-fx-background-color: transparent;"+"-fx-background-radius: 30;"+""
-				+ "-fx-border-color: transparent;"+"-fx-border-radius: 30;"+"-fx-text-fill: #ffffff");
-    }
+	@FXML
+	void ColorBackWhite(MouseEvent event) {
+		start.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 30;" + ""
+				+ "-fx-border-color: transparent;" + "-fx-border-radius: 30;" + "-fx-text-fill: #ffffff");
+	}
 }
-
