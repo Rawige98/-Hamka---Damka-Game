@@ -127,13 +127,10 @@ public class Game{
 
 		}
 	}
-<<<<<<< HEAD
+
 	
 	public boolean validateMoveInput(String moveInput) {
-=======
 
-	private boolean validateMoveInput(String moveInput) {
->>>>>>> main
 		// TODO Auto-generated method stub
 		// format (x,y)
 		// String regex = "/n(X,Y)/";
