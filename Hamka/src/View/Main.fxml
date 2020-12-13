@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#ColorBack" onMouseEntered="#ColorBack" onMouseMoved="#ColorBack" prefHeight="449.0" prefWidth="581.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#ColorBack" onMouseEntered="#ColorBack" onMouseMoved="#ColorBack" prefHeight="449.0" prefWidth="581.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainPageController">
    <children>
       <ImageView fitHeight="460.0" fitWidth="661.0" layoutX="-7.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -42,7 +42,7 @@
             <Image url="@../images/cloud.png" />
          </image>
       </ImageView>
-      <VBox layoutX="223.0" layoutY="154.0" prefHeight="202.0" prefWidth="136.0" spacing="15.0">
+      <VBox layoutX="223.0" layoutY="174.0" prefHeight="202.0" prefWidth="136.0" spacing="15.0">
          <children>
             <Button fx:id="play" mnemonicParsing="false" onAction="#Play" onMouseEntered="#playColor" prefHeight="40.0" prefWidth="139.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Play" textFill="#cd4f06" VBox.vgrow="ALWAYS">
                <font>
@@ -52,17 +52,12 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button fx:id="rules" mnemonicParsing="false" onAction="#Rules" prefHeight="40.0" prefWidth="139.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Game Rules" textFill="#cd4f06">
+            <Button fx:id="rules" mnemonicParsing="false" onAction="#Rules" onMouseEntered="#rulesColor" prefHeight="40.0" prefWidth="139.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Game Rules" textFill="#cd4f06">
                <font>
                   <Font name="Berlin Sans FB" size="19.0" />
                </font>
             </Button>
-            <Button fx:id="question" mnemonicParsing="false" onAction="#Question" prefHeight="40.0" prefWidth="143.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-radius: 30; -fx-border-color: silver;" text="Questions" textFill="#cd4f06">
-               <font>
-                  <Font name="Berlin Sans FB" size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="history" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" style="-fx-background-radius: 30; -fx-border-color: silver; -fx-border-radius: 30; -fx-background-color: silver;" text="View History" textFill="#cd4f06">
+            <Button fx:id="history" mnemonicParsing="false" onMouseEntered="#historyColor" prefHeight="40.0" prefWidth="152.0" style="-fx-background-radius: 30; -fx-border-color: silver; -fx-border-radius: 30; -fx-background-color: silver;" text="View History" textFill="#cd4f06">
                <font>
                   <Font name="Berlin Sans FB" size="19.0" />
                </font>
@@ -77,7 +72,7 @@
             <DropShadow height="0.0" radius="3.4525" spread="0.55" width="15.81" />
          </effect>
       </Label>
-      <Button fx:id="unmute" layoutX="23.0" layoutY="399.0" mnemonicParsing="false" onAction="#mute" style="-fx-background-color: transparent;">
+      <Button fx:id="unmute" layoutX="23.0" layoutY="399.0" mnemonicParsing="false" onAction="#mute" onMouseClicked="#soundClicked" style="-fx-background-color: transparent;">
          <graphic>
             <ImageView fitHeight="26.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -86,7 +81,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="mute" layoutX="18.0" layoutY="392.0" mnemonicParsing="false" onAction="#unmute" style="-fx-background-color: transparent;" visible="false">
+      <Button fx:id="mute" layoutX="18.0" layoutY="392.0" mnemonicParsing="false" onAction="#unmute" onMouseClicked="#soundClicked" style="-fx-background-color: transparent;" visible="false">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -95,10 +90,19 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="exit" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Exit" textFill="#cd4f06">
+      <Button fx:id="exit" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="25.0" prefWidth="56.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Exit" textFill="#cd4f06">
          <font>
             <Font name="Berlin Sans FB" size="15.0" />
          </font>
+      </Button>
+      <Button layoutX="490.0" layoutY="366.0" mnemonicParsing="false" onAction="#Admin" prefHeight="73.0" prefWidth="75.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="70.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/icons8-admin-settings-male-64.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
    </children>
 </AnchorPane>

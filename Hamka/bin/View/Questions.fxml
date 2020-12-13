@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="456.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.QuestionController">
+<AnchorPane prefHeight="450.0" prefWidth="456.0" style="-fx-background-color: #3091E1;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.QuestionController">
    <children>
-      <ImageView fx:id="image" fitHeight="98.0" fitWidth="104.0" layoutX="154.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="image" fitHeight="136.0" fitWidth="129.0" layoutX="356.0" layoutY="307.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/ques.jpg" />
+            <Image url="@../images/icons8-question-mark-100%20(2).png" />
          </image>
       </ImageView>
-      <Button fx:id="back" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="57.0" style="-fx-background-radius: 30;" text="back" textFill="#cd4f06">
+      <Button fx:id="back" layoutX="24.0" layoutY="406.0" mnemonicParsing="false" onAction="#back" prefHeight="21.0" prefWidth="57.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="back" textFill="WHITE">
          <font>
-            <Font name="Berlin Sans FB" size="13.0" />
+            <Font name="Berlin Sans FB Bold" size="14.0" />
          </font>
       </Button>
-      <HBox layoutX="7.0" layoutY="199.0" prefHeight="34.0" prefWidth="440.0" spacing="25.0">
-         <children>
-            <Button fx:id="add" mnemonicParsing="false" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30;" text="Add Question" textFill="#cd4f06">
-               <font>
-                  <Font name="Berlin Sans FB" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="update" mnemonicParsing="false" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30;" text="Update Question" textFill="#cd4f06">
-               <font>
-                  <Font name="Berlin Sans FB" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="delete" mnemonicParsing="false" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30;" text="Delete Question" textFill="#cd4f06">
-               <font>
-                  <Font name="Berlin Sans FB" size="14.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <ListView fx:id="list" layoutX="24.0" layoutY="251.0" prefHeight="163.0" prefWidth="398.0" />
+      <ListView fx:id="list" layoutX="24.0" layoutY="77.0" prefHeight="308.0" prefWidth="247.0" style="-fx-background-color: white;" />
+      <Button fx:id="add" layoutX="286.0" layoutY="77.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Add Question" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="delete" layoutX="286.0" layoutY="181.0" mnemonicParsing="false" onAction="#deleteQuestion" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Delete Question" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="update" layoutX="286.0" layoutY="127.0" mnemonicParsing="false" onAction="#updateQuestion" prefHeight="29.0" prefWidth="155.0" style="-fx-background-radius: 30; -fx-background-color: #FF890D;" text="Update Question" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="24.0" layoutY="14.0" prefHeight="23.0" prefWidth="109.0" text="Hello Admin" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

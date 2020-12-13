@@ -26,10 +26,7 @@ public class Question {
 	}
 	
 	
-	public Question()
-	{
-		
-	}
+	
     /**
      * Add a possible answer to the question.
      * check if the answer is not already exists in answers arraylist.
