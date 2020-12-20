@@ -4,10 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="json-simple-1.1.jar"/>
 	<classpathentry kind="lib" path="gson-2.8.2.jar"/>
-<<<<<<< Updated upstream
-=======
-	<classpathentry kind="lib" path="C:/Users/amneh/Downloads/junit-4.10.jar"/>
->>>>>>> Stashed changes
+	<classpathentry kind="lib" path="C:/Users/User 1/Documents/GitHub/Wolf/Hamka/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="junit-4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
