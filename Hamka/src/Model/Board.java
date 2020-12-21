@@ -145,21 +145,43 @@ public class Board {
 						}
 					} else {
 						if (Math.abs(dx) + Math.abs(dy) == 8) {
-							if (dx > 0 && dy > 0) {
-								i++;
-								j--;
-							}
-							if (dx < 0 && dy > 0) {
-								i--;
-								j--;
-							}
-							if (dx > 0 && dy < 0) {
-								j++;
-								i++;
-							}
-							if (dx < 0 && dy < 0) {
-								i--;
-								j++;
+							if (xEnd == 0 || xEnd == 7) {
+								if (dx > 0 && dy > 0) {
+									i++;
+									j--;
+								}
+								if (dx < 0 && dy > 0) {
+									i--;
+									j--;
+								}
+								if (dx > 0 && dy < 0) {
+									j++;
+									i++;
+								}
+								if (dx < 0 && dy < 0) {
+									i--;
+									j++;
+								}
+							} else {
+								if (dx > 0 && dy > 0) {
+									i--;
+									j++;
+								}
+								if (dx < 0 && dy > 0) {
+									j++;
+									i++;
+								}
+								if (dx > 0 && dy < 0) {
+
+									i--;
+									j--;
+								}
+								if (dx < 0 && dy < 0) {
+
+									i++;
+									j--;
+								}
+
 							}
 						}
 					}
@@ -300,21 +322,43 @@ public class Board {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (dx > 0 && dy > 0) {
-							i++;
-							j--;
-						}
-						if (dx < 0 && dy > 0) {
-							i--;
-							j--;
-						}
-						if (dx > 0 && dy < 0) {
-							j++;
-							i++;
-						}
-						if (dx < 0 && dy < 0) {
-							i--;
-							j++;
+						if (xEnd == 0 || xEnd == 7) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						} else {
+							if (dx > 0 && dy > 0) {
+								i--;
+								j++;
+							}
+							if (dx < 0 && dy > 0) {
+								j++;
+								i++;
+							}
+							if (dx > 0 && dy < 0) {
+
+								i--;
+								j--;
+							}
+							if (dx < 0 && dy < 0) {
+
+								i++;
+								j--;
+							}
+
 						}
 					}
 				}
@@ -437,21 +481,43 @@ public class Board {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (dx > 0 && dy > 0) {
-							i++;
-							j--;
-						}
-						if (dx < 0 && dy > 0) {
-							i--;
-							j--;
-						}
-						if (dx > 0 && dy < 0) {
-							j++;
-							i++;
-						}
-						if (dx < 0 && dy < 0) {
-							i--;
-							j++;
+						if (xEnd == 0 || xEnd == 7) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						} else {
+							if (dx > 0 && dy > 0) {
+								i--;
+								j++;
+							}
+							if (dx < 0 && dy > 0) {
+								j++;
+								i++;
+							}
+							if (dx > 0 && dy < 0) {
+
+								i--;
+								j--;
+							}
+							if (dx < 0 && dy < 0) {
+
+								i++;
+								j--;
+							}
+
 						}
 					}
 				}
@@ -661,14 +727,12 @@ public class Board {
 		}
 		return mymoves;
 	}
-	
-	
+
 	public Tile getTile(int x, int y) {
 		return myBoard[x][y];
 	}
-	
 
-	private boolean isSkip(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
+	public boolean isSkip(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
 		if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
@@ -682,9 +746,10 @@ public class Board {
 		// Queen
 		else {
 			int i = xStart, j = yStart;
-			boolean isSkip = false;			// check if the road to the target is clear
-
+			boolean isSkip = false; // check if the road to the target is clear
+			int c=0;
 			while ((i != xEnd && j != yEnd)) {
+				c++;
 				if (Math.abs(dx) == Math.abs(dy)) {
 					if (dx > 0 && dy > 0) {
 						i++;
@@ -706,21 +771,43 @@ public class Board {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (dx > 0 && dy > 0) {
-							i++;
-							j--;
-						}
-						if (dx < 0 && dy > 0) {
-							i--;
-							j--;
-						}
-						if (dx > 0 && dy < 0) {
-							j++;
-							i++;
-						}
-						if (dx < 0 && dy < 0) {
-							i--;
-							j++;
+						if (xEnd == 0 || xEnd == 7) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						} else {
+							if (dx > 0 && dy > 0) {
+								i--;
+								j++;
+							}
+							if (dx < 0 && dy > 0) {
+								j++;
+								i++;
+							}
+							if (dx > 0 && dy < 0) {
+
+								i--;
+								j--;
+							}
+							if (dx < 0 && dy < 0) {
+
+								i++;
+								j--;
+							}
+
 						}
 					}
 				}
@@ -739,8 +826,8 @@ public class Board {
 					isSkip = true;
 				}
 			}
-			return isSkip;
-	}
+			return isSkip&&c==1;
+		}
 	}
 
 	@Override
