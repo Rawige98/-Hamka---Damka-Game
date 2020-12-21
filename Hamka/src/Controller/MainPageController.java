@@ -159,9 +159,10 @@ public class MainPageController implements Initializable {
 
 	public void Rules(ActionEvent event) throws Exception {
 		isSoundOn=false;
+		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Rules.fxml"));
-		Scene scene = new Scene(root, 625, 504);
+		Scene scene = new Scene(root, 672, 456);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("RULES");
 		primaryStage.show();
