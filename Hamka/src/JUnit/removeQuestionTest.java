@@ -34,7 +34,7 @@ public class removeQuestionTest {
 		}
 		//Question q2 = new Question("q5", Difficulty.HARD, 2, E_Teams.Wolf);
         Question q3= new Question("q",Difficulty.EASY,3,E_Teams.Wolf);
-		assertFalse(SysData.getInstance().removeQuestion(q2));
+		//assertFalse(SysData.getInstance().removeQuestion(q2));
 		assertTrue(SysData.getInstance().removeQuestion(question));
 		assertFalse(SysData.getInstance().removeQuestion(q3));
 		
