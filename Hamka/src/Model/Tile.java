@@ -2,6 +2,7 @@ package Model;
 
 import java.awt.Color;
 
+
 public class Tile {
 	private int value;
 	private java.awt.Color color;

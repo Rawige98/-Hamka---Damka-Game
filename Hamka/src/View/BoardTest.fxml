@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="799.0" prefWidth="798.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="View.BoardController">
+   <children>
+      <GridPane fx:id="board" prefHeight="799.0" prefWidth="879.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane fx:id="tile20" layoutX="118.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="2" />
+            <Pane fx:id="tile00" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" />
+            <Pane fx:id="tile10" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="1">
+               <children>
+                  <Circle fx:id="p1_1" fill="#e40606" layoutX="55.0" layoutY="50.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile40" layoutX="334.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" />
+            <Pane fx:id="tile50" layoutX="442.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="5">
+               <children>
+                  <Circle fx:id="p1_3" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile30" layoutX="226.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="3">
+               <children>
+                  <Circle fx:id="leavingCircle" fill="DODGERBLUE" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: yellow;" />
+                  <Circle fx:id="p1_2" fill="#e40606" layoutX="50.0" layoutY="50.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile60" layoutX="550.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="6" />
+            <Pane fx:id="tile70" layoutX="658.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="7">
+               <children>
+                  <Circle fx:id="p1_4" fill="#e40606" layoutX="48.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile01" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.rowIndex="1">
+               <children>
+                  <Circle fx:id="p1_5" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile11" layoutX="10.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Pane fx:id="tile21" layoutX="118.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <Circle fx:id="p1_6" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile31" layoutX="226.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Pane fx:id="tile41" layoutX="334.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="4" GridPane.rowIndex="1">
+               <children>
+                  <Circle fx:id="p1_7" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile51" layoutX="442.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Pane fx:id="tile61" layoutX="550.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="6" GridPane.rowIndex="1">
+               <children>
+                  <Circle fx:id="p1_8" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile71" layoutX="658.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <Pane fx:id="tile02" layoutX="766.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.rowIndex="2" />
+            <Pane fx:id="tile12" layoutX="10.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Circle fx:id="p1_9" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile22" layoutX="118.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Pane fx:id="tile32" layoutX="226.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <children>
+                  <Circle fx:id="p1_10" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile42" layoutX="334.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Pane fx:id="tile52" layoutX="442.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="5" GridPane.rowIndex="2">
+               <children>
+                  <Circle fx:id="p1_11" fill="#e40606" layoutX="55.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile62" layoutX="550.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Pane fx:id="tile72" layoutX="658.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="7" GridPane.rowIndex="2">
+               <children>
+                  <Circle fx:id="p1_12" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: magenta;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile03" layoutX="766.0" layoutY="168.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.rowIndex="3" />
+            <Pane fx:id="tile13" layoutX="10.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Pane fx:id="tile23" layoutX="118.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Pane fx:id="tile33" layoutX="226.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Pane fx:id="tile43" layoutX="334.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Pane fx:id="tile53" layoutX="442.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Pane fx:id="tile63" layoutX="550.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <Pane fx:id="tile73" layoutX="658.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+            <Pane fx:id="tile04" layoutX="766.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.rowIndex="4" />
+            <Pane fx:id="tile14" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Pane fx:id="tile24" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Pane fx:id="tile34" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Pane fx:id="tile44" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Pane fx:id="tile54" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <Pane fx:id="tile64" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+            <Pane fx:id="tile74" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+            <Pane fx:id="tile05" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.rowIndex="5">
+               <children>
+                  <Circle fx:id="p2_9" fill="#e40606" layoutX="50.0" layoutY="48.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile15" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Pane fx:id="tile35" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Pane fx:id="tile25" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <children>
+                  <Circle fx:id="p2_10" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile55" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <Pane fx:id="tile45" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="4" GridPane.rowIndex="5">
+               <children>
+                  <Circle fx:id="s211" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile75" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+            <Pane fx:id="tile65" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="6" GridPane.rowIndex="5">
+               <children>
+                  <Circle fx:id="s212" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile16" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <children>
+                  <Circle fx:id="p2_5" fill="#e40606" layoutX="51.0" layoutY="48.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile06" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.rowIndex="6" />
+            <Pane fx:id="tile36" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="3" GridPane.rowIndex="6">
+               <children>
+                  <Circle fx:id="p2_6" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile26" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Pane fx:id="tile56" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="5" GridPane.rowIndex="6">
+               <children>
+                  <Circle fx:id="p2_7" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile46" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+            <Pane fx:id="tile76" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="7" GridPane.rowIndex="6">
+               <children>
+                  <Circle fx:id="p2_8" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile66" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+            <Pane fx:id="tile07" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.rowIndex="7">
+               <children>
+                  <Circle fx:id="p2_1" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile17" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Pane fx:id="tile37" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <Pane fx:id="tile27" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="2" GridPane.rowIndex="7">
+               <children>
+                  <Circle fx:id="p2_2" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile47" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="4" GridPane.rowIndex="7">
+               <children>
+                  <Circle fx:id="p2_3" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile57" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <Pane fx:id="tile67" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnIndex="6" GridPane.rowIndex="7">
+               <children>
+                  <Circle fx:id="p2_4" fill="#e40606" layoutX="50.0" layoutY="50.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: cyan;" />
+               </children>
+            </Pane>
+            <Pane fx:id="tile77" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
