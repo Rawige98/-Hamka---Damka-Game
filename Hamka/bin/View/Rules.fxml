@@ -2,71 +2,229 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>  
 
-<AnchorPane prefHeight="504.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainPageController">
+<AnchorPane prefHeight="442.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.RulesController">
    <children>
-      <ImageView fitHeight="508.0" fitWidth="683.0" layoutX="-3.0" pickOnBounds="true">
+      <ImageView fitHeight="456.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/blue.jpg" />
+            <Image url="@../images/bigstock-Game-Of-Checkers-Played-On-A-B-372228700.jpg" />
          </image>
-         <effect>
-            <Glow />
-         </effect>
       </ImageView>
-      <Label layoutX="162.0" layoutY="33.0" text="HAMKA instructions" textFill="#cd4f06">
+      <AnchorPane fx:id="viewPane" layoutX="51.0" layoutY="18.0" prefHeight="416.0" prefWidth="520.0" style="-fx-background-color: rgb(255, 255, 255,0.9); -fx-background-radius: 20;" visible="false">
+         <children>
+            <ImageView fitHeight="142.0" fitWidth="177.0" layoutX="14.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/158px-Column_draughts_game.gif" />
+               </image>
+            </ImageView>
+            <Text layoutX="16.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Each player in turn moves a soldier-game diagonally from one black square to a free and adjacent black square in the direction of the opponent " wrappingWidth="150.36331176757812">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Label layoutX="22.0" layoutY="14.0" prefHeight="32.0" prefWidth="140.0" text="OverView">
+               <font>
+                  <Font name="Forte" size="30.0" />
+               </font>
+            </Label>
+            <Text layoutX="162.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Each player starts with 12 soldiers." wrappingWidth="134.66670735677076">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Text layoutX="11.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Eating an opponent's soldier is done when an opponent  soldier is placed in a square next to the player soldier, and beyond the opponent's soldier there is a free square so that you can skip over the opponent's soldier and &quot;eat&quot; him." wrappingWidth="285.3332824707031">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="90.0" fitWidth="86.0" layoutX="146.0" layoutY="263.0" pickOnBounds="true" preserveRatio="true" rotate="-26.6">
+               <image>
+                  <Image url="@../images/arrow-e1497300050765.png" />
+               </image>
+            </ImageView>
+            <Separator layoutX="162.0" layoutY="14.0" orientation="VERTICAL" prefHeight="167.0" prefWidth="7.0" />
+            <Text layoutX="174.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- A soldier who is &quot;eaten&quot; leaves the game and gives points to the opponent." wrappingWidth="172.45118713378906">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="35.0" fitWidth="209.0" layoutX="174.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/kissclipart-board-games-clip-art-clipart-chess-board-game-clip-16e02ae5772a7032.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="346.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- If it is possible to perform an &quot;eating&quot; operation - it must be performed, if the soldier who could have performed it was not &quot;burned&quot; and left the game." wrappingWidth="161.69662475585938">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Separator layoutX="331.0" layoutY="4.0" orientation="VERTICAL" prefHeight="89.0" prefWidth="7.0" />
+            <ImageView fitHeight="69.0" fitWidth="67.0" layoutX="298.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" rotate="56.3">
+               <image>
+                  <Image url="@../images/arrow-e1497300050765.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="168.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- When a soldier reaches the last row and is stopped there, he becomes a &quot;queen&quot;." wrappingWidth="256.33334350585926">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Separator layoutX="14.0" layoutY="181.0" prefHeight="7.0" prefWidth="422.0" />
+            <ImageView fitHeight="55.0" fitWidth="57.0" layoutX="427.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/boardgames-checkers-crown-draughts-games-monopoly-icon-draughts-png-512_512.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="46.0" fitWidth="48.0" layoutX="464.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true" rotate="-43.0">
+               <image>
+                  <Image url="@../images/arrow-e1497300050765.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="313.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- A queen, unlike a regular soldier, can move diagonally in all directions." wrappingWidth="196.3333282470703">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Separator layoutX="294.0" layoutY="185.0" orientation="VERTICAL" prefHeight="211.0" prefWidth="7.0" />
+            <Text layoutX="313.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- A queen has another special ability and it is a passage through walls." wrappingWidth="196.3333282470703">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Text layoutX="313.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- A queen must perform &quot;eating&quot; only when an opposing soldier is close to her" wrappingWidth="196.3333282470703">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+         </children></AnchorPane>
+      <Button fx:id="score" layoutX="580.0" layoutY="227.0" mnemonicParsing="false" onAction="#OpenscorePane" prefHeight="79.0" prefWidth="77.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="Score">
          <font>
-            <Font name="Berlin Sans FB Bold" size="29.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="202.0" text="- When a piece is captured, it is removed from the board.">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="74.0" prefHeight="76.0" prefWidth="554.0" text="- If a player is able to make a capture, there is no option; the jump must be made. If more than one capture is available, the player is free to choose whichever he or she prefers." wrapText="true">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="15.0" layoutY="225.0" prefHeight="62.0" prefWidth="538.0" text="- When a piece reaches the furthest row from the player who controls that piece, it is crowned and becomes a king. One of the pieces which had been captured is placed on top of the king so that it is twice as high as a single piece." wrapText="true">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="278.0" prefHeight="69.0" prefWidth="554.0" text="- LabKings are limited to moving diagonally but may move both forward and backward. (Remember that single pieces, i.e. non-kings, are always limited to forward moves.)el" wrapText="true">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="15.0" layoutY="130.0" prefHeight="76.0" prefWidth="554.0" text="- Kings may combine jumps in several directions, forward and backward, on the same turn. Single pieces may shift direction diagonally during a multiple capture turn, but must always jump forward (toward the opponent)." wrapText="true">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="15.0" layoutY="324.0" prefHeight="91.0" prefWidth="538.0" text="- A piece making a capturing move (a jump) leaps over one of the opponent's pieces, landing in a straight diagonal line on the other side. Only one piece may be captured in a single jump; however, multiple jumps are allowed during a single turn." wrapText="true">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="16.0" layoutY="402.0" prefHeight="50.0" prefWidth="526.0" text="- Moves are allowed only on the dark squares, so pieces   always move diagonally. Single pieces are always limited to forward moves (toward the opponent)." wrapText="true">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Button fx:id="closeInst" layoutX="539.0" layoutY="443.0" mnemonicParsing="false" onAction="#closeWindowInst" style="-fx-background-radius: 30; -fx-background-color: #6994E1;" text="Close" textFill="#cd4f06">
-         <font>
-            <Font name="Berlin Sans FB Bold" size="17.0" />
+            <Font name="Berlin Sans FB Bold" size="16.0" />
          </font>
       </Button>
-      <ImageView fitHeight="76.0" fitWidth="79.0" layoutX="543.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/icons8-rules-100%20(2).png" />
-         </image>
-      </ImageView>
+      <Button fx:id="square" layoutX="580.0" layoutY="323.0" mnemonicParsing="false" prefHeight="79.0" prefWidth="77.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="Squares">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="overView" layoutX="580.0" layoutY="27.0" mnemonicParsing="false" onAction="#OpenOverView" prefHeight="79.0" prefWidth="77.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="OverView">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="goal" layoutX="580.0" layoutY="127.0" mnemonicParsing="false" onAction="#OpenGoalPane" prefHeight="79.0" prefWidth="77.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="Goal">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="15.0" />
+         </font>
+      </Button>
+      <AnchorPane fx:id="goalPane" layoutX="51.0" layoutY="19.0" prefHeight="416.0" prefWidth="520.0" style="-fx-background-color: rgb(255, 255, 255,0.9); -fx-background-radius: 20;" visible="false">
+         <children>
+            <Label layoutX="22.0" layoutY="22.0" prefHeight="35.0" prefWidth="285.0" text="goal of the game">
+               <font>
+                  <Font name="Forte" size="34.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="89.0" fitWidth="77.0" layoutX="159.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true" rotate="-32.0">
+               <image>
+                  <Image url="@../images/arrow-e1497300050765.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="31.0" fitWidth="215.0" layoutX="15.0" layoutY="321.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/kissclipart-board-games-clip-art-clipart-chess-board-game-clip-16e02ae5772a7032.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="15.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The goal of each player is to remove all the opponent's soldiers from the board (&quot;eat&quot;), or to block them, ie not to allow the opponent to make a move. A player who is left without soldiers or without a possible move is declared a loser." wrappingWidth="346.13673400878906">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="112.0" fitWidth="116.0" layoutX="22.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/black.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="115.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/boardgames-checkers-crown-draughts-games-monopoly-icon-draughts-png-512_512.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="140.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The game ends when one of the players has no more soldiers on the board." wrappingWidth="115.74990307521398">
+               <font>
+                  <Font name="Berlin Sans FB" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="277.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The winning player is the player with the most points and not the player who won the checkers game itself." wrappingWidth="218.66659545898438">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="24.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player1-black : 100  player2-white : 110" wrappingWidth="106.46943960126902">
+               <font>
+                  <Font name="Berlin Sans FB" size="13.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="167.0" fitWidth="150.0" layoutX="162.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" rotate="-149.5">
+               <image>
+                  <Image url="@../images/815caba52b04849b0d6d2e46249b53a1.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="260.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player2 won the game." wrappingWidth="93.41542300771039">
+               <font>
+                  <Font name="Berlin Sans FB" size="12.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <Button layoutX="9.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="35.0" prefWidth="41.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="back" />
+      <AnchorPane fx:id="scorePane" layoutX="51.0" layoutY="16.0" prefHeight="416.0" prefWidth="520.0" style="-fx-background-color: rgb(255, 255, 255,0.9); -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="48.0" layoutY="14.0" prefHeight="53.0" prefWidth="150.0" text="Score">
+               <font>
+                  <Font name="Forte" size="35.0" />
+               </font>
+            </Label>
+            <Text layoutX="54.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Each player starts with 0 points, and can accumulate more points along the way." wrappingWidth="196.3333282470703">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="57.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If a player's turn lasts more than a minute until the end of the move, the player will lose one point for every second step." wrappingWidth="231.70509338378906">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="132.0" fitWidth="150.0" layoutX="305.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/clock-clipart-animated-gif-14.gif" />
+               </image>
+            </ImageView>
+            <Text layoutX="54.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If he finishes his turn in less than a minute, he will earn points according to the time he saved according to the same rule of point per second." wrappingWidth="285.33333333333337">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font></Text>
+            <ImageView fitHeight="56.0" fitWidth="55.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/minus-138-459260.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="46.0" fitWidth="41.0" layoutX="7.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/new+plus+icon-1320196808672578110.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="57.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eating an opponent's soldier earns an additional 100 points." wrappingWidth="212.00000762939453">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

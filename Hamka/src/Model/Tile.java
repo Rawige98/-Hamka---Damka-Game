@@ -67,7 +67,7 @@ public class Tile {
 	/**
 	 * in this method we upgrade the soldier to queen
 	 * 
-	 * @param Tile T
+	 * @param TileView T
 	 * @return true if the soldier upgraded successfully
 	 */
 	public boolean upgradeToQueen() {

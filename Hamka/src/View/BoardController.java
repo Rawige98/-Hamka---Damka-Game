@@ -1,9 +1,7 @@
 package View;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,383 +9,293 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.scene.layout.GridPane;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import javafx.scene.Node;
-import javafx.scene.effect.InnerShadow;
-import javafx.scene.input.MouseEvent;
 
+public class BoardController {
 
-public class BoardController implements Initializable  {
-	
-	
 	private final Logger log = Logger.getLogger("BoardController");
+	private final List<Pane> panes = new ArrayList<>();
 
 	
     @FXML
-    private Circle p1_1;
+    private Rectangle t1_7;
 
     @FXML
-    private Pane tile20;
+    private Rectangle t3_5;
 
     @FXML
-    private Pane tile64;
+    private Rectangle t5_3;
 
     @FXML
-    private Pane tile21;
+    private Rectangle t7_1;
 
     @FXML
-    private Pane tile65;
+    private Rectangle t1_6;
 
     @FXML
-    private Pane tile22;
+    private Rectangle t3_4;
 
     @FXML
-    private Pane tile66;
+    private Rectangle t5_2;
 
     @FXML
-    private Pane tile23;
+    private Rectangle t7_0;
 
-    @FXML
-    private Pane tile67;
-
-    @FXML
-    private Pane tile60;
-
-    @FXML
-    private Circle p1_5;
-
-    @FXML
-    private Circle p1_4;
-
-    @FXML
-    private Pane tile61;
-
-    @FXML
-    private Circle p1_3;
-
-    @FXML
-    private Pane tile62;
-
-    @FXML
-    private Circle p1_2;
-
-    @FXML
-    private Pane tile63;
-
-    @FXML
-    private Circle p1_9;
-
-    @FXML
-    private Circle p1_8;
-
-    @FXML
-    private Circle p1_7;
-
-    @FXML
-    private Circle p1_6;
-
-    @FXML
-    private Circle p1_10;
-
-    @FXML
-    private Pane tile24;
-
-    @FXML
-    private Pane tile25;
-
-    @FXML
-    private Circle p1_12;
-
-    @FXML
-    private Pane tile26;
-
-    @FXML
-    private Circle p1_11;
-
-    @FXML
-    private Pane tile27;
-
-    @FXML
-    private Pane tile53;
-
-    @FXML
-    private Pane tile10;
-
-    @FXML
-    private Pane tile54;
-
-    @FXML
-    private Pane tile11;
-
-    @FXML
-    private Pane tile55;
-
-    @FXML
-    private Pane tile12;
-
-    @FXML
-    private Pane tile56;
-
-    @FXML
-    private Pane tile50;
-
-    @FXML
-    private Pane tile51;
-
-    @FXML
-    private Pane tile52;
-
-    @FXML
-    private Pane tile17;
-
-    @FXML
-    private Pane tile13;
-
-    @FXML
-    private Pane tile57;
-
-    @FXML
-    private Pane tile14;
-
-    @FXML
-    private Pane tile15;
-
-    @FXML
-    private Pane tile16;
-
-    @FXML
-    private Pane tile42;
-
-    @FXML
-    private Pane tile43;
-
-    @FXML
-    private Pane tile00;
-
-    @FXML
-    private Pane tile44;
-
-    @FXML
-    private Pane tile01;
-
-    @FXML
-    private Pane tile45;
-
-    @FXML
-    private Circle p2_4;
-
-    @FXML
-    private Circle p2_3;
-
-    @FXML
-    private Pane tile40;
-
-    @FXML
-    private Circle p2_2;
-
-    @FXML
-    private Pane tile41;
-
-    @FXML
-    private Circle p2_1;
-
-    @FXML
-    private Circle p2_8;
-
-    @FXML
-    private Circle p2_7;
-
-    @FXML
-    private Circle p2_6;
-
-    @FXML
-    private Circle p2_5;
-
-    @FXML
-    private Circle p2_9;
-
-    @FXML
-    private Pane tile06;
-
-    @FXML
-    private Pane tile07;
-
-    @FXML
-    private Pane tile02;
-
-    @FXML
-    private Pane tile46;
-
-    @FXML
-    private Pane tile03;
-
-    @FXML
-    private Pane tile47;
-
-    @FXML
-    private Pane tile04;
-
-    @FXML
-    private Pane tile05;
-
-    @FXML
-    private Pane tile31;
-
-    @FXML
-    private Pane tile75;
-
-    @FXML
-    private Pane tile32;
-
-    @FXML
-    private Pane tile76;
-
-    @FXML
-    private Pane tile33;
-
-    @FXML
-    private Pane tile77;
-
-    @FXML
-    private Pane tile34;
-
-    @FXML
-    private Pane tile71;
-
-    @FXML
-    private Pane tile72;
-
-    @FXML
-    private Pane tile73;
-
-    @FXML
-    private Pane tile30;
-
-    @FXML
-    private Pane tile74;
-
-    @FXML
-    private Pane tile70;
-
-    @FXML
-    private Pane tile35;
-
-    @FXML
-    private Circle p2_12;
-
-    @FXML
-    private Pane tile36;
-
-    @FXML
-    private GridPane board;
-
-    @FXML
-    private Circle p2_10;
-
-    @FXML
-    private Pane tile37;
-
-    @FXML
-    private Circle p2_11;
-    
     @FXML
     private Circle leavingCircle;
 
+    @FXML
+    private Rectangle t3_7;
+
+    @FXML
+    private Rectangle t5_5;
+
+    @FXML
+    private Rectangle t7_3;
+
+    @FXML
+    private Rectangle t3_6;
+
+    @FXML
+    private Rectangle t5_4;
+
+    @FXML
+    private Rectangle t7_2;
+
+    @FXML
+    private Rectangle t1_3;
+
+    @FXML
+    private Rectangle t3_1;
+
+    @FXML
+    private Rectangle t1_2;
+
+    @FXML
+    private Rectangle t3_0;
+
+    @FXML
+    private Rectangle t1_5;
+
+    @FXML
+    private Rectangle t3_3;
+
+    @FXML
+    private Rectangle t5_1;
+
+    @FXML
+    private Rectangle t1_4;
+
+    @FXML
+    private Rectangle t3_2;
+
+    @FXML
+    private Rectangle t5_0;
+
+    @FXML
+    private Rectangle t5_7;
+
+    @FXML
+    private Rectangle t7_5;
+
+    @FXML
+    private Rectangle t5_6;
+
+    @FXML
+    private Rectangle t7_4;
+
+    @FXML
+    private Rectangle t7_7;
+
+    @FXML
+    private Rectangle t7_6;
+
+    @FXML
+    private Rectangle t1_1;
+
+    @FXML
+    private Rectangle t1_0;
+
+    @FXML
+    private Pane row1;
+
+    @FXML
+    private Pane row0;
+
+    @FXML
+    private Pane row7;
+
+    @FXML
+    private Pane row6;
+
+    @FXML
+    private Pane row3;
+
+    @FXML
+    private Pane row2;
+
+    @FXML
+    private Pane row5;
+
+    @FXML
+    private Pane row4;
+
+    @FXML
+    private Circle circle;
+
+    @FXML
+    private Rectangle t2_6;
+
+    @FXML
+    private Rectangle t4_4;
+
+    @FXML
+    private Rectangle t6_2;
+
+    @FXML
+    private Rectangle t0_7;
+
+    @FXML
+    private Rectangle t2_5;
+
+    @FXML
+    private Rectangle t4_3;
+
+    @FXML
+    private Rectangle t6_1;
+
+    @FXML
+    private Rectangle t4_6;
+
+    @FXML
+    private Rectangle t6_4;
+
+    @FXML
+    private Rectangle t2_7;
+
+    @FXML
+    private Rectangle t4_5;
+
+    @FXML
+    private Rectangle t6_3;
+
+    @FXML
+    private Rectangle t0_4;
+
+    @FXML
+    private Rectangle t2_2;
+
+    @FXML
+    private Rectangle t4_0;
+
+    @FXML
+    private Rectangle t0_3;
+
+    @FXML
+    private Rectangle t2_1;
+
+    @FXML
+    private Rectangle t0_6;
+
+    @FXML
+    private Rectangle t2_4;
+
+    @FXML
+    private Rectangle t4_2;
+
+    @FXML
+    private Rectangle t6_0;
+
+    @FXML
+    private Rectangle t0_5;
+
+    @FXML
+    private Rectangle t2_3;
+
+    @FXML
+    private Rectangle t4_1;
+
+    @FXML
+    private Rectangle t6_6;
+
+    @FXML
+    private Rectangle t4_7;
+
+    @FXML
+    private Rectangle t6_5;
+
+    @FXML
+    private Rectangle t6_7;
+
+    @FXML
+    private Rectangle t0_0;
+
+    @FXML
+    private Rectangle t0_2;
+
+    @FXML
+    private Rectangle t2_0;
+
+    @FXML
+    private Rectangle t0_1;
+
+    @FXML
+    private Group rectangleGroup;
     
-	private final InnerShadow shadow = new InnerShadow();
+    @FXML
+    private Pane boardPane;
+    
     private Point2D offset = new Point2D(0.0d, 0.0d);
 	private boolean movingPiece = false;
-	private final List<Pane> panes = new ArrayList<>();
-	private Pane currPane;
 
-    
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		
-		
-		
-		board.addEventFilter(MouseEvent.MOUSE_EXITED, this::leaveBoard);
-		board.addEventFilter(MouseEvent.MOUSE_RELEASED, this::checkReleaseOutOfBoard);
-		
-	}
-	
-	
-	
-	public void checkReleaseOutOfBoard(MouseEvent evt) { 
-		Point2D mousePoint_s = new Point2D(evt.getSceneX(), evt.getSceneY());
-		if( !inBoard(mousePoint_s) ) {
-			leaveBoard(evt);
-			evt.consume();
-		}
-	}
-
-	
-	public void leaveBoard(MouseEvent evt) {
-		if( movingPiece ) {
-			
-			final Timeline timeline = new Timeline();
-
-			offset = new Point2D(0.0d, 0.0d);
-			movingPiece = false;
-
-			timeline.getKeyFrames().add(
-					new KeyFrame(Duration.millis(200), 
-							new KeyValue(p1_2.layoutXProperty(), leavingCircle.getLayoutX()),
-							new KeyValue(p1_2.layoutYProperty(), leavingCircle.getLayoutY()),
-							new KeyValue(p1_2.opacityProperty(), 1.0d),
-							new KeyValue(leavingCircle.opacityProperty(), 0.0d)
-							)
-					);
-			timeline.play();			
-		}
-	}
-	
-	@FXML
-	public void startMovingPiece(MouseEvent evt) { 
-		p1_1.setOpacity(0.4d);
-		offset = new Point2D(evt.getX(), evt.getY());
-
-		leavingCircle.setOpacity(1.0d);		
-		leavingCircle.setLayoutX( p1_2.getLayoutX() );
-		leavingCircle.setLayoutY( p1_2.getLayoutY() );
-		
-		movingPiece = true;
-	}
-	
-	
-	@FXML
-	public void movePiece(MouseEvent evt) {		
-		
-		Point2D mousePoint = new Point2D(evt.getX(), evt.getY());		
+    @FXML
+    public void movePiece(MouseEvent evt) {
+    	Point2D mousePoint = new Point2D(evt.getX(), evt.getY());		
 		Point2D mousePoint_s = new Point2D(evt.getSceneX(), evt.getSceneY());
 		
 		if( !inBoard(mousePoint_s) ) {
 			return;  // don't relocate() b/c will resize Pane
 		}
 		
-		Point2D mousePoint_p = p1_2.localToParent(mousePoint);		
-		p1_2.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
-	}
+		Point2D mousePoint_p = circle.localToParent(mousePoint);		
+		circle.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
+    }
 
-	
-	
-	@FXML
-	public void finishMovingPiece(MouseEvent evt) {
+    private boolean inBoard(Point2D pt) {	
+		Point2D panePt = boardPane.sceneToLocal(pt);
+		return panePt.getX()-offset.getX() >= 0.0d 
+				&& panePt.getY()-offset.getY() >= 0.0d 
+				&& panePt.getX() <= boardPane.getWidth() 
+				&& panePt.getY() <= boardPane.getHeight();
+	}
+    
+    @FXML
+    public void startMovingPiece(MouseEvent evt) {
+    	circle.setOpacity(0.4d);
+		offset = new Point2D(evt.getX(), evt.getY());
+
+		leavingCircle.setOpacity(1.0d);		
+		leavingCircle.setLayoutX( circle.getLayoutX() );
+		leavingCircle.setLayoutY( circle.getLayoutY() );
 		
+		movingPiece = true;
+    }
+
+    @FXML
+    public void finishMovingPiece(MouseEvent evt) {
 		offset = new Point2D(0.0d, 0.0d);
 		
 		Point2D mousePoint = new Point2D(evt.getX(), evt.getY());
-		Point2D mousePointScene = p1_2.localToScene(mousePoint);
+		Point2D mousePointScene = circle.localToScene(mousePoint);
 		
-		Pane r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() );
+		Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() );
 
 		final Timeline timeline = new Timeline();
 		timeline.setCycleCount(1);
@@ -398,14 +306,14 @@ public class BoardController implements Initializable  {
 				log.fine("[FINISH] r=" + r.getId());
 			}
 			
-			Point2D rectScene =r.localToScene(r.getLayoutX(), r.getLayoutY());			
-			Point2D parent = board.sceneToLocal(rectScene.getX(), rectScene.getY());
+			Point2D rectScene =r.localToScene(r.getX(), r.getY());			
+			Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
 			
 			timeline.getKeyFrames().add(
 					new KeyFrame(Duration.millis(100), 
-							new KeyValue(p1_2.layoutXProperty(), parent.getX()),
-							new KeyValue(p1_2.layoutYProperty(), parent.getY()),
-							new KeyValue(p1_2.opacityProperty(), 1.0d),
+							new KeyValue(circle.layoutXProperty(), parent.getX()),
+							new KeyValue(circle.layoutYProperty(), parent.getY()),
+							new KeyValue(circle.opacityProperty(), 1.0d),
 							new KeyValue(leavingCircle.opacityProperty(), 0.0d)
 							)
 					);
@@ -414,7 +322,7 @@ public class BoardController implements Initializable  {
 
 			timeline.getKeyFrames().add(
 					new KeyFrame(Duration.millis(100), 
-							new KeyValue(p1_2.opacityProperty(), 1.0d),
+							new KeyValue(circle.opacityProperty(), 1.0d),
 							new KeyValue(leavingCircle.opacityProperty(), 0.0d)
 							)
 					);
@@ -423,60 +331,14 @@ public class BoardController implements Initializable  {
 		timeline.play();
 			
 		movingPiece = false;
-	}
+    }
 
-	public void mouseMoved(MouseEvent evt) {
-
-		Pane p = pickPane(evt);	
-		
-		if( p == null ) {
-
-			if( currPane != null ) {
-				// deselect previous
-				currPane.setEffect( null );
-			}
-
-			currPane = null;
-			return;  // might be out of area but w/i scene
-		}
-		
-		if( p != currPane ) {
-			
-			if( currPane != null ) {
-				// deselect previous
-				currPane.setEffect( null );
-			}
-			
-			currPane = p;
-
-			if( log.isLoggable( Level.FINE ) ) {
-				log.fine("[MOVED] in " + currPane.getId());
-			}
-
-			if( currPane != null ) {  // new selection
-				currPane.setEffect( shadow );
-			}
-		}
-	}
-
-	
-	
-	
-	private boolean inBoard(Point2D pt) {	
-		Point2D panePt = board.sceneToLocal(pt);
-		return panePt.getX()-offset.getX() >= 0.0d 
-				&& panePt.getY()-offset.getY() >= 0.0d 
-				&& panePt.getX() <= board.getWidth() 
-				&& panePt.getY() <= board.getHeight();
-	}
-	
-	
-	private Pane pickPane(MouseEvent evt) {
+    private Rectangle pickRectangle(MouseEvent evt) {
 		return pickRectangle(evt.getSceneX(), evt.getSceneY());
 	}
 	
-	private Pane pickRectangle(double sceneX, double sceneY) {
-		Pane pickedRectangle = null;
+	private Rectangle pickRectangle(double sceneX, double sceneY) {
+		Rectangle pickedRectangle = null;
 		for( Pane row : panes ) {
 			
 			//
@@ -500,7 +362,7 @@ public class BoardController implements Initializable  {
 						if( log.isLoggable(Level.FINEST) ) {
 							log.finest("[PICK] selected cell=" + cell.getId());
 						}
-						pickedRectangle = (Pane)cell;
+						pickedRectangle = (Rectangle)cell;
 						break;
 					}
 				}				
@@ -509,7 +371,6 @@ public class BoardController implements Initializable  {
 		}
 		return pickedRectangle;
 	}
-	
-	
-	
+
+    
 }
