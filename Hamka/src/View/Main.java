@@ -29,7 +29,7 @@ public class Main extends Application {
 		window = primaryStage;
 
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/View/BoardTest.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
 			Scene scene = new Scene(root, 581, 449);
 			window.setScene(scene);
 			window.setTitle("Hamka game");
