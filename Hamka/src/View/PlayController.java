@@ -4,7 +4,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controller.MainPageController;
+import Controller.PlayGameController;
 import Model.Game;
+import Model.Tile;
 import Model.TimeForPlayer;
 import Utils.Consts;
 import Utils.MoveResult;
@@ -58,6 +60,8 @@ public class PlayController implements Initializable {
 	private Group tileGroup;
 	private Group pieceGroup;
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
+	
+	private Game game;
 
 	@FXML
 	void closeWindow(ActionEvent event) {
@@ -78,32 +82,34 @@ public class PlayController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		player1.setText(MainPageController.getPlayer1().getUsername());
-		player2.setText(MainPageController.getPlayer2().getUsername());	
+		player2.setText(MainPageController.getPlayer2().getUsername());
 		point1.setText(Integer.toString(MainPageController.getPlayer1().getScore()));
-		point2.setText(Integer.toString(MainPageController.getPlayer2().getScore()));	
+		point2.setText(Integer.toString(MainPageController.getPlayer2().getScore()));
 		tileGroup = new Group();
 		pieceGroup = new Group();
-		rootBorderPane.setCenter(createBoardView());		
+		rootBorderPane.setCenter(createBoardView());
+
+		PlayGameController.getInstance();
 	}
 
-	public Pane createBoardView() {		
+	public Pane createBoardView() {
 		boardPane = new Pane();
-		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE , Consts.ROWS * Consts.TILE_SIZE);
+		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
 		boardPane.getChildren().addAll(tileGroup, pieceGroup);
-		for(int y=0 ; y<Consts.ROWS ; y++) {
-			for(int x=0 ; x<Consts.COLS ;x++) {
-				TileView tileView = new TileView((x+y)%2 == 0, x, y);
+		for (int y = 0; y < Consts.ROWS; y++) {
+			for (int x = 0; x < Consts.COLS; x++) {
+				TileView tileView = new TileView((x + y) % 2 == 0, x, y);
 				boardView[x][y] = tileView;
 				tileGroup.getChildren().add(tileView);
 
 				Piece piece = null;
-				if(y <= 2 && (x+y)%2 != 0) {
+				if (y <= 2 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.RED, x, y);
 				}
-				if(y >= 5 && (x+y)%2 != 0) {
+				if (y >= 5 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.BLUE, x, y);
 				}
-				if(piece != null) {
+				if (piece != null) {
 					tileView.setPiece(piece);
 					pieceGroup.getChildren().add(piece);
 				}
@@ -112,7 +118,7 @@ public class PlayController implements Initializable {
 		return boardPane;
 	}
 
-	private Piece makePiece(PieceType type , int x, int y) {
+	private Piece makePiece(PieceType type, int x, int y) {
 		Piece piece = new Piece(type, x, y, "b.jpg");
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
@@ -151,10 +157,11 @@ public class PlayController implements Initializable {
 	}
 
 	private MoveResult tryMove(Piece piece, int newX, int newY) {
-		if (newX < 0 || newY < 0|| newX >= Consts.ROWS || newY >= Consts.COLS)
+
+		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
 			return new MoveResult(MoveType.NONE);
 
-		if( boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
+		if (boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
 			return new MoveResult(MoveType.NONE);
 		}
 
@@ -176,7 +183,43 @@ public class PlayController implements Initializable {
 		return new MoveResult(MoveType.NONE);
 	}
 
+	
+	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
+		
+		boolean move;
+		Tile currentTile;
+		Tile nextTile;
+		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
+			return new MoveResult(MoveType.NONE);
+		
+		int oldX = toBoard(piece.getOldX());
+		int oldY = toBoard(piece.getOldY());
+		
+	//	game=PlayGameController.getInstance().getGame();
+		currentTile= game.getBoard().getTile(oldX, oldY);
+
+		move=game.move(oldX, oldY, newX, newY);
+		
+		if (Math.abs(newX - oldX) == 1 && newY - oldY == piece.getPieceType().moveDir) {
+			return new MoveResult(MoveType.NORMAL);
+		} else if (Math.abs(newX - oldX) == 2 && newY - oldY == piece.getPieceType().moveDir * 2) {
+
+			int x1 = oldX + (newX - oldX) / 2;
+			int y1 = oldY + (newY - oldY) / 2;
+
+			if(game.getBoard().validateIDs(true, oldX, oldY, newX, newY, false))
+				return new MoveResult(MoveType.KILL, boardView[x1][y1].getPiece());
+			
+			}
+		
+
+		return new MoveResult(MoveType.NONE);
+	
+		
+	}
+	
+	
 	private int toBoard(double pixel) {
-		return (int)(pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
+		return (int) (pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
 	}
 }
