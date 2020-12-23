@@ -129,7 +129,7 @@ public class PlayController implements Initializable {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
 
-			MoveResult moveResult = tryMoveTest(piece, newX, newY);
+			MoveResult moveResult = tryMove(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
