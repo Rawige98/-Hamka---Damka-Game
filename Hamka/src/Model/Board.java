@@ -13,7 +13,7 @@ public class Board {
 	private Tile[][] myBoard;
 
 	public Board() {
-		setMyBoard(new Tile[8][8]);
+		setMyBoard(new Tile[Consts.ROWS][Consts.COLS]);
 		initBoard();
 	}
 
@@ -29,8 +29,8 @@ public class Board {
 	 * Initialize the game board to start the game
 	 */
 	public void initBoard() {
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
+		for (int i = 0; i < Consts.ROWS; i++) {
+			for (int j = 0; j < Consts.COLS; j++) {
 				if (toIndex(i, j) >= 0 && toIndex(i, j) <= 11) {
 					myBoard[j][i] = new Tile(2, Color.black, j, i);
 
@@ -75,7 +75,7 @@ public class Board {
 	 */
 	public static boolean isValidPoint(int x, int y) {
 		// Check that it is on the board
-		if (x < 0 || x > 7 || y < 0 || y > 7) {
+		if (x < 0 || x > Consts.COLS -1 || y < 0 || y > Consts.COLS -1) {
 			return false;
 		}
 
