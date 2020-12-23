@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="288.0" prefWidth="663.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.HistoryControl">
+   <children>
+      <AnchorPane prefHeight="329.0" prefWidth="679.0">
+         <children>
+            <ImageView fitHeight="329.0" fitWidth="680.0" layoutX="-1.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../images/history.PNG" />
+               </image>
+            </ImageView>
+            <ListView fx:id="HistoryList" layoutX="91.0" layoutY="67.0" onMouseClicked="#showSelected" opacity="0.7" prefHeight="237.0" prefWidth="508.0" />
+            <Label layoutX="259.0" layoutY="14.0" prefHeight="35.0" prefWidth="178.0" text="History Scoreboard" textFill="WHITE">
+               <font>
+                  <Font name="Aharoni Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -31,7 +31,7 @@ public class SysData {
 	private ArrayList<Game> pausedGames;
 	private ArrayList<String> rules;
 
-	private String gameJsonPath = "src/JSON/game_json.txt";
+	private String gameJsonPath = "src/JSON/finishedGames_json.txt";
 
 	private String quesJsonPath = "src/JSON/question_json.txt"; // .txt
 	private String originalPath = quesJsonPath;

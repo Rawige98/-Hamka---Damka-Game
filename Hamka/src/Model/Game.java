@@ -442,7 +442,7 @@ public class Game {
 	@Override
 	public String toString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
-				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "\n" + board;
+				+ ", winner=" + winner + ", gameDuration=" + gameDuration;
 	}
 
 	public String briefToString() {

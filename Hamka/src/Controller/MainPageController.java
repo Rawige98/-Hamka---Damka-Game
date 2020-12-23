@@ -1,5 +1,6 @@
 package Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -135,7 +136,7 @@ public class MainPageController implements Initializable {
 		history.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
 
 	}
-
+	@FXML
 	public void Admin(ActionEvent event) throws Exception {
 		closeWindow();
 		Stage primaryStage = new Stage();
@@ -145,7 +146,7 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("login");
 		primaryStage.show();
 	}
-
+	@FXML
 	public void Play(ActionEvent event) throws Exception {
 		isSoundOn=false;
 		closeWindow();
@@ -156,7 +157,7 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("enter nick Name");
 		primaryStage.show();
 	}
-
+	@FXML
 	public void Rules(ActionEvent event) throws Exception {
 		isSoundOn=false;
 		closeWindow();
@@ -167,6 +168,16 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("RULES");
 		primaryStage.show();
 	}
+    @FXML
+    void History(ActionEvent event) throws IOException {
+		closeWindow();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/History.fxml"));
+		Scene scene = new Scene(root, 680,333);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("History");
+		primaryStage.show();
+    }
 
 	@FXML
 	void soundClicked(MouseEvent event) {
