@@ -26,43 +26,45 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class PlayController implements Initializable {
-	
-    @FXML
-    private Circle player1image;
 
-    @FXML
-    private Label player1;
+	@FXML
+	private Circle player1image;
 
-    @FXML
-    private Circle player2image;
+	@FXML
+	private Label player1;
 
-    @FXML
-    private Label player2;
-    @FXML
-    private Label point1;
+	@FXML
+	private Circle player2image;
 
-    @FXML
-    private Label playerTimer;
-    @FXML
-    private Label point2;
-    
-    @FXML
-    public static Pane boardPane;
-    
-    @FXML
-    private AnchorPane rootPane;
-    
-    @FXML
-    private BorderPane rootBorderPane;
-    
-    private Group tileGroup = new Group();
-	private Group pieceGroup = new Group();
+	@FXML
+	private Label player2;
+	@FXML
+	private Label point1;
+
+	@FXML
+	private Label playerTimer;
+	@FXML
+	private Label point2;
+
+	@FXML
+	public static Pane boardPane;
+
+	@FXML
+	private AnchorPane rootPane;
+
+	@FXML
+	private BorderPane rootBorderPane;
+
+	private Group tileGroup;
+	private Group pieceGroup;
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
-    
+
 	@FXML
 	void closeWindow(ActionEvent event) {
 		((Stage) player1.getScene().getWindow()).close();
 	}
+
+	@FXML
 	public void back(ActionEvent event) throws Exception {
 		((Stage) player1.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
@@ -79,12 +81,12 @@ public class PlayController implements Initializable {
 		player2.setText(MainPageController.getPlayer2().getUsername());	
 		point1.setText(Integer.toString(MainPageController.getPlayer1().getScore()));
 		point2.setText(Integer.toString(MainPageController.getPlayer2().getScore()));	
-		rootBorderPane.setCenter(createContent());		
+		tileGroup = new Group();
+		pieceGroup = new Group();
+		rootBorderPane.setCenter(createBoardView());		
 	}
-	
-	public Pane createContent() {
-//		Pane rootPane = new Pane();
-		
+
+	public Pane createBoardView() {		
 		boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE , Consts.ROWS * Consts.TILE_SIZE);
 		boardPane.getChildren().addAll(tileGroup, pieceGroup);
@@ -109,18 +111,18 @@ public class PlayController implements Initializable {
 		}
 		return boardPane;
 	}
-	
+
 	private Piece makePiece(PieceType type , int x, int y) {
 		Piece piece = new Piece(type, x, y, "b.jpg");
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
-			
+
 			MoveResult moveResult = tryMove(piece, newX, newY);
-			
+
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
-			
+
 			switch (moveResult.getType()) {
 			case NONE:
 				piece.aboartMove();
@@ -130,46 +132,49 @@ public class PlayController implements Initializable {
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
 				break;
-				
+
 			case KILL:
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
-				
+
 				Piece otherPiece = moveResult.getPiece();
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
-                pieceGroup.getChildren().remove(otherPiece);
+				pieceGroup.getChildren().remove(otherPiece);
 				break;
 			default:
 				break;
 			}
-			
+
 		});
 		return piece;
 	}
-	
-	 private MoveResult tryMove(Piece piece, int newX, int newY) {
-	        if (boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
-	            return new MoveResult(MoveType.NONE);
-	        }
 
-	        int x0 = toBoard(piece.getOldX());
-	        int y0 = toBoard(piece.getOldY());
+	private MoveResult tryMove(Piece piece, int newX, int newY) {
+		if (newX < 0 || newY < 0|| newX >= Consts.ROWS || newY >= Consts.COLS)
+			return new MoveResult(MoveType.NONE);
 
-	        if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getPieceType().moveDir) {
-	            return new MoveResult(MoveType.NORMAL);
-	        } else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getPieceType().moveDir * 2) {
+		if( boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
+			return new MoveResult(MoveType.NONE);
+		}
 
-	            int x1 = x0 + (newX - x0) / 2;
-	            int y1 = y0 + (newY - y0) / 2;
+		int x0 = toBoard(piece.getOldX());
+		int y0 = toBoard(piece.getOldY());
 
-	            if (boardView[x1][y1].hasPiece() && boardView[x1][y1].getPiece().getPieceType() != piece.getPieceType()) {
-	                return new MoveResult(MoveType.KILL, boardView[x1][y1].getPiece());
-	            }
-	        }
+		if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getPieceType().moveDir) {
+			return new MoveResult(MoveType.NORMAL);
+		} else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getPieceType().moveDir * 2) {
 
-	        return new MoveResult(MoveType.NONE);
-	    }
+			int x1 = x0 + (newX - x0) / 2;
+			int y1 = y0 + (newY - y0) / 2;
+
+			if (boardView[x1][y1].hasPiece() && boardView[x1][y1].getPiece().getPieceType() != piece.getPieceType()) {
+				return new MoveResult(MoveType.KILL, boardView[x1][y1].getPiece());
+			}
+		}
+
+		return new MoveResult(MoveType.NONE);
+	}
 
 	private int toBoard(double pixel) {
 		return (int)(pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
