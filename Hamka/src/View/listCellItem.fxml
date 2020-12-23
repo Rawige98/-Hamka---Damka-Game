@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="hBox" prefHeight="28.0" prefWidth="508.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<children>
+         <ImageView fx:id="fstImg" fitHeight="27.0" fitWidth="32.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" />
+    <Label fx:id="fstPlayer" prefHeight="25.0" prefWidth="84.0">
+            <font>
+               <Font name="Aharoni Bold" size="12.0" />
+            </font></Label>
+         <Separator opacity="0.1" orientation="VERTICAL" prefHeight="32.0" prefWidth="0.0" />
+         <ImageView fx:id="secImg" fitHeight="28.0" fitWidth="30.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" />
+         <Label fx:id="secPlayer" prefHeight="24.0" prefWidth="80.0">
+            <font>
+               <Font name="Aharoni Bold" size="12.0" />
+            </font>
+         </Label>
+         <Separator opacity="0.1" orientation="VERTICAL" prefHeight="26.0" prefWidth="7.0" />
+      <Label fx:id="gameDate" prefHeight="22.0" prefWidth="153.0">
+         <font>
+            <Font name="Aharoni Bold" size="12.0" />
+         </font>
+      </Label>
+      <Separator opacity="0.1" orientation="VERTICAL" prefHeight="200.0" />
+    <Button fx:id="b1" opacity="0.8" prefHeight="18.0" prefWidth="95.0" style="-fx-background-radius: 100; -fx-background-color: #2C8EFF;">
+         <font>
+            <Font name="Georgia Bold" size="12.0" />
+         </font></Button>
+</children>
+</HBox>
