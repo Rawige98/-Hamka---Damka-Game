@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import Utils.Consts;
+import Utils.MoveType;
 
 public class Board {
 	private Tile[][] myBoard;
@@ -96,7 +97,7 @@ public class Board {
 	 * @param yEnd
 	 * @return true if the soldier move successfully
 	 */
-	public boolean move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
+	public MoveType move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
 		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn, false)) {
 			int dx = xEnd - xStart;
 			int dy = yEnd - yStart;
@@ -105,7 +106,7 @@ public class Board {
 				if (Math.abs(dx) != 2) {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
-					return true;
+					return MoveType.NORMAL;
 				} else {
 					int xmid = (xStart + xEnd) / 2;
 					int ymid = (yStart + yEnd) / 2;
@@ -113,7 +114,7 @@ public class Board {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
 					p.setScore(100);
-					return true;
+					return MoveType.KILL;
 				}
 			}
 			// Queen
@@ -207,15 +208,15 @@ public class Board {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
 					p.setScore(100);
-					return true;
+					return MoveType.KILL;
 				} else {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
-					return true;
+					return MoveType.NORMAL;
 				}
 			}
 		}
-		return false;
+		return MoveType.NONE;
 	}
 
 	/**

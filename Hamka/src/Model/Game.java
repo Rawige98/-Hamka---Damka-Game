@@ -16,6 +16,7 @@ import com.sun.media.jfxmedia.events.NewFrameEvent;
 
 import Utils.Consts;
 import Utils.GameStatus;
+import Utils.MoveType;
 
 public class Game {
 	private static int Serial = 0;
@@ -311,8 +312,8 @@ public class Game {
 				isSkip = true;
 			}
 		}
-
-		if (board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p)) {
+		MoveType MType=board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p);
+		if (MType.equals(MoveType.KILL)||MType.equals(MoveType.NORMAL)) {
 			board.upgradeQueen(xEnd, yEnd);
 			Time = myTimer.getSecond();
 			p.setScore(scoreForPlayer(Time));
