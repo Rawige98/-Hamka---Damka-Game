@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import Controller.MainPageController;
 import Controller.PlayGameController;
 import Model.Game;
+import Model.Player;
 import Model.Tile;
 import Model.TimeForPlayer;
 import Utils.Consts;
@@ -60,8 +61,10 @@ public class PlayController implements Initializable {
 	private Group tileGroup;
 	private Group pieceGroup;
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
-	
+
 	private Game game;
+	private Player player_1;
+	private Player player_2;
 
 	@FXML
 	void closeWindow(ActionEvent event) {
@@ -89,6 +92,8 @@ public class PlayController implements Initializable {
 		pieceGroup = new Group();
 		rootBorderPane.setCenter(createBoardView());
 
+		player_1 = MainPageController.getPlayer1();
+		player_2 = MainPageController.getPlayer2();
 		PlayGameController.getInstance();
 	}
 
@@ -124,7 +129,7 @@ public class PlayController implements Initializable {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
 
-			MoveResult moveResult = tryMove(piece, newX, newY);
+			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
@@ -183,42 +188,22 @@ public class PlayController implements Initializable {
 		return new MoveResult(MoveType.NONE);
 	}
 
-	
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
-		
-		boolean move;
-		Tile currentTile;
-		Tile nextTile;
+
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
 			return new MoveResult(MoveType.NONE);
-		
+
 		int oldX = toBoard(piece.getOldX());
 		int oldY = toBoard(piece.getOldY());
 		
-	//	game=PlayGameController.getInstance().getGame();
-		currentTile= game.getBoard().getTile(oldX, oldY);
+		PlayGameController.getInstance().startGame(player_1, player_2);
 
-		move=game.move(oldX, oldY, newX, newY);
-		
-		if (Math.abs(newX - oldX) == 1 && newY - oldY == piece.getPieceType().moveDir) {
-			return new MoveResult(MoveType.NORMAL);
-		} else if (Math.abs(newX - oldX) == 2 && newY - oldY == piece.getPieceType().moveDir * 2) {
+		MoveType result = PlayGameController.getInstance().movePiece(oldX, oldY, newX, newY);
 
-			int x1 = oldX + (newX - oldX) / 2;
-			int y1 = oldY + (newY - oldY) / 2;
+		return new MoveResult(result);
 
-			if(game.getBoard().validateIDs(true, oldX, oldY, newX, newY, false))
-				return new MoveResult(MoveType.KILL, boardView[x1][y1].getPiece());
-			
-			}
-		
-
-		return new MoveResult(MoveType.NONE);
-	
-		
 	}
-	
-	
+
 	private int toBoard(double pixel) {
 		return (int) (pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
 	}
