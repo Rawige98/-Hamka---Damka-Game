@@ -8,12 +8,13 @@ import java.util.HashMap;
 import java.util.Random;
 
 import Utils.Consts;
+import Utils.MoveType;
 
 public class Board {
 	private Tile[][] myBoard;
 
 	public Board() {
-		setMyBoard(new Tile[8][8]);
+		setMyBoard(new Tile[Consts.ROWS][Consts.COLS]);
 		initBoard();
 	}
 
@@ -29,8 +30,8 @@ public class Board {
 	 * Initialize the game board to start the game
 	 */
 	public void initBoard() {
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
+		for (int i = 0; i < Consts.ROWS; i++) {
+			for (int j = 0; j < Consts.COLS; j++) {
 				if (toIndex(i, j) >= 0 && toIndex(i, j) <= 11) {
 					myBoard[j][i] = new Tile(2, Color.black, j, i);
 
@@ -75,7 +76,7 @@ public class Board {
 	 */
 	public static boolean isValidPoint(int x, int y) {
 		// Check that it is on the board
-		if (x < 0 || x > 7 || y < 0 || y > 7) {
+		if (x < 0 || x > Consts.COLS -1 || y < 0 || y > Consts.COLS -1) {
 			return false;
 		}
 
@@ -96,7 +97,7 @@ public class Board {
 	 * @param yEnd
 	 * @return true if the soldier move successfully
 	 */
-	public boolean move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
+	public MoveType move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
 		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn, false)) {
 			int dx = xEnd - xStart;
 			int dy = yEnd - yStart;
@@ -105,7 +106,7 @@ public class Board {
 				if (Math.abs(dx) != 2) {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
-					return true;
+					return MoveType.NORMAL;
 				} else {
 					int xmid = (xStart + xEnd) / 2;
 					int ymid = (yStart + yEnd) / 2;
@@ -113,7 +114,7 @@ public class Board {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
 					p.setScore(100);
-					return true;
+					return MoveType.KILL;
 				}
 			}
 			// Queen
@@ -145,21 +146,43 @@ public class Board {
 						}
 					} else {
 						if (Math.abs(dx) + Math.abs(dy) == 8) {
-							if (dx > 0 && dy > 0) {
-								i++;
-								j--;
-							}
-							if (dx < 0 && dy > 0) {
-								i--;
-								j--;
-							}
-							if (dx > 0 && dy < 0) {
-								j++;
-								i++;
-							}
-							if (dx < 0 && dy < 0) {
-								i--;
-								j++;
+							if (xEnd == 0 || xEnd == 7) {
+								if (dx > 0 && dy > 0) {
+									i++;
+									j--;
+								}
+								if (dx < 0 && dy > 0) {
+									i--;
+									j--;
+								}
+								if (dx > 0 && dy < 0) {
+									j++;
+									i++;
+								}
+								if (dx < 0 && dy < 0) {
+									i--;
+									j++;
+								}
+							} else {
+								if (dx > 0 && dy > 0) {
+									i--;
+									j++;
+								}
+								if (dx < 0 && dy > 0) {
+									j++;
+									i++;
+								}
+								if (dx > 0 && dy < 0) {
+
+									i--;
+									j--;
+								}
+								if (dx < 0 && dy < 0) {
+
+									i++;
+									j--;
+								}
+
 							}
 						}
 					}
@@ -185,15 +208,15 @@ public class Board {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
 					p.setScore(100);
-					return true;
+					return MoveType.KILL;
 				} else {
 					myBoard[yEnd][xEnd].setValue(myBoard[yStart][xStart].getValue());
 					myBoard[yStart][xStart].setValue(0);
-					return true;
+					return MoveType.NORMAL;
 				}
 			}
 		}
-		return false;
+		return MoveType.NONE;
 	}
 
 	/**
@@ -300,21 +323,43 @@ public class Board {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (dx > 0 && dy > 0) {
-							i++;
-							j--;
-						}
-						if (dx < 0 && dy > 0) {
-							i--;
-							j--;
-						}
-						if (dx > 0 && dy < 0) {
-							j++;
-							i++;
-						}
-						if (dx < 0 && dy < 0) {
-							i--;
-							j++;
+						if (xEnd == 0 || xEnd == 7) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						} else {
+							if (dx > 0 && dy > 0) {
+								i--;
+								j++;
+							}
+							if (dx < 0 && dy > 0) {
+								j++;
+								i++;
+							}
+							if (dx > 0 && dy < 0) {
+
+								i--;
+								j--;
+							}
+							if (dx < 0 && dy < 0) {
+
+								i++;
+								j--;
+							}
+
 						}
 					}
 				}
@@ -437,21 +482,43 @@ public class Board {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (dx > 0 && dy > 0) {
-							i++;
-							j--;
-						}
-						if (dx < 0 && dy > 0) {
-							i--;
-							j--;
-						}
-						if (dx > 0 && dy < 0) {
-							j++;
-							i++;
-						}
-						if (dx < 0 && dy < 0) {
-							i--;
-							j++;
+						if (xEnd == 0 || xEnd == 7) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						} else {
+							if (dx > 0 && dy > 0) {
+								i--;
+								j++;
+							}
+							if (dx < 0 && dy > 0) {
+								j++;
+								i++;
+							}
+							if (dx > 0 && dy < 0) {
+
+								i--;
+								j--;
+							}
+							if (dx < 0 && dy < 0) {
+
+								i++;
+								j--;
+							}
+
 						}
 					}
 				}
@@ -661,14 +728,12 @@ public class Board {
 		}
 		return mymoves;
 	}
-	
-	
+
 	public Tile getTile(int x, int y) {
 		return myBoard[x][y];
 	}
-	
 
-	private boolean isSkip(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
+	public boolean isSkip(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
 		if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
@@ -682,9 +747,10 @@ public class Board {
 		// Queen
 		else {
 			int i = xStart, j = yStart;
-			boolean isSkip = false;			// check if the road to the target is clear
-
+			boolean isSkip = false; // check if the road to the target is clear
+			int c=0;
 			while ((i != xEnd && j != yEnd)) {
+				c++;
 				if (Math.abs(dx) == Math.abs(dy)) {
 					if (dx > 0 && dy > 0) {
 						i++;
@@ -706,21 +772,43 @@ public class Board {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (dx > 0 && dy > 0) {
-							i++;
-							j--;
-						}
-						if (dx < 0 && dy > 0) {
-							i--;
-							j--;
-						}
-						if (dx > 0 && dy < 0) {
-							j++;
-							i++;
-						}
-						if (dx < 0 && dy < 0) {
-							i--;
-							j++;
+						if (xEnd == 0 || xEnd == 7) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						} else {
+							if (dx > 0 && dy > 0) {
+								i--;
+								j++;
+							}
+							if (dx < 0 && dy > 0) {
+								j++;
+								i++;
+							}
+							if (dx > 0 && dy < 0) {
+
+								i--;
+								j--;
+							}
+							if (dx < 0 && dy < 0) {
+
+								i++;
+								j--;
+							}
+
 						}
 					}
 				}
@@ -739,8 +827,8 @@ public class Board {
 					isSkip = true;
 				}
 			}
-			return isSkip;
-	}
+			return isSkip&&c==1;
+		}
 	}
 
 	@Override

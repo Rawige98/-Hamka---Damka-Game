@@ -2,6 +2,7 @@ package Model;
 
 import java.awt.Color;
 
+
 public class Tile {
 	private int value;
 	private java.awt.Color color;
@@ -66,7 +67,7 @@ public class Tile {
 	/**
 	 * in this method we upgrade the soldier to queen
 	 * 
-	 * @param Tile T
+	 * @param TileView T
 	 * @return true if the soldier upgraded successfully
 	 */
 	public boolean upgradeToQueen() {

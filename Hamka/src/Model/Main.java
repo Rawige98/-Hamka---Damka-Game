@@ -14,7 +14,6 @@ import Utils.GameStatus;
  *
  */
 public class Main {
-	
 
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -97,73 +96,54 @@ public class Main {
 		SysData.getInstance().loadData(DataType.PAUSED_GAMES);
 		SysData.getInstance().loadData(DataType.RULES);
 	}
-/*
-	private void runGame(Game game) {
-		// TODO Auto-generated method stub
-		GameStatus status = GameStatus.FINISH;
-		Scanner runGameScanner = new Scanner(System.in);
-		String turnString, scoresStatus, moveInput;
-		Player playerToPlay;
-		int fromX, fromY, toX, toY;
-		System.out.println(
-				"NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game");
-		System.out.println();
-		while (!game.finishGame(status)) {
-			playerToPlay = game.isP1Turn() ? game.getPlayer1() : game.getPlayer2();
-			turnString = String.format("%s's turn:", playerToPlay.getUsername());
-			System.out.println(turnString);
-			System.out.println("Time for previos turn : "+game.getTime());
-			scoresStatus = "Current scores status: " + game.getPlayer1().getUsername() + ": "
-					+ game.getPlayer1().getScore()  + " , " + game.getPlayer2().getUsername() + ": "
-					+ game.getPlayer2().getScore() ;
-			System.out.println(scoresStatus);
-			System.out.println(game.getGameState());
-			boolean legalFirstMoveInput = false;
-			while (!legalFirstMoveInput) {
-				System.out
-						.println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:");
-				moveInput = runGameScanner.nextLine();
-				if (moveInput.equals("quit")) {
-					status = GameStatus.QUIT;
-					game.finishGame(status);
-					System.out.println("Game finished. " + playerToPlay.getUsername() + " had quited");
-					System.out.println(game.getWinner().getUsername() + " wins !!!");
-					SysData.getInstance().addFinishedGame(game);
-					legalFirstMoveInput = true;
-				} else if (moveInput.equals("save game")) {
-					SysData.getInstance().addPausedGame(game);
-					System.out.println("This game had been paused and saved\nSee you later");
-					status = GameStatus.PAUSE;
-					legalFirstMoveInput = true;
-				} else {
-					if (validateMoveInput(moveInput)) {
-						boolean legalSecondMoveInput = false;
-						char[] moveArr = moveInput.toCharArray();
-						fromX = Integer.parseInt(String.valueOf(moveArr[1]));
-						fromY = Integer.parseInt(String.valueOf(moveArr[3]));
-						while (!legalSecondMoveInput) {
-							System.out.println("Please enter the indexes [format: (row,col)] of the distination tile:");
-							moveInput = runGameScanner.nextLine();
-							if (validateMoveInput(moveInput)) {
-								moveArr = moveInput.toCharArray();
-								toX = Integer.parseInt(String.valueOf(moveArr[1]));
-								toY = Integer.parseInt(String.valueOf(moveArr[3]));
-								game.move(fromX, fromY, toX, toY);//////////
-								legalSecondMoveInput = true;
-							} else {
-								System.out.println("Illegal move input! Try Again");
-							}
-						}
-						legalFirstMoveInput = true;
-					}
-				}
-			}
-		
+	/*
+	 * private void runGame(Game game) { // TODO Auto-generated method stub
+	 * GameStatus status = GameStatus.FINISH; Scanner runGameScanner = new
+	 * Scanner(System.in); String turnString, scoresStatus, moveInput; Player
+	 * playerToPlay; int fromX, fromY, toX, toY; System.out.println(
+	 * "NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game"
+	 * ); System.out.println(); while (!game.finishGame(status)) { playerToPlay =
+	 * game.isP1Turn() ? game.getPlayer1() : game.getPlayer2(); turnString =
+	 * String.format("%s's turn:", playerToPlay.getUsername());
+	 * System.out.println(turnString);
+	 * System.out.println("Time for previos turn : "+game.getTime()); scoresStatus =
+	 * "Current scores status: " + game.getPlayer1().getUsername() + ": " +
+	 * game.getPlayer1().getScore() + " , " + game.getPlayer2().getUsername() + ": "
+	 * + game.getPlayer2().getScore() ; System.out.println(scoresStatus);
+	 * System.out.println(game.getGameState()); boolean legalFirstMoveInput = false;
+	 * while (!legalFirstMoveInput) { System.out
+	 * .println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:"
+	 * ); moveInput = runGameScanner.nextLine(); if (moveInput.equals("quit")) {
+	 * status = GameStatus.QUIT; game.finishGame(status);
+	 * System.out.println("Game finished. " + playerToPlay.getUsername() +
+	 * " had quited"); System.out.println(game.getWinner().getUsername() +
+	 * " wins !!!"); SysData.getInstance().addFinishedGame(game);
+	 * legalFirstMoveInput = true; } else if (moveInput.equals("save game")) {
+	 * SysData.getInstance().addPausedGame(game);
+	 * System.out.println("This game had been paused and saved\nSee you later");
+	 * status = GameStatus.PAUSE; legalFirstMoveInput = true; } else { if
+	 * (validateMoveInput(moveInput)) { boolean legalSecondMoveInput = false; char[]
+	 * moveArr = moveInput.toCharArray(); fromX =
+	 * Integer.parseInt(String.valueOf(moveArr[1])); fromY =
+	 * Integer.parseInt(String.valueOf(moveArr[3])); while (!legalSecondMoveInput) {
+	 * System.out.
+	 * println("Please enter the indexes [format: (row,col)] of the distination tile:"
+	 * ); moveInput = runGameScanner.nextLine(); if (validateMoveInput(moveInput)) {
+	 * moveArr = moveInput.toCharArray(); toX =
+	 * Integer.parseInt(String.valueOf(moveArr[1])); toY =
+	 * Integer.parseInt(String.valueOf(moveArr[3])); game.move(fromX, fromY, toX,
+	 * toY);////////// legalSecondMoveInput = true; } else {
+	 * System.out.println("Illegal move input! Try Again"); } } legalFirstMoveInput
+	 * = true; } } }
+	 * 
+	 * 
+	 * } }
+	 * 
+	 */
 
-		}
-	}
-
-
+	
+	
+	
 
 	private boolean validateMoveInput(String moveInput) {
 		// TODO Auto-generated method stub
@@ -183,7 +163,7 @@ public class Main {
 		}
 		return false;
 	}
-*/
+
 	public void printDashboard() {
 		String toPrint = String.format(
 				"Please choose a game option:\n\t1.Play\n\t2.Game Rules\n\t3.Load games\n\t4.Questions\n\t5.View History\n\t6.Exit");
