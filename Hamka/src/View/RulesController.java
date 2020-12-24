@@ -15,8 +15,7 @@ import javafx.stage.Stage;
 
 public class RulesController implements Initializable {
 	
-	@FXML
-    private AnchorPane viewPane;
+	
 
     @FXML
     private Button score;
@@ -29,11 +28,14 @@ public class RulesController implements Initializable {
 
     @FXML
     private Button goal;
-
+    @FXML
+    private AnchorPane viewPane;
     @FXML
     private AnchorPane goalPane;
     @FXML
     private AnchorPane scorePane;
+    @FXML
+    private AnchorPane squaresPane;
     
     public void closeWindow() {
 		((Stage) goal.getScene().getWindow()).close();
@@ -52,12 +54,21 @@ public class RulesController implements Initializable {
 	public void OpenOverView(ActionEvent event) throws Exception {
 		goalPane.setVisible(false);
 		scorePane.setVisible(false);
+		squaresPane.setVisible(false);
 		viewPane.setVisible(true);
+	
+	}
+	public void OpensquarePane(ActionEvent event) throws Exception {
+		goalPane.setVisible(false);
+		scorePane.setVisible(false);
+		viewPane.setVisible(false);
+		squaresPane.setVisible(true);
 	
 	}
 	public void OpenscorePane(ActionEvent event) throws Exception {
 		goalPane.setVisible(false);
 		viewPane.setVisible(false);
+		squaresPane.setVisible(false);
 		scorePane.setVisible(true);
 	
 	}
@@ -65,6 +76,7 @@ public class RulesController implements Initializable {
 	public void OpenGoalPane(ActionEvent event) throws Exception {
 		viewPane.setVisible(false);
 		scorePane.setVisible(false);
+		squaresPane.setVisible(false);
 		goalPane.setVisible(true);
 	}
 	@Override
@@ -72,6 +84,7 @@ public class RulesController implements Initializable {
 		viewPane.setVisible(true);
 		goalPane.setVisible(false);
 		scorePane.setVisible(false);
+		squaresPane.setVisible(false);
 		
 	}
 
