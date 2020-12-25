@@ -3,7 +3,6 @@ package View;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Controller.MainPageController;
 import Controller.PlayGameController;
 import Model.Game;
 import Model.Player;
@@ -25,8 +24,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class PlayController implements Initializable {
 
@@ -81,6 +82,7 @@ public class PlayController implements Initializable {
 		primaryStage.setTitle("Hamka game");
 		primaryStage.show();
 	}
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
