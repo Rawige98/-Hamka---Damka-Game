@@ -1,4 +1,4 @@
-package Controller;
+package View;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -64,6 +64,10 @@ public class UpdateQuestionController implements Initializable  {
 
 	@FXML
 	private RadioButton r4 = new RadioButton();
+	
+	public void closeWindow() {
+		((Stage) r3.getScene().getWindow()).close();
+	}
 	
 //	public void updateQuestion(ActionEvent event) throws Exception {
 //

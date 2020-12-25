@@ -1,4 +1,4 @@
-package Controller;
+package View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,8 +18,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class MainPageController implements Initializable {
@@ -193,6 +195,20 @@ public class MainPageController implements Initializable {
 			MainPageController.isSoundOn = true;
 		}
 	}
+	
+	public void pop(ActionEvent event) throws Exception {
+	
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
+		Scene scene = new Scene(root, 473, 310);
+		primaryStage.initStyle(StageStyle.TRANSPARENT);
+		scene.setFill(Color.TRANSPARENT);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Play");
+		primaryStage.show();
+	}
+	
+	
 
 	/**********************************************
 	 * nick name page
