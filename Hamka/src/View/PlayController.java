@@ -65,6 +65,8 @@ public class PlayController implements Initializable {
 	private Game game;
 	private Player player_1;
 	private Player player_2;
+    private boolean gameInProgress; // Is a game currently in progress?
+    private Player currentPlayer;      // Whose turn is it now?  The possible values
 
 	@FXML
 	void closeWindow(ActionEvent event) {
@@ -94,7 +96,8 @@ public class PlayController implements Initializable {
 
 		player_1 = MainPageController.getPlayer1();
 		player_2 = MainPageController.getPlayer2();
-		PlayGameController.getInstance();
+		PlayGameController.getInstance().startGame(player_1,player_2);
+
 	}
 
 	public Pane createBoardView() {
@@ -108,10 +111,11 @@ public class PlayController implements Initializable {
 				tileGroup.getChildren().add(tileView);
 
 				Piece piece = null;
-				if (y <= 2 && (x + y) % 2 != 0) {
+				//changes in (if)
+				if (y <= 2 && (x + y) % 2 == 0) {
 					piece = makePiece(PieceType.RED, x, y);
 				}
-				if (y >= 5 && (x + y) % 2 != 0) {
+				if (y >= 5 && (x + y) % 2 == 0) {
 					piece = makePiece(PieceType.BLUE, x, y);
 				}
 				if (piece != null) {
@@ -129,7 +133,8 @@ public class PlayController implements Initializable {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
 
-			MoveResult moveResult = tryMove(piece, newX, newY);
+			//calling tryMoveTest instead of tryMove
+			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
@@ -150,6 +155,7 @@ public class PlayController implements Initializable {
 				boardView[newX][newY].setPiece(piece);
 
 				Piece otherPiece = moveResult.getPiece();
+				System.out.println("the other piece is:"+otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
 				break;
@@ -188,19 +194,32 @@ public class PlayController implements Initializable {
 		return new MoveResult(MoveType.NONE);
 	}
 
+	//move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
 			return new MoveResult(MoveType.NONE);
 
+		MoveType result = MoveType.NONE;
 		int oldX = toBoard(piece.getOldX());
 		int oldY = toBoard(piece.getOldY());
-		
-		PlayGameController.getInstance().startGame(player_1, player_2);
+		int x1 = oldX + (newX - oldX) / 2;
+		int y1 = oldY + (newY - oldY) / 2;
 
-		MoveType result = PlayGameController.getInstance().movePiece(oldX, oldY, newX, newY);
+		System.out.println("the old move Y is:" + oldX + " old X is:" + oldY);
+		System.out.println("the new move Y is:" + newX + " new X is:" + newY);
+		System.out.println(PlayGameController.getInstance().getGame().getBoard().toString());
+		System.out.println("this piece color is:"+piece.getPieceType());
+		if (piece.getPieceType().equals(PieceType.BLUE)) {
+			 result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1,true);
+		}
+		if (piece.getPieceType().equals(PieceType.RED)) {
+			 result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2,false);
 
-		return new MoveResult(result);
+		}
+		System.out.println("the result is:" + result);
+
+		return new MoveResult(result,boardView[x1][y1].getPiece());
 
 	}
 
