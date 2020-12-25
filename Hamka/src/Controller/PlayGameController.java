@@ -24,8 +24,9 @@ public class PlayGameController {
 
 	}
 
-	public MoveType movePiece(int oldX, int oldY, int newX, int newY) {
-		return game.getBoard().move(oldX, oldY, newX, newY, true, game.getPlayer1());
+	public MoveType movePiece(int oldX, int oldY, int newX, int newY,Player p,boolean isTurn) {
+		
+		return game.getBoard().move(oldX, oldY, newX, newY, isTurn, p);
 	}
 
 	/*
@@ -58,4 +59,16 @@ public class PlayGameController {
 		PlayGameController.instance = instance;
 	}
 
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+
+	
+	
+	
 }
