@@ -89,25 +89,25 @@ public class Tile {
 	@Override
 	public String toString() {
 
-		String colorTxt;
-		if(this.color.equals(Color.yellow))
-			colorTxt = "YELLOW";
-		else if(this.color.equals(Color.red))
-			colorTxt = "RED";
-		else if(this.color.equals(Color.blue))
-			colorTxt = "BLUE";
-		else if(this.color.equals(Color.orange))
-			colorTxt = "ORANGE" ;
-		else if(this.color.equals(Color.green))
-			colorTxt = "GREEN";
-		else if(this.color.equals(Color.white)) {
-			colorTxt = "WHITE";
-		}
-		else
-			colorTxt = "BLACK";
+		String colorTxt="";
+//		if(this.color.equals(Color.yellow))
+//			colorTxt = "YELLOW";
+//		else if(this.color.equals(Color.red))
+//			colorTxt = "RED";
+//		else if(this.color.equals(Color.blue))
+//			colorTxt = "BLUE";
+//		else if(this.color.equals(Color.orange))
+//			colorTxt = "ORANGE" ;
+//		else if(this.color.equals(Color.green))
+//			colorTxt = "GREEN";
+//		else if(this.color.equals(Color.white)) {
+//			colorTxt = "WHITE";
+//		}
+//		else
+//			colorTxt = "BLACK";
+//		
 		
-		
-		return  value+" - "+colorTxt;
+		return  value+""+colorTxt;
 
 	}
 

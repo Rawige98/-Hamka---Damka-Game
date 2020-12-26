@@ -98,7 +98,8 @@ public class Board {
 	 * @return true if the soldier move successfully
 	 */
 	public MoveType move(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn, Player p) {
-		if (moveValidation(xStart, yStart, xEnd, yEnd, isP1Turn, false)) {
+		MoveValidation validation=new MoveValidation(xStart, xEnd, yStart, yEnd, this, isP1Turn, false);
+		if (validation.moveValidation()) {
 			int dx = xEnd - xStart;
 			int dy = yEnd - yStart;
 			if (myBoard[yStart][xStart].getValue() != 22 && myBoard[yStart][xStart].getValue() != 11) {
