@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>  
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="442.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.RulesController">
    <children>
@@ -108,7 +108,7 @@
             <Font name="Berlin Sans FB Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="square" layoutX="580.0" layoutY="323.0" mnemonicParsing="false" prefHeight="79.0" prefWidth="77.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="Squares">
+      <Button fx:id="square" layoutX="580.0" layoutY="323.0" mnemonicParsing="false" onAction="#OpensquarePane" prefHeight="79.0" prefWidth="77.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="Squares">
          <font>
             <Font name="Berlin Sans FB Bold" size="15.0" />
          </font>
@@ -182,46 +182,151 @@
             </Text>
          </children>
       </AnchorPane>
-      <Button layoutX="9.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="35.0" prefWidth="41.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.8);" text="back" />
+      <Button layoutX="9.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="41.0" style="-fx-background-radius: 50; -fx-background-color: rgb(255, 255, 255,0.9); -fx-border-color: black; -fx-border-radius: 50;" text="back">
+         <font>
+            <Font name="Berlin Sans FB" size="11.0" />
+         </font></Button>
       <AnchorPane fx:id="scorePane" layoutX="51.0" layoutY="16.0" prefHeight="416.0" prefWidth="520.0" style="-fx-background-color: rgb(255, 255, 255,0.9); -fx-background-radius: 20;">
          <children>
-            <Label layoutX="48.0" layoutY="14.0" prefHeight="53.0" prefWidth="150.0" text="Score">
+            <Label layoutX="213.0" layoutY="14.0" prefHeight="53.0" prefWidth="93.0" text="Score">
                <font>
                   <Font name="Forte" size="35.0" />
                </font>
             </Label>
-            <Text layoutX="54.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Each player starts with 0 points, and can accumulate more points along the way." wrappingWidth="196.3333282470703">
+            <Text layoutX="54.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Each player starts with 0 points, and can accumulate more points along the way." wrappingWidth="196.3333282470703">
                <font>
                   <Font name="Berlin Sans FB" size="17.0" />
                </font>
             </Text>
-            <Text layoutX="57.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If a player's turn lasts more than a minute until the end of the move, the player will lose one point for every second step." wrappingWidth="231.70509338378906">
+            <Text layoutX="264.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If a player's turn lasts more than a minute until the end of the move, the player will lose one point for every second step." wrappingWidth="231.70509338378906">
                <font>
                   <Font name="Berlin Sans FB" size="17.0" />
                </font>
             </Text>
-            <ImageView fitHeight="132.0" fitWidth="150.0" layoutX="305.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true">
+            <Text layoutX="53.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If he finishes his turn in less than a minute, he will earn points according to the time he saved according to the same rule of point per second." wrappingWidth="320.66670735677087">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font></Text>
+            <Text layoutX="267.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eating an opponent's soldier earns an additional 100 points." wrappingWidth="212.00000762939453">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Text>
+            <Separator layoutX="53.0" layoutY="127.0" prefHeight="7.0" prefWidth="232.0" />
+            <Separator layoutX="264.0" layoutY="214.0" prefHeight="7.0" prefWidth="232.0" />
+            <Separator layoutX="54.0" layoutY="293.0" prefHeight="0.0" prefWidth="256.0" />
+            <ImageView fitHeight="75.0" fitWidth="140.0" layoutX="431.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/giphy.gif" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="89.0" fitWidth="75.0" layoutX="158.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/clock-clipart-animated-gif-14.gif" />
                </image>
             </ImageView>
-            <Text layoutX="54.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If he finishes his turn in less than a minute, he will earn points according to the time he saved according to the same rule of point per second." wrappingWidth="285.33333333333337">
-               <font>
-                  <Font name="Berlin Sans FB" size="17.0" />
-               </font></Text>
-            <ImageView fitHeight="56.0" fitWidth="55.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="75.0" fitWidth="140.0" layoutX="394.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/minus-138-459260.png" />
+                  <Image url="@../images/giphy.gif" />
                </image>
             </ImageView>
-            <ImageView fitHeight="46.0" fitWidth="41.0" layoutX="7.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true">
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="squaresPane" layoutX="51.0" layoutY="19.0" prefHeight="416.0" prefWidth="520.0" style="-fx-background-color: rgb(255, 255, 255,0.9); -fx-background-radius: 20;" visible="false">
+         <children>
+            <Label layoutX="184.0" layoutY="14.0" prefHeight="46.0" prefWidth="150.0" text="Squares ">
+               <font>
+                  <Font name="Forte" size="39.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="186.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/new+plus+icon-1320196808672578110.png" />
+                  <Image url="@../images/222.png" />
                </image>
             </ImageView>
-            <Text layoutX="57.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eating an opponent's soldier earns an additional 100 points." wrappingWidth="212.00000762939453">
+            <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="441.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/0004.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="188.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/55553.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="441.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/5672.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="433.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/תמונה7.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="24.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Yellow squares – 3 yellow squares appears randomly on the game board." wrappingWidth="173.89523315429688">
                <font>
-                  <Font name="Berlin Sans FB" size="17.0" />
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Text layoutX="24.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A player who takes a step and stops on a yellow square has to answer a question." wrappingWidth="195.9999999999999">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="35.0" fitWidth="150.0" layoutX="23.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/תמונה8.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="24.0" layoutY="153.0" prefHeight="19.0" prefWidth="93.0" text="Correct Answer:">
+               <font>
+                  <Font name="Berlin Sans FB" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="24.0" layoutY="214.0" prefHeight="19.0" prefWidth="93.0" text="Wrong Answer:">
+               <font>
+                  <Font name="Berlin Sans FB" size="13.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="35.0" fitWidth="150.0" layoutX="23.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/תמונה9.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="46.0" fitWidth="48.0" layoutX="191.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" rotate="113.2">
+               <image>
+                  <Image url="@../images/815caba52b04849b0d6d2e46249b53a1.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="259.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Red square - A red square appears only when there are no options to eat in the current queue.              Stepping on it entitles the player to another step in the same turn with the same soldier" wrappingWidth="173.89523315429688">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="89.0" fitWidth="84.0" layoutX="359.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" rotate="67.4">
+               <image>
+                  <Image url="@../images/815caba52b04849b0d6d2e46249b53a1.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="23.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Green square - will appear if 30 seconds have passed since the player's turn and he has not yet made a move, Stepping on it earns the player an additional 50 points." wrappingWidth="148.60655212402344">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="53.0" fitWidth="55.0" layoutX="161.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true" rotate="88.7">
+               <image>
+                  <Image url="@../images/815caba52b04849b0d6d2e46249b53a1.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="184.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Blue square: stepping on it entitles the player to bring one soldier back to life, so that at least 2 empty squares will be between the returned soldier and each soldier of the opponent." wrappingWidth="245.89524841308594">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Text>
+            <Text layoutX="271.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Orange square - If 90 seconds have passed since the player's turn and he has not yet made a move, orange squares will appear to guide him in the game." wrappingWidth="161.6966247558595">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
                </font>
             </Text>
          </children>

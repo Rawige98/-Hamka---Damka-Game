@@ -135,6 +135,12 @@ public class Game {
 		}
 	}
 
+	public Player showPlayerTurn() {
+
+		return (isP1Turn() ? getPlayer1() : getPlayer2());
+
+	}
+
 	public boolean validateMoveInput(String moveInput) {
 
 		// TODO Auto-generated method stub
@@ -319,8 +325,8 @@ public class Game {
 			p.setScore(scoreForPlayer(Time));
 			Tile destinationTile = board.getTile(xEnd, yEnd);
 			checkDestinatonTile(destinationTile);
-			if(!(isSkip&&board.checkAvailableSkips(isP1Turn).containsKey(board.getMyBoard()[xEnd][yEnd])))
-			isP1Turn = !isP1Turn;
+			if (!(isSkip && board.checkAvailableSkips(isP1Turn).containsKey(board.getMyBoard()[xEnd][yEnd])))
+				isP1Turn = !isP1Turn;
 			notFinished = true;
 			myTimer.reset();
 			Runtime(myTimer);
