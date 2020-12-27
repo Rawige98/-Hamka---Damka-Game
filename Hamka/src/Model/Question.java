@@ -122,8 +122,8 @@ public class Question {
 	
 	@Override
 	public String toString() {
-		return "Question [text=" + text + ", answers=" + answers + ", rightAnswer=" + rightAnswer + ", difficulty="
-				+ difficulty + ", team=" + team + "]";
+	   return text+" ?- level :"+difficulty+ "\n"+ answers.get(0)+"\n"+answers.get(1)+"\n"
+			   +answers.get(2)+"\n"+answers.get(3)+"\nTeam:"+team+"\n----------------------------------------";
 	}
 
 	@Override

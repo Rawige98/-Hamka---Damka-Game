@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+import Model.SysData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +30,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		window = primaryStage;
-
+		SysData sys = SysData.getInstance();
+		sys.loadQuestions(null);
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
 			Scene scene = new Scene(root, 581, 449);
