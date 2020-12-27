@@ -8,10 +8,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="473.0" style="-fx-background-color: rgba(255,255,200,0.5); -fx-background-radius: 30;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PopQuestionController">
    <children>
-      <Button fx:id="check" layoutX="398.0" layoutY="265.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="37.0" prefWidth="68.0" style="-fx-background-radius: 30;" text="check">
+      <Button fx:id="check" layoutX="398.0" layoutY="265.0" mnemonicParsing="false" onAction="#check" prefHeight="37.0" prefWidth="68.0" style="-fx-background-radius: 30;" text="check">
          <font>
             <Font name="Berlin Sans FB" size="17.0" />
          </font>
