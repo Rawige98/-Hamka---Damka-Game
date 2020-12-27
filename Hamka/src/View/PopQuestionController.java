@@ -5,8 +5,12 @@ import java.util.ResourceBundle;
 
 import Controller.PopQ;
 import Model.Question;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -38,14 +42,30 @@ public class PopQuestionController implements Initializable {
     @FXML
     private RadioButton ans4;
     PopQ p = new PopQ();
+    int rightA;
     
     public void closeWindow() {
 		((Stage) ans4.getScene().getWindow()).close();
+	}
+    
+	public void check(ActionEvent event) throws Exception {
+		if((ans1.isSelected()&&rightA==1) || (ans2.isSelected()&&rightA==2) || 
+		   (ans3.isSelected()&&rightA==3) || (ans4.isSelected()&&rightA==4))
+		{
+			System.out.println("true");
+		}
+		else
+		{
+			System.out.println("false");
+		}
+		closeWindow();
+		
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Question q = p.popQuestion();
+		rightA= q.getRightAnswer();
 		question.setText(q.getText());
 		ans1.setText(q.getAnswers().get(0));
 		ans2.setText(q.getAnswers().get(1));

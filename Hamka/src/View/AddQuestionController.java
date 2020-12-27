@@ -97,8 +97,8 @@ public class AddQuestionController implements Initializable {
 		q.addAnswer(answer3);
 		q.addAnswer(answer4);
 		SysData.getInstance().addQuestion(q);
-		SysData.getInstance().loadQuestions(null);
-		SysData.getInstance().saveQuestions(null);
+		//SysData.getInstance().loadQuestions(null);
+		//SysData.getInstance().saveQuestions(null);
 		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));

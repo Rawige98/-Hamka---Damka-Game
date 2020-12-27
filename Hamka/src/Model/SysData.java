@@ -27,6 +27,7 @@ public class SysData {
 
 	private static SysData SysData;
 	private HashMap<Difficulty, ArrayList<Question>> questions;
+	private HashMap<Difficulty, ArrayList<Question>> pop;
 	private ArrayList<Game> games;
 	private ArrayList<Game> pausedGames;
 	private ArrayList<String> rules;
@@ -49,6 +50,7 @@ public class SysData {
 		games = new ArrayList<Game>();
 		pausedGames = new ArrayList<Game>();
 		rules = new ArrayList<>();
+		pop=new HashMap<Difficulty, ArrayList<Question>>();
 	}
 
 	//*********************************getters and setters********************************************************************
@@ -87,6 +89,7 @@ public class SysData {
 
 	@SuppressWarnings("unchecked")
 	public boolean loadQuestions(String externalPath) {
+	
 
 		if (externalPath != null) {
 			quesJsonPath = externalPath;
@@ -134,14 +137,21 @@ public class SysData {
 					// add answers to the queston's answers array.
 					questionToAdd.addAnswer(a);
 				}
+				
 
 				// Add the question to questions according to the question level.
 				if (!questions.containsKey(questionToAdd.getDifficulty())) {
 					questions.put(questionToAdd.getDifficulty(), new ArrayList<Question>());
 					questions.get(questionToAdd.getDifficulty()).add(questionToAdd);
+					pop.put(questionToAdd.getDifficulty(), new ArrayList<Question>());
+					pop.get(questionToAdd.getDifficulty()).add(questionToAdd);
 
 				} else {
-					questions.get(questionToAdd.getDifficulty()).add(questionToAdd);
+					if(!questions.get(questionToAdd.getDifficulty()).contains(questionToAdd))
+					{
+						questions.get(questionToAdd.getDifficulty()).add(questionToAdd);
+						pop.get(questionToAdd.getDifficulty()).add(questionToAdd);
+					}
 
 				}
 			}
@@ -231,6 +241,7 @@ public class SysData {
 			myArray.add(question);
 		}
 		questions.put(question.getDifficulty(), myArray);
+		saveQuestions(null);
 
 	}
 
@@ -239,6 +250,11 @@ public class SysData {
 		ArrayList<Question> myArray = questions.get(question.getDifficulty());
 		if (myArray.contains(question)) {
 			questions.get(question.getDifficulty()).remove(question);
+			if(questions.get(question.getDifficulty()).isEmpty())
+			{
+				questions.remove(question.getDifficulty());
+				saveQuestions(null);
+			}
 			return true;
 		}
 		return false;
@@ -256,10 +272,20 @@ public class SysData {
 
 	//***********************************************popQuestion*****************************************************************************
 	public Question popQuestion() {
-		Object[] diff = questions.keySet().toArray();
+		if(pop.isEmpty())
+		{
+			System.out.println("here");
+			pop=questions;
+		}
+		Object[] diff = pop.keySet().toArray();
 		Difficulty key = (Difficulty) diff[new Random().nextInt(diff.length)];
-		ArrayList<Question> myArray = questions.get(key);
+		ArrayList<Question> myArray = pop.get(key);
 		Question q = myArray.get(new Random().nextInt(myArray.size()));
+		pop.get(key).remove(q);
+		if(pop.get(key).isEmpty())
+		{
+			pop.remove(key);
+		}
 		return q;
 	}
 
