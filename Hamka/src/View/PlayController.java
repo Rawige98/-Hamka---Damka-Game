@@ -114,10 +114,10 @@ public class PlayController implements Initializable {
 
 				Piece piece = null;
 				// changes in (if)
-				if (y <= 2 && (x + y) % 2 == 0) {
+				if (y <= 2 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.RED, x, y);
 				}
-				if (y >= 5 && (x + y) % 2 == 0) {
+				if (y >= 5 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.BLUE, x, y);
 				}
 				if (piece != null) {
