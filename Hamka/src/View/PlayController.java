@@ -66,8 +66,8 @@ public class PlayController implements Initializable {
 	private Game game;
 	private Player player_1;
 	private Player player_2;
-    private boolean gameInProgress; // Is a game currently in progress?
-    private Player currentPlayer;      // Whose turn is it now?  The possible values
+	private boolean gameInProgress; // Is a game currently in progress?
+	private Player currentPlayer; // Whose turn is it now? The possible values
 
 	@FXML
 	void closeWindow(ActionEvent event) {
@@ -85,7 +85,6 @@ public class PlayController implements Initializable {
 		primaryStage.show();
 	}
 
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		player1.setText(MainPageController.getPlayer1().getUsername());
@@ -98,7 +97,7 @@ public class PlayController implements Initializable {
 
 		player_1 = MainPageController.getPlayer1();
 		player_2 = MainPageController.getPlayer2();
-		PlayGameController.getInstance().startGame(player_1,player_2);
+		PlayGameController.getInstance().startGame(player_1, player_2);
 
 	}
 
@@ -113,7 +112,7 @@ public class PlayController implements Initializable {
 				tileGroup.getChildren().add(tileView);
 
 				Piece piece = null;
-				//changes in (if)
+				// changes in (if)
 				if (y <= 2 && (x + y) % 2 == 0) {
 					piece = makePiece(PieceType.RED, x, y);
 				}
@@ -135,7 +134,7 @@ public class PlayController implements Initializable {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
 
-			//calling tryMoveTest instead of tryMove
+			// calling tryMoveTest instead of tryMove
 			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
@@ -157,7 +156,7 @@ public class PlayController implements Initializable {
 				boardView[newX][newY].setPiece(piece);
 
 				Piece otherPiece = moveResult.getPiece();
-				System.out.println("the other piece is:"+otherPiece);
+				System.out.println("the other piece is:" + otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
 				break;
@@ -196,7 +195,7 @@ public class PlayController implements Initializable {
 		return new MoveResult(MoveType.NONE);
 	}
 
-	//move update(Model)
+	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
@@ -211,18 +210,38 @@ public class PlayController implements Initializable {
 		System.out.println("the old move Y is:" + oldX + " old X is:" + oldY);
 		System.out.println("the new move Y is:" + newX + " new X is:" + newY);
 		System.out.println(PlayGameController.getInstance().getGame().getBoard().toString());
-		System.out.println("this piece color is:"+piece.getPieceType());
-		if (piece.getPieceType().equals(PieceType.BLUE)) {
-			 result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1,true);
+		System.out.println("this piece color is:" + piece.getPieceType());
+		if (PlayGameController.getInstance().getGame().isP1Turn()) {
+			currentPlayer=player_1;
+			if (piece.getPieceType().equals(PieceType.BLUE)) {
+				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1, true);
+				PlayGameController.getInstance().getGame().setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+			}
 		}
-		if (piece.getPieceType().equals(PieceType.RED)) {
-			 result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2,false);
+		if (!PlayGameController.getInstance().getGame().isP1Turn()) {
+			currentPlayer=player_2;
+			if (piece.getPieceType().equals(PieceType.RED)) {
+				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2, false);
 
+				PlayGameController.getInstance().getGame().setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+
+			}
 		}
 		System.out.println("the result is:" + result);
+		updateScore(player_1);
+		updateScore(player_2);
 
-		return new MoveResult(result,boardView[x1][y1].getPiece());
+		return new MoveResult(result, boardView[x1][y1].getPiece());
 
+	}
+
+	private void updateScore(Player p) {
+		if (p.equals(player_1)) {
+			point1.setText(String.valueOf(player_1.getScore()));
+		} else if (p.equals(player_2)) {
+			point2.setText(String.valueOf(player_2.getScore()));
+
+		}
 	}
 
 	private int toBoard(double pixel) {
