@@ -30,10 +30,19 @@ public class QuestionController implements Initializable {
 	private Button back;
 
 	static Question updatedQ;
-	static int flag = 1;
+	static int flag = 0;
 
 	@FXML
 	private ListView<Question> list;
+
+	public ListView<Question> getList() {
+		return list;
+	}
+
+	public void setList(ListView<Question> list) {
+		this.list = list;
+	}
+
 	@FXML
 	private ImageView image;
 	private HashMap<Difficulty, ArrayList<Question>> questions;
@@ -59,14 +68,14 @@ public class QuestionController implements Initializable {
 		Question q = list.getSelectionModel().getSelectedItem();
 		list.getItems().remove(q);
 		SysData.getInstance().removeQuestion(q);
-		//System.out.println(SysData.getInstance().getQuestions());
-		//SysData.getInstance().saveQuestions(null);
-		//System.out.println(SysData.getInstance().getQuestions());
-		//SysData.getInstance().loadQuestions(null);
+		// System.out.println(SysData.getInstance().getQuestions());
+		// SysData.getInstance().saveQuestions(null);
+		// System.out.println(SysData.getInstance().getQuestions());
+		// SysData.getInstance().loadQuestions(null);
 	}
 
 	public void addQuestion(ActionEvent event) throws Exception {
-	
+
 		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/AddQuestion.fxml"));
@@ -77,7 +86,6 @@ public class QuestionController implements Initializable {
 	}
 
 	public void updateQuestion(ActionEvent event) throws Exception {
-
 		updatedQ = list.getSelectionModel().getSelectedItem();
 		closeWindow();
 		Stage primaryStage = new Stage();
@@ -93,8 +101,9 @@ public class QuestionController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-			SysData.getInstance().loadQuestions(null);
-	
+
+		SysData.getInstance().loadQuestions(null);
+
 		questions = sysData.getQuestions();
 		for (Difficulty d : questions.keySet()) {
 			for (Question q : questions.get(d)) {

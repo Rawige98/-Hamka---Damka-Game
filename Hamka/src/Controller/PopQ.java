@@ -9,7 +9,7 @@ public class PopQ {
 	
 	public Question popQuestion() {
 		
-		sys.loadQuestions(null);
+		//sys.loadQuestions(null);
 		return sys.popQuestion();
 	}
 

@@ -1,5 +1,9 @@
 .list-cell {
     -fx-background-color: transparent;
+   -fx-font-size : 18.0;
+     -fx-font-family: "Berlin Sans FB";
+     -fx-text-fill: white;
+    
 }
 .list-view {
     -fx-background-color: transparent;
