@@ -30,7 +30,7 @@ public class TileView extends Rectangle{
 		setHeight(Consts.TILE_SIZE);
 		relocate(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
 		//changes in the colors
-		setFill(isWhite ? Color.BLACK : Color.WHITE);
+		setFill(isWhite ? Color.WHITE : Color.BLACK);
 	}
 
 }
