@@ -16,7 +16,7 @@
                   <Image url="@../images/history.PNG" />
                </image>
             </ImageView>
-            <ListView fx:id="HistoryList" layoutX="91.0" layoutY="67.0" onMouseClicked="#showSelected" opacity="0.7" prefHeight="237.0" prefWidth="508.0" />
+            <ListView fx:id="HistoryList" layoutX="91.0" layoutY="67.0" opacity="0.7" prefHeight="237.0" prefWidth="508.0" />
             <Label layoutX="259.0" layoutY="14.0" prefHeight="35.0" prefWidth="178.0" text="History Scoreboard" textFill="WHITE">
                <font>
                   <Font name="Aharoni Bold" size="18.0" />

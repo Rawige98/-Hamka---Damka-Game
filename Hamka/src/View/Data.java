@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import Model.Game;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -34,7 +35,7 @@ public class Data {
 
 	@FXML
 	private Button b1;
-
+	
 	private static Game game = null;
 	private Game cellGame = null;
 
@@ -45,8 +46,17 @@ public class Data {
 	public static void setGame(Game game) {
 		Data.game = game;
 	}
+	
+	public Button getB1() {
+		return b1;
+	}
+
+	public void setB1(Button b1) {
+		this.b1 = b1;
+	}
 
 	public Data() {
+	
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/listCellItem.fxml"));
 		fxmlLoader.setController(this);
 		try {
@@ -63,9 +73,18 @@ public class Data {
 			fstImg.setImage(new Image("/images/winner.png"));
 		if (game.getWinner().equals(game.getPlayer2()))
 			secImg.setImage(new Image("/images/winner.png"));
-		b1.setText("Show Board");
 		gameDate.setText(game.getGameDate().toString());
+		b1.setText("Show Board");
 		cellGame = game;
+		Data.game=cellGame;
+	b1.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				System.out.println(cellGame.getPlayer1());
+			}
+		});
 	}
 
 	public HBox getBox() {
