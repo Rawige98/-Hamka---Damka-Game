@@ -74,7 +74,6 @@ public class QuestionController implements Initializable {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("add question");
 		primaryStage.show();
-
 	}
 
 	public void updateQuestion(ActionEvent event) throws Exception {

@@ -105,8 +105,8 @@ public class UpdateQuestionController implements Initializable  {
 		q1.addAnswer(answer3);
 		q1.addAnswer(answer4);
 		System.out.println(QuestionController.updatedQ.getText());
-		SysData.getInstance().removeQuestion(QuestionController.updatedQ);
 		SysData.getInstance().addQuestion(q1);
+		SysData.getInstance().removeQuestion(QuestionController.updatedQ);
 		//SysData.getInstance().saveQuestions(null);
 		((Stage) ans3.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
