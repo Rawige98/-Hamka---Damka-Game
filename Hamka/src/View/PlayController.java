@@ -97,6 +97,7 @@ public class PlayController implements Initializable {
 
 		player_1 = MainPageController.getPlayer1();
 		player_2 = MainPageController.getPlayer2();
+		currentPlayer = player_1;
 		PlayGameController.getInstance().startGame(player_1, player_2);
 
 	}
@@ -113,10 +114,10 @@ public class PlayController implements Initializable {
 
 				Piece piece = null;
 				// changes in (if)
-				if (y <= 2 && (x + y) % 2 == 0) {
+				if (y <= 2 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.RED, x, y);
 				}
-				if (y >= 5 && (x + y) % 2 == 0) {
+				if (y >= 5 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.BLUE, x, y);
 				}
 				if (piece != null) {
@@ -211,21 +212,33 @@ public class PlayController implements Initializable {
 		System.out.println("the new move Y is:" + newX + " new X is:" + newY);
 		System.out.println(PlayGameController.getInstance().getGame().getBoard().toString());
 		System.out.println("this piece color is:" + piece.getPieceType());
-		if (PlayGameController.getInstance().getGame().isP1Turn()) {
-			currentPlayer=player_1;
+
+		// if (PlayGameController.getInstance().getGame().isP1Turn()) {
+		if (currentPlayer.equals(player_1)) {
 			if (piece.getPieceType().equals(PieceType.BLUE)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1, true);
-				PlayGameController.getInstance().getGame().setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				PlayGameController.getInstance().getGame()
+						.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				currentPlayer = player_2;
+
 			}
 		}
-		if (!PlayGameController.getInstance().getGame().isP1Turn()) {
-			currentPlayer=player_2;
+		if (currentPlayer.equals(player_2)) {
+			// if (!PlayGameController.getInstance().getGame().isP1Turn()) {
 			if (piece.getPieceType().equals(PieceType.RED)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2, false);
 
-				PlayGameController.getInstance().getGame().setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				PlayGameController.getInstance().getGame()
+						.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				currentPlayer = player_1;
 
 			}
+
+		}
+		
+		if(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen())
+		{
+		//	boardView[x1][y1].getPiece().setPieceType();
 		}
 		System.out.println("the result is:" + result);
 		updateScore(player_1);

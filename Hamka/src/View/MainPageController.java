@@ -2,6 +2,8 @@ package View;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import Model.Player;
@@ -88,10 +90,10 @@ public class MainPageController implements Initializable {
 	@FXML
 	private TextField p2;
 	@FXML
-    private Pane newPane;
+	private Pane newPane;
 
-    @FXML
-    private ImageView menu;
+	@FXML
+	private ImageView menu;
 
 	private static Player player1;
 	private static Player player2;
@@ -138,6 +140,7 @@ public class MainPageController implements Initializable {
 		history.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
 
 	}
+
 	@FXML
 	public void Admin(ActionEvent event) throws Exception {
 		closeWindow();
@@ -148,9 +151,10 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("login");
 		primaryStage.show();
 	}
+
 	@FXML
 	public void Play(ActionEvent event) throws Exception {
-		isSoundOn=false;
+		isSoundOn = false;
 		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/NickName.fxml"));
@@ -159,9 +163,10 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("enter nick Name");
 		primaryStage.show();
 	}
+
 	@FXML
 	public void Rules(ActionEvent event) throws Exception {
-		isSoundOn=false;
+		isSoundOn = false;
 		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Rules.fxml"));
@@ -170,16 +175,17 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("RULES");
 		primaryStage.show();
 	}
-    @FXML
-    void History(ActionEvent event) throws IOException {
+
+	@FXML
+	void History(ActionEvent event) throws IOException {
 		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/History.fxml"));
-		Scene scene = new Scene(root, 680,333);
+		Scene scene = new Scene(root, 680, 333);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("History");
 		primaryStage.show();
-    }
+	}
 
 	@FXML
 	void soundClicked(MouseEvent event) {
@@ -195,9 +201,9 @@ public class MainPageController implements Initializable {
 			MainPageController.isSoundOn = true;
 		}
 	}
-	
+
 	public void pop(ActionEvent event) throws Exception {
-	
+
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
 		Scene scene = new Scene(root, 473, 310);
@@ -207,8 +213,6 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("Play");
 		primaryStage.show();
 	}
-	
-	
 
 	/**********************************************
 	 * nick name page
@@ -218,20 +222,33 @@ public class MainPageController implements Initializable {
 	void closeWindowInst(ActionEvent event) {
 		((Stage) closeInst.getScene().getWindow()).close();
 	}
-	
+
 	@FXML
 	void menu(MouseEvent event) {
 		newPane.setVisible(true);
 	}
-	
+
 	@FXML
 	void deletemenu(MouseEvent event) {
 		newPane.setVisible(false);
 	}
 
 	public void Start(ActionEvent event) throws Exception {
+		ArrayList<Player> players = new ArrayList<Player>();
+
 		player1 = new Player(p1.getText());
 		player2 = new Player(p2.getText());
+		players.add(player1);
+		players.add(player2);
+		Player firstPlayer = players.get(new Random().nextInt(players.size()));
+		Player secondPlayer;
+		if (firstPlayer.equals(player1)) {
+			secondPlayer = player2;
+		} else {
+			secondPlayer = player1;
+		}
+		player1 = firstPlayer;
+		player2 = secondPlayer;
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
