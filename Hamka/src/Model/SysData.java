@@ -241,6 +241,7 @@ public class SysData {
 			myArray.add(question);
 		}
 		questions.put(question.getDifficulty(), myArray);
+		saveQuestions(null);
 
 	}
 
