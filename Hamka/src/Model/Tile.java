@@ -3,7 +3,7 @@ package Model;
 import java.awt.Color;
 
 
-public class Tile {
+public abstract class Tile implements Cloneable{
 	private int value;
 	private java.awt.Color color;
 	private int rows;
@@ -70,55 +70,20 @@ public class Tile {
 	 * @param TileView T
 	 * @return true if the soldier upgraded successfully
 	 */
-	public boolean upgradeToQueen() {
-
-		System.out.println(Board.toIndex(rows, cols));
-
-		if (this.getValue() == 1 && Board.toIndex(rows, cols) >= 0 && Board.toIndex(rows, cols) < 4) {
-			this.setValue(11);
-			return true;
-		}
-
-		if (this.getValue() == 2 && Board.toIndex(rows, cols) >= 29 && Board.toIndex(rows, cols) < 33) {
-			this.setValue(22);
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String toString() {
-
-		String colorTxt;
-		if(this.color.equals(Color.yellow))
-			colorTxt = "YELLOW";
-		else if(this.color.equals(Color.red))
-			colorTxt = "RED";
-		else if(this.color.equals(Color.blue))
-			colorTxt = "BLUE";
-		else if(this.color.equals(Color.orange))
-			colorTxt = "ORANGE" ;
-		else if(this.color.equals(Color.green))
-			colorTxt = "GREEN";
-		else if(this.color.equals(Color.white)) {
-			colorTxt = "WHITE";
-		}
-		else
-			colorTxt = "BLACK";
+	public abstract boolean upgradeToQueen() ;
+	public abstract boolean isQueen();
+	public abstract Tile makeCopy();
+	//Clone Factory
+	public Tile getClone(Tile t) {
 		
-		
-		return  value+" - "+colorTxt;
-
+		return t.makeCopy();
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + cols;
 		result = prime * result + rows;
-		result = prime * result + value;
 		return result;
 	}
 
@@ -131,18 +96,16 @@ public class Tile {
 		if (getClass() != obj.getClass())
 			return false;
 		Tile other = (Tile) obj;
-		if (color == null) {
-			if (other.color != null)
-				return false;
-		} else if (!color.equals(other.color))
-			return false;
 		if (cols != other.cols)
 			return false;
 		if (rows != other.rows)
 			return false;
-		if (value != other.value)
-			return false;
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return value+"";
+	}
+	
 }
