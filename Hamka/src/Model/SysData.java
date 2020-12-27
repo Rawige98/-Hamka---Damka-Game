@@ -275,7 +275,7 @@ public class SysData {
 		if(pop.isEmpty())
 		{
 			System.out.println("here");
-			pop=questions;
+			pop.putAll(questions);
 		}
 		Object[] diff = pop.keySet().toArray();
 		Difficulty key = (Difficulty) diff[new Random().nextInt(diff.length)];

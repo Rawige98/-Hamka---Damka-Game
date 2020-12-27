@@ -77,6 +77,7 @@ public class Data {
 		b1.setText("Show Board");
 		cellGame = game;
 		Data.game=cellGame;
+		System.out.println(game.getBoard().getMyBoard()[0][0].getClass());
 	b1.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override

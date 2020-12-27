@@ -1,1 +1,1 @@
-{"questions":[{"question":"q1","level":1,"answers":["answer1","answer2","answer3","answer4"],"team":"Wolf","correct_ans":2},{"question":"q2","level":1,"answers":["answer1","answer2","answer3","answer4"],"team":"Wolf","correct_ans":2},{"question":"aaa","level":3,"answers":["1","2","3","4"],"team":"Wolf","correct_ans":3}]}
+{}

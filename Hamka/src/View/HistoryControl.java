@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import Model.Game;
+import Model.Player;
 import Model.SysData;
 import Utils.DataType;
 import javafx.beans.value.ChangeListener;
@@ -40,7 +41,11 @@ public class HistoryControl implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-
+		Player x=new Player("Nagwan");
+		Game m=new Game(x,new Player("tony"));
+		m.setWinner(x);
+		SysData.getInstance().addFinishedGame(m);
+		SysData.getInstance().writeData(DataType.FINISHED_GAMES);
 		SysData.getInstance().loadData(DataType.FINISHED_GAMES);
 		finishedGames = new HashSet<Game>();
 		finishedGames.addAll(arr);

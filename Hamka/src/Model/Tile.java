@@ -3,12 +3,11 @@ package Model;
 import java.awt.Color;
 
 
-public abstract class Tile implements Cloneable{
+public class Tile implements Cloneable,TileOperations{
 	private int value;
 	private java.awt.Color color;
 	private int rows;
 	private int cols;
-
 	public static final String TEXT_RESET = "\u001B[0m";
 	public static final String TEXT_BLACK = "\u001B[30m";
 	public static final String TEXT_RED = "\u001B[31m";
@@ -64,15 +63,7 @@ public abstract class Tile implements Cloneable{
 	}
 
 	// ------------------------------------
-	/**
-	 * in this method we upgrade the soldier to queen
-	 * 
-	 * @param TileView T
-	 * @return true if the soldier upgraded successfully
-	 */
-	public abstract boolean upgradeToQueen() ;
-	public abstract boolean isQueen();
-	public abstract Tile makeCopy();
+
 	//Clone Factory
 	public Tile getClone(Tile t) {
 		
@@ -107,5 +98,23 @@ public abstract class Tile implements Cloneable{
 	public String toString() {
 		return value+"";
 	}
-	
+
+	@Override
+	public boolean upgradeToQueen() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isQueen() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Tile makeCopy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
