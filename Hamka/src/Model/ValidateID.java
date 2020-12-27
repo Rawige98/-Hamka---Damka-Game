@@ -9,17 +9,17 @@ public class ValidateID {
 	private boolean isP1;
 	private boolean finish;
 
-
-	public ValidateID(int xStart, int xEnd, int yStart, int yEnd, Board myBoard, boolean isP1) {
+	public ValidateID(int xStart, int xEnd, int yStart, int yEnd, Board myBoard, boolean isP1,boolean finish) {
 		super();
 		this.xStart = xStart;
 		this.xEnd = xEnd;
 		this.yStart = yStart;
 		this.yEnd = yEnd;
-		this.myBoard=myBoard;
+		this.myBoard = myBoard;
 		this.isP1 = isP1;
+		this.finish=finish;
 	}
-	
+
 	/**
 	 * Validates all ID related values for the start, end, and middle (if the move
 	 * is a skip).
@@ -39,8 +39,8 @@ public class ValidateID {
 			return false;
 		}
 		// check if the the player play with his soldiers
-		if ((!isP1 && myBoard.getMyBoard()[yStart][xStart].getValue() != 2 && myBoard.getMyBoard()[yStart][xStart].getValue() != 22)
-				|| (isP1  && myBoard.getMyBoard()[yStart][xStart].getValue() != 1 && myBoard.getMyBoard()[yStart][xStart].getValue() != 11)) {
+		if ((!isP1 && myBoard.getMyBoard()[yStart][xStart] instanceof WhiteSoldier)
+				|| (isP1 && myBoard.getMyBoard()[yStart][xStart] instanceof BlackSoldier)) {
 			if (finish)
 				return false;
 			System.out.println("thats not your soldier");

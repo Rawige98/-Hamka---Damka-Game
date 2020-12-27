@@ -31,13 +31,13 @@ public class ValidateDistance {
 		// Check that it was a diagonal move
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
-		if (myBoard.getMyBoard()[yStart][xStart].getValue() != 22 && myBoard.getMyBoard()[yStart][xStart].getValue() != 11) {
+		if (!myBoard.getMyBoard()[yStart][xStart].isQueen()) {
 			if (Math.abs(dx) != Math.abs(dy) || Math.abs(dx) > 2 || dx == 0) {
 				return false;
 			}
 			// Check that it was in the right direction
-			if ((myBoard.getMyBoard()[yStart][xStart].getValue() == 1 && dx > 0)
-					|| (myBoard.getMyBoard()[yStart][xStart].getValue() == 2 && dx < 0)) {
+			if ((myBoard.getMyBoard()[yStart][xStart] instanceof WhiteSoldier && dx > 0)
+					|| (myBoard.getMyBoard()[yStart][xStart] instanceof BlackSoldier && dx < 0)) {
 				return false;
 			}
 		} else {
@@ -135,8 +135,8 @@ public class ValidateDistance {
 					j = 0;
 				dy = yEnd - j;
 				dx = xEnd - i;
-				if ((!isP1 && (myBoard.getMyBoard()[j][i].getValue() == 11 || myBoard.getMyBoard()[j][i].getValue() == 1))
-						|| isP1 && (myBoard.getMyBoard()[j][i].getValue() == 22 || myBoard.getMyBoard()[j][i].getValue() == 2))
+				if ((!isP1 && (myBoard.getMyBoard()[j][i] instanceof WhiteSoldier))
+						|| isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier))
 					return false;
 			}
 		return true;

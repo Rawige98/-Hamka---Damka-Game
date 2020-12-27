@@ -1,7 +1,5 @@
 package Model;
 
-import Utils.Consts;
-
 public class SkipValidation {
 	private int xStart;
 	private int xEnd;
@@ -35,17 +33,17 @@ public class SkipValidation {
 	public boolean skipValidation() {
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
-		if (myBoard.getMyBoard()[yStart][xStart].getValue() != 22 && myBoard.getMyBoard()[yStart][xStart].getValue() != 11) {
+		if (!myBoard.getMyBoard()[yStart][xStart].isQueen()) {
 			// if its not a skip
 			if (Math.abs(dx) != 2) {
 				return true;
 			}
 			int xmid = (xStart + xEnd) / 2;
 			int ymid = (yStart + yEnd) / 2;
-			if ((myBoard.getMyBoard()[yStart][xStart].getValue() == 1 && myBoard.getMyBoard()[ymid][xmid].getValue() != 2)
-					|| (myBoard.getMyBoard()[yStart][xStart].getValue() == 2 && myBoard.getMyBoard()[ymid][xmid].getValue() != 1))
+			if ((myBoard.getMyBoard()[yStart][xStart] instanceof WhiteSoldier &&!(myBoard.getMyBoard()[ymid][xmid] instanceof BlackSoldier))
+					|| (myBoard.getMyBoard()[yStart][xStart] instanceof BlackSoldier && !(myBoard.getMyBoard()[ymid][xmid] instanceof WhiteSoldier)))
 				return false;
-			if (!isValidPoint(xEnd, yEnd))
+			if (!MoveValidation.isValidPoint(xEnd, yEnd))
 				return false;
 			if (myBoard.getMyBoard()[yEnd][xEnd].getValue() != 0)
 				return false;
@@ -127,8 +125,8 @@ public class SkipValidation {
 					j = 0;
 				dy = yEnd - j;
 				dx = xEnd - i;
-				if ((!isP1 && (myBoard.getMyBoard()[j][i].getValue() == 1) || myBoard.getMyBoard()[j][i].getValue() == 11)
-						|| isP1 && ((myBoard.getMyBoard()[j][i].getValue() == 2) || myBoard.getMyBoard()[j][i].getValue() == 22))
+				if ((!isP1 && (myBoard.getMyBoard()[j][i] instanceof WhiteSoldier)
+						|| isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier)))
 					c++;
 			}
 			if (c != 1)
@@ -136,19 +134,5 @@ public class SkipValidation {
 		}
 		return true;
 	}
-	private boolean isValidPoint(int x, int y) {
-		// Check that it is on the board
-		if (x < 0 || x > Consts.COLS -1 || y < 0 || y > Consts.COLS -1) {
-			return false;
-		}
 
-		// Check that it is on a black tile
-		if (x % 2 == y % 2) {
-			return true;
-		}
-
-		return false;
-	}
-
-	
 }

@@ -2,7 +2,6 @@ package Model;
 
 import java.awt.Point;
 
-import JUnit.ValidateMoveTest;
 import Utils.Consts;
 
 public class MoveValidation {
@@ -23,7 +22,7 @@ public class MoveValidation {
 		this.yEnd = yEnd;
 		this.finish = finish;
 		vDistance=new ValidateDistance(xStart, xEnd, yStart, yEnd, myBoard, isP1);
-		vID=new ValidateID(xStart, xEnd, yStart, yEnd, myBoard, isP1);
+		vID=new ValidateID(xStart, xEnd, yStart, yEnd, myBoard, isP1,finish);
 		vSkip=new SkipValidation(xStart, xEnd, yStart, yEnd, myBoard, isP1);
 	}
 	/**
@@ -85,7 +84,7 @@ public class MoveValidation {
 	 */
 	public static int toIndex(int x, int y) {
 		// Invalid (x, y) (i.e. not in board, or white tile)
-		if (!isValidPoint(x, y)) {
+		if (!MoveValidation.isValidPoint(x, y)) {
 			return -1;
 		}
 		return x * 4 + y / 2;
@@ -105,9 +104,9 @@ public class MoveValidation {
 
 		// Check that it is on a black tile
 		if (x % 2 == y % 2) {
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 }

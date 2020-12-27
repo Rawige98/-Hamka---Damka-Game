@@ -301,10 +301,15 @@ public class Game {
 		Player p = null;
 		p = isP1Turn ? player1 : player2;
 		HashMap<Tile, ArrayList<Tile>> mp = board.checkAvailableSkips(isP1Turn);
-		Tile start = new Tile(board.getMyBoard()[yStart][xStart].getValue(),
-				board.getMyBoard()[yStart][xStart].getColor(), yStart, xStart);
-		Tile end = new Tile(board.getMyBoard()[yEnd][xEnd].getValue(), board.getMyBoard()[yEnd][xEnd].getColor(), yEnd,
-				xEnd);
+		Tile start,end;
+		if(board.getMyBoard()[yStart][xStart] instanceof BlackSoldier)
+			start=new BlackSoldier(yStart,xStart);
+		else
+			start=new WhiteSoldier(yEnd,xEnd);
+		if(board.getMyBoard()[yEnd][xEnd] instanceof BlackSoldier)
+			end=new BlackSoldier(yEnd,xEnd);
+		else
+			end=new WhiteSoldier(yEnd,xEnd);
 		boolean isIgnoreSkip = false;
 		boolean isSkip = false;
 		ArrayList<Tile> availableTilesToSkip = mp.get(start);
@@ -461,25 +466,25 @@ public class Game {
 		Game n = new Game(new Player("Nagwan"), new Player("Tony"));
 		 n.move(5, 0, 4, 1);
 		 n.move(2, 3, 3, 2);
-		 n.move(4, 1, 2, 3);
-		 n.move(2, 5, 3, 4);
-		 n.move(5, 2, 4, 1);
-		 n.move(1, 6, 2, 5);
-		 n.move(4, 1, 3, 2);
-		 n.move(0, 5, 1, 6);
-		 n.move(2, 3, 0, 5);
-		 n.move(1, 2, 2, 3);
-		 n.move(5, 6, 4, 7);
-		 n.move(2, 1, 3, 0);
-		 n.move(3, 2, 2, 1);
-		 n.move(3, 0, 4, 1);
-		 n.move(0, 5, 3, 2);
-		 n.move(3, 4, 4, 5);
-		 n.move(3, 2, 5, 0);
-		 n.move(4,5,5,6);
-		 n.move(4, 7, 3, 6);
-		 n.move(2, 5, 4, 7);
-		 n.move(5, 0, 3, 6);
+//		 n.move(4, 1, 2, 3);
+//		 n.move(2, 5, 3, 4);
+//		 n.move(5, 2, 4, 1);
+//		 n.move(1, 6, 2, 5);
+//		 n.move(4, 1, 3, 2);
+//		 n.move(0, 5, 1, 6);
+//		 n.move(2, 3, 0, 5);
+//		 n.move(1, 2, 2, 3);
+//		 n.move(5, 6, 4, 7);
+//		 n.move(2, 1, 3, 0);
+//		 n.move(3, 2, 2, 1);
+//		 n.move(3, 0, 4, 1);
+//		 n.move(0, 5, 3, 2);
+//		 n.move(3, 4, 4, 5);
+//		 n.move(3, 2, 5, 0);
+//		 n.move(4,5,5,6);
+//		 n.move(4, 7, 3, 6);
+//		 n.move(2, 5, 4, 7);
+//		 n.move(5, 0, 3, 6);
 		System.out.println("Bye");
 		System.out.println(n.getGameState());
 		System.out.println("BYEBYE");
