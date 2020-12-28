@@ -439,6 +439,7 @@ public class Game {
 		if (sCount == 2 && qCount == 1)
 			board.colorRandomTile(suggestedTiles, Color.blue);
 	}
+	
 
 	private ArrayList<Tile> getSuggestedTilesArray() {
 		// TODO Auto-generated method stub
