@@ -227,7 +227,7 @@
             </ImageView>
             <ImageView fitHeight="75.0" fitWidth="140.0" layoutX="394.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/giphy.gif" />
+                  <Image url="@../images/giphy1.gif" />
                </image>
             </ImageView>
          </children>
@@ -241,27 +241,27 @@
             </Label>
             <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="186.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/222.png" />
+                  <Image url="@../images/2222.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="441.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/0004.png" />
+                  <Image url="@../images/00045.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="188.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/55553.png" />
+                  <Image url="@../images/555533.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="441.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/5672.png" />
+                  <Image url="@../images/56722.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="433.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/תמונה7.png" />
+                  <Image url="@../images/תמונה77.png" />
                </image>
             </ImageView>
             <Text layoutX="24.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Yellow squares – 3 yellow squares appears randomly on the game board." wrappingWidth="173.89523315429688">
@@ -276,7 +276,7 @@
             </Text>
             <ImageView fitHeight="35.0" fitWidth="150.0" layoutX="23.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/תמונה8.png" />
+                  <Image url="@../images/תמונה88.png" />
                </image>
             </ImageView>
             <Label layoutX="24.0" layoutY="153.0" prefHeight="19.0" prefWidth="93.0" text="Correct Answer:">
@@ -291,7 +291,7 @@
             </Label>
             <ImageView fitHeight="35.0" fitWidth="150.0" layoutX="23.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/תמונה9.png" />
+                  <Image url="@../images/תמונה99.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="46.0" fitWidth="48.0" layoutX="191.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" rotate="113.2">

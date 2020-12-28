@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+
 import Controller.PlayGameController;
 import Model.Game;
 import Model.Player;
@@ -14,6 +15,7 @@ import Utils.Consts;
 import Utils.MoveResult;
 import Utils.MoveType;
 import Utils.PieceType;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,6 +59,8 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private AnchorPane rootPane;
+	@FXML
+	private Label gameTimer;
 
 	@FXML
 	private BorderPane rootBorderPane;
@@ -64,21 +68,34 @@ public class PlayController implements Initializable {
 	private Group tileGroup;
 	private Group pieceGroup;
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
-
+	private Thread t = null;
+	private Thread tp1 = null;
+//	private Thread tp2 = null;
 	private Game game;
 	private Player player_1;
 	private Player player_2;
 	private boolean gameInProgress; // Is a game currently in progress?
 	private Player currentPlayer; // Whose turn is it now? The possible values
+	private TimerForGame timer;
+	private TimerForPlayer1 PlayerTimer1;
 	int count = 0;
-
+	//private TimerForPlayer2 PlayerTimer2;
 	@FXML
 	void closeWindow(ActionEvent event) {
+
+
+		//tp1.stop();
+		Game.notFinished=false;
+		t.stop();
+		tp1.stop();
 		((Stage) player1.getScene().getWindow()).close();
 	}
 
 	@FXML
 	public void back(ActionEvent event) throws Exception {
+		Game.notFinished=false;
+		t.stop();
+		tp1.stop();
 		((Stage) player1.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
@@ -88,23 +105,7 @@ public class PlayController implements Initializable {
 		primaryStage.show();
 	}
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		player1.setText(MainPageController.getPlayer1().getUsername());
-		player2.setText(MainPageController.getPlayer2().getUsername());
-		point1.setText(Integer.toString(MainPageController.getPlayer1().getScore()));
-		point2.setText(Integer.toString(MainPageController.getPlayer2().getScore()));
-		tileGroup = new Group();
-		pieceGroup = new Group();
-		rootBorderPane.setCenter(createBoardView());
 
-		player_1 = MainPageController.getPlayer1();
-		player_2 = MainPageController.getPlayer2();
-		currentPlayer = player_1;
-		PlayGameController.getInstance().startGame(player_1, player_2);
-		showYellowTiles();
-
-	}
 
 	public Pane createBoardView() {
 		boardPane = new Pane();
@@ -228,8 +229,8 @@ public class PlayController implements Initializable {
 		if (currentPlayer.equals(player_1)) {
 			if (piece.getPieceType().equals(PieceType.BLUE)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1, true);
-				PlayGameController.getInstance().getGame()
-						.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				PlayGameController.getInstance().getGame();
+				Game.setP1Turn(!Game.getIsP1Turn());
 				currentPlayer = player_2;
 
 			}
@@ -237,8 +238,8 @@ public class PlayController implements Initializable {
 			if (piece.getPieceType().equals(PieceType.RED)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2, false);
 
-				PlayGameController.getInstance().getGame()
-						.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				PlayGameController.getInstance().getGame();
+				Game.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
 				currentPlayer = player_1;
 
 			}
@@ -249,8 +250,27 @@ public class PlayController implements Initializable {
 		updateScore(player_2);
 
 		return new MoveResult(result, boardView[x1][y1].getPiece());
-
 	}
+
+//		System.out.println("your index is:" + newY + "," + newX);
+//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[newX][newY].getColor());
+//
+//		if (/* boardView[x1][y1].getFill().equals(Color.YELLOW)&& */PlayGameController.getInstance().isYellowTile(newX,
+//				newY)) {
+//			count++;
+//			System.out.println(count + " **yellow:" + newY + "," + newX);
+//		}
+//
+//		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
+//			// boardView[x1][y1].getPiece().setPieceType();
+//		}
+//		updateScore(player_1);
+//		updateScore(player_2);
+//
+//		return new MoveResult(result, boardView[x1][y1].getPiece());
+//
+//	}
+
 
 	private void showYellowTiles() {
 		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
@@ -264,11 +284,11 @@ public class PlayController implements Initializable {
 //			boardView[x][y] = tileView;
 			boardView[y][x].setFill(Color.YELLOW);
 
-//			tileGroup.getChildren().add(tileView);
-
-		}
 
 	}
+
+}
+
 
 	private void turnOffAllColors() {
 		Color color;
@@ -304,4 +324,261 @@ public class PlayController implements Initializable {
 	private int toBoard(double pixel) {
 		return (int) (pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
 	}
+
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		Game.notFinished=true;
+		Game.setP1Turn(true);
+		timer = new TimerForGame();
+		t = new Thread(timer);
+		t.start();
+		////////////////////////////
+		PlayerTimer1 = new TimerForPlayer1();
+		tp1 =  new Thread(PlayerTimer1);
+		tp1.start();
+
+		player1.setText(MainPageController.getPlayer1().getUsername());
+		player2.setText(MainPageController.getPlayer2().getUsername());
+		point1.setText(Integer.toString(MainPageController.getPlayer1().getScore()));
+		point2.setText(Integer.toString(MainPageController.getPlayer2().getScore()));
+		tileGroup = new Group();
+		pieceGroup = new Group();
+		rootBorderPane.setCenter(createBoardView());
+
+		player_1 = MainPageController.getPlayer1();
+		player_2 = MainPageController.getPlayer2();
+		currentPlayer = player_1;
+		PlayGameController.getInstance().startGame(player_1, player_2);
+		showYellowTiles();
+
+	}
+
+	public class TimerForPlayer1 implements Runnable {
+
+		private int second;
+		private int mints;
+		private Label l;
+
+		public Label getL() {
+			return l;
+		}
+
+		public void setL(Label l) {
+			this.l = l;
+		}
+
+		public int getSecond() {
+			return second;
+		}
+
+		public int getMints() {
+			return mints;
+		}
+
+		public void setMints(int mints) {
+			this.mints = mints;
+		}
+
+		public void setSecond(int second) {
+			this.second = second;
+		}
+
+		public void reset() {
+			this.second = -1;
+			this.mints = 0;
+		}
+		public TimerForPlayer1() {
+			this.second = -1;
+			this.mints = 0;
+		}
+
+
+		public void getLabel(Label text) {
+		   l=text;
+		}
+
+		@Override
+		public void run() {
+			//System.out.println("aya");
+			//System.out.println(Game.getIsP1Turn());
+			reset();
+
+			while (Game.getIsP1Turn()&&Game.notFinished) {
+
+				second++;
+				if (second >= 60) {
+					second = 0;
+					mints++;
+				}
+
+
+				Platform.runLater(()->{
+
+					if(mints<10 && second <10)
+					{
+						playerTimer.setText("0"+mints+" : 0"+second);
+					}
+					else if(mints<10)
+					{
+						playerTimer.setText("0"+mints+" : "+second);
+					}
+					else if(second<10)
+					{
+						playerTimer.setText(mints+" : 0"+second);
+					}
+					else
+					{
+						playerTimer.setText(mints+" : "+second);
+					}
+
+				});
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			reset();
+
+			while (!Game.getIsP1Turn()&&Game.notFinished) {
+
+				second++;
+				if (second >= 60) {
+					second = 0;
+					mints++;
+				}
+
+				Platform.runLater(()->{
+					if(mints<10 && second <10)
+					{
+						playerTimer.setText("0"+mints+" : 0"+second);
+					}
+					else if(mints<10)
+					{
+						playerTimer.setText("0"+mints+" : "+second);
+					}
+					else if(second<10)
+					{
+						playerTimer.setText(mints+" : 0"+second);
+					}
+					else
+					{
+						playerTimer.setText(mints+" : "+second);
+					}
+
+				});
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+           if(Game.notFinished){
+        	   run();
+           }
+
+
+
+		}
+
+	}
+
+
+
+
+	public class TimerForGame implements Runnable {
+
+		private int second;
+		private int mints;
+		private Label l;
+
+		public Label getL() {
+			return l;
+		}
+
+		public void setL(Label l) {
+			this.l = l;
+		}
+
+		public int getSecond() {
+			return second;
+		}
+
+		public int getMints() {
+			return mints;
+		}
+
+		public void setMints(int mints) {
+			this.mints = mints;
+		}
+
+		public void setSecond(int second) {
+			this.second = second;
+		}
+
+		public void reset() {
+			this.second = -1;
+			this.mints = 0;
+		}
+		public TimerForGame() {
+			this.second = -1;
+			this.mints = 0;
+		}
+
+
+		public void getLabel(Label text) {
+		   l=text;
+		}
+
+		@Override
+		public void run() {
+			System.out.println("aya");
+
+			while (Game.notFinished) {
+
+				second++;
+				if (second >= 60) {
+					second = 0;
+					mints++;
+				}
+
+				Platform.runLater(()->{
+					if(mints<10 && second <10)
+					{
+						gameTimer.setText("0"+mints+" : 0"+second);
+					}
+					else if(mints<10)
+					{
+						gameTimer.setText("0"+mints+" : "+second);
+					}
+					else if(second<10)
+					{
+						gameTimer.setText(mints+" : 0"+second);
+					}
+					else
+					{
+						gameTimer.setText(mints+" : "+second);
+					}
+
+				});
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+
+
+		}
+
+	}
+
+
+
+
 }

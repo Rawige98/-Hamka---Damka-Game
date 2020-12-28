@@ -29,7 +29,7 @@ public class Game {
 	private Timer gameDuration;
 	private static boolean isP1Turn;
 	private TimeForPlayer myTimer;
-	static boolean notFinished = false;
+	public static boolean notFinished = false;
 	private int Time = 0;
 	Scanner runGameScanner;
 
@@ -231,8 +231,12 @@ public class Game {
 		return isP1Turn;
 	}
 
-	public void setP1Turn(boolean isP1Turn) {
-		this.isP1Turn = isP1Turn;
+	public static  boolean getIsP1Turn() {
+		return isP1Turn;
+	}
+
+	public static void setP1Turn(boolean isP1Turn) {
+		Game.isP1Turn = isP1Turn;
 	}
 	// ---------------------------------------------------
 

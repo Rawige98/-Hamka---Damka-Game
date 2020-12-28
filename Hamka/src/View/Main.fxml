@@ -59,6 +59,11 @@
                   <Insets />
                </VBox.margin>
             </Button>
+            <Button fx:id="loadGame" mnemonicParsing="false" onMouseEntered="#historyColor" prefHeight="40.0" prefWidth="152.0" style="-fx-background-radius: 30; -fx-border-color: silver; -fx-border-radius: 30; -fx-background-color: silver;" text="Load Game" textFill="#cd4f06">
+               <font>
+                  <Font name="Berlin Sans FB" size="19.0" />
+               </font>
+            </Button>
             <Button fx:id="rules" mnemonicParsing="false" onAction="#Rules" onMouseEntered="#rulesColor" prefHeight="40.0" prefWidth="139.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Game Rules" textFill="#cd4f06">
                <font>
                   <Font name="Berlin Sans FB" size="19.0" />
