@@ -50,7 +50,7 @@
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="playerTimer" layoutX="290.0" layoutY="28.0" prefHeight="36.0" prefWidth="71.0" text="00:31" textFill="#e80d0d">
+            <Label fx:id="playerTimer" layoutX="277.0" layoutY="30.0" prefHeight="32.0" prefWidth="101.0" text="00 : 00" textFill="#e80d0d">
                <font>
                   <Font name="Berlin Sans FB" size="30.0" />
                </font>
@@ -71,7 +71,7 @@
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="303.0" layoutY="8.0" prefHeight="19.0" prefWidth="44.0" text="10:31">
+            <Label fx:id="gameTimer" layoutX="289.0" layoutY="10.0" prefHeight="22.0" prefWidth="77.0" text="00 : 00">
                <font>
                   <Font name="Berlin Sans FB" size="20.0" />
                </font>
