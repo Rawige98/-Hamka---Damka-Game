@@ -56,7 +56,7 @@ public class AdminController implements Initializable {
 					closeWindow();
 					Stage primaryStage = new Stage();
 					Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));
-					Scene scene = new Scene(root, 450, 456);
+					Scene scene = new Scene(root, 456, 450);
 					primaryStage.setScene(scene);
 					primaryStage.setTitle("questions");
 					primaryStage.show();
