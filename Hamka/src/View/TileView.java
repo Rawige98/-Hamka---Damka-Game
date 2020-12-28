@@ -31,6 +31,23 @@ public class TileView extends Rectangle{
 		relocate(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
 		//changes in the colors
 		setFill(isWhite ? Color.WHITE : Color.BLACK);
+		
 	}
+	
+	public TileView(Color color , int x, int y)
+	{
+		setWidth(Consts.TILE_SIZE);
+		setHeight(Consts.TILE_SIZE);
+		relocate(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
+		//changes in the colors
+		setFill(color);
+		
+	}
+	
+	/*
+	 * public void ChangeColor(Color color , int x, int y) {
+	 * setWidth(Consts.TILE_SIZE); setHeight(Consts.TILE_SIZE); relocate(x *
+	 * Consts.TILE_SIZE, y * Consts.TILE_SIZE); setFill(color); }
+	 */
 
 }

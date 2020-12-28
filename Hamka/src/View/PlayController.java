@@ -1,6 +1,7 @@
 package View;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -76,11 +77,12 @@ public class PlayController implements Initializable {
 	private Player currentPlayer; // Whose turn is it now? The possible values
 	private TimerForGame timer;
 	private TimerForPlayer1 PlayerTimer1;
+	int count = 0;
 	//private TimerForPlayer2 PlayerTimer2;
 	@FXML
 	void closeWindow(ActionEvent event) {
-		
-		
+
+
 		//tp1.stop();
 		Game.notFinished=false;
 		t.stop();
@@ -108,8 +110,10 @@ public class PlayController implements Initializable {
 		boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
 		boardPane.getChildren().addAll(tileGroup, pieceGroup);
+
 		for (int y = 0; y < Consts.ROWS; y++) {
 			for (int x = 0; x < Consts.COLS; x++) {
+
 				TileView tileView = new TileView((x + y) % 2 == 0, x, y);
 				boardView[x][y] = tileView;
 				tileGroup.getChildren().add(tileView);
@@ -136,24 +140,27 @@ public class PlayController implements Initializable {
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
-
 			// calling tryMoveTest instead of tryMove
 			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
-
+			if(boardView[newX][newY].getFill().equals(Color.YELLOW))
+				System.out.println("************** YELLOW TILE *******************");
 			switch (moveResult.getType()) {
 			case NONE:
 				piece.aboartMove();
 				break;
 			case NORMAL:
+				turnOffAllColors();
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
+				showYellowTiles();
 				break;
 
 			case KILL:
+				turnOffAllColors();
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
@@ -162,6 +169,7 @@ public class PlayController implements Initializable {
 				System.out.println("the other piece is:" + otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
+				showYellowTiles();
 				break;
 			default:
 				break;
@@ -210,12 +218,6 @@ public class PlayController implements Initializable {
 		int x1 = oldX + (newX - oldX) / 2;
 		int y1 = oldY + (newY - oldY) / 2;
 
-		System.out.println("the old move Y is:" + oldX + " old X is:" + oldY);
-		System.out.println("the new move Y is:" + newX + " new X is:" + newY);
-		System.out.println(PlayGameController.getInstance().getGame().getBoard().toString());
-		System.out.println("this piece color is:" + piece.getPieceType());
-
-		// if (PlayGameController.getInstance().getGame().isP1Turn()) {
 		if (currentPlayer.equals(player_1)) {
 			if (piece.getPieceType().equals(PieceType.BLUE)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1, true);
@@ -225,28 +227,68 @@ public class PlayController implements Initializable {
 
 			}
 		}
-		if (currentPlayer.equals(player_2)) {
-			// if (!PlayGameController.getInstance().getGame().isP1Turn()) {
+		else{
 			if (piece.getPieceType().equals(PieceType.RED)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2, false);
 
 				PlayGameController.getInstance().getGame();
-				Game
-						.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				Game.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
 				currentPlayer = player_1;
 
 			}
 
 		}
 
+		System.out.println("your index is:" + newY + "," + newX);
+		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[newX][newY].getColor());
+
+		if (/* boardView[x1][y1].getFill().equals(Color.YELLOW)&& */PlayGameController.getInstance().isYellowTile(newX,
+				newY)) {
+			count++;
+			System.out.println(count + " **yellow:" + newY + "," + newX);
+		}
+
 		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
 			// boardView[x1][y1].getPiece().setPieceType();
 		}
-		System.out.println("the result is:" + result);
 		updateScore(player_1);
 		updateScore(player_2);
 
 		return new MoveResult(result, boardView[x1][y1].getPiece());
+
+	}
+
+	private void showYellowTiles() {
+		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
+		for (Tile tile : yellowTiles) {
+			//System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
+		}
+		for (Tile tile : yellowTiles) {
+			int x = tile.getRows();
+			int y = tile.getCols();
+			TileView tileView = new TileView(Color.YELLOW, y, x);
+//			boardView[x][y] = tileView;
+			boardView[y][x].setFill(Color.YELLOW);
+			System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
+
+
+//			tileGroup.getChildren().add(tileView);
+
+		}
+
+	}
+
+	private void turnOffAllColors() {
+		Color color;
+		for(int x=0; x<Consts.COLS ; x++) {
+			for(int y=0; y<Consts.ROWS ; y++) {
+				color = ((x + y) % 2 == 0 ? Color.WHITE : Color.BLACK);
+				boardView[x][y].setFill(color);
+			}
+		}
+	}
+
+	private void popQuestion(int x, int y) {
 
 	}
 
@@ -262,8 +304,8 @@ public class PlayController implements Initializable {
 	private int toBoard(double pixel) {
 		return (int) (pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
 	}
-	
-	
+
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Game.notFinished=true;
@@ -276,9 +318,9 @@ public class PlayController implements Initializable {
 		tp1 =  new Thread(PlayerTimer1);
 		tp1.start();
 
-		
-		
-	
+
+
+
 		player1.setText(MainPageController.getPlayer1().getUsername());
 		player2.setText(MainPageController.getPlayer2().getUsername());
 		point1.setText(Integer.toString(MainPageController.getPlayer1().getScore()));
@@ -291,9 +333,10 @@ public class PlayController implements Initializable {
 		player_2 = MainPageController.getPlayer2();
 		currentPlayer = player_1;
 		PlayGameController.getInstance().startGame(player_1, player_2);
+		showYellowTiles();
 
 	}
-	
+
 	public class TimerForPlayer1 implements Runnable {
 
 		private int second;
@@ -343,18 +386,18 @@ public class PlayController implements Initializable {
 			//System.out.println("aya");
 			//System.out.println(Game.getIsP1Turn());
 			reset();
-			
+
 			while (Game.getIsP1Turn()&&Game.notFinished) {
-				
+
 				second++;
 				if (second >= 60) {
 					second = 0;
 					mints++;
 				}
-				
-				
+
+
 				Platform.runLater(()->{
-				
+
 					if(mints<10 && second <10)
 					{
 						playerTimer.setText("0"+mints+" : 0"+second);
@@ -371,7 +414,7 @@ public class PlayController implements Initializable {
 					{
 						playerTimer.setText(mints+" : "+second);
 					}
-					
+
 				});
 				try {
 					Thread.sleep(1000);
@@ -381,15 +424,15 @@ public class PlayController implements Initializable {
 				}
 			}
 			reset();
-			
+
 			while (!Game.getIsP1Turn()&&Game.notFinished) {
-				
+
 				second++;
 				if (second >= 60) {
 					second = 0;
 					mints++;
 				}
-				
+
 				Platform.runLater(()->{
 					if(mints<10 && second <10)
 					{
@@ -407,7 +450,7 @@ public class PlayController implements Initializable {
 					{
 						playerTimer.setText(mints+" : "+second);
 					}
-					
+
 				});
 				try {
 					Thread.sleep(1000);
@@ -419,16 +462,16 @@ public class PlayController implements Initializable {
            if(Game.notFinished){
         	   run();
            }
-			
-			
-			
-		}
-		
-	}
-	
 
-	
-	
+
+
+		}
+
+	}
+
+
+
+
 	public class TimerForGame implements Runnable {
 
 		private int second;
@@ -476,15 +519,15 @@ public class PlayController implements Initializable {
 		@Override
 		public void run() {
 			System.out.println("aya");
-			
+
 			while (Game.notFinished) {
-				
+
 				second++;
 				if (second >= 60) {
 					second = 0;
 					mints++;
 				}
-				
+
 				Platform.runLater(()->{
 					if(mints<10 && second <10)
 					{
@@ -502,7 +545,7 @@ public class PlayController implements Initializable {
 					{
 						gameTimer.setText(mints+" : "+second);
 					}
-					
+
 				});
 				try {
 					Thread.sleep(1000);
@@ -511,14 +554,14 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-			
-			
-			
+
+
+
 		}
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 }
