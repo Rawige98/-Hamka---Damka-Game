@@ -139,24 +139,27 @@ public class PlayController implements Initializable {
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
-
 			// calling tryMoveTest instead of tryMove
 			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
-
+			if(boardView[newX][newY].getFill().equals(Color.YELLOW))
+				System.out.println("************** YELLOW TILE *******************");
 			switch (moveResult.getType()) {
 			case NONE:
 				piece.aboartMove();
 				break;
 			case NORMAL:
+				turnOffAllColors();
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
+				showYellowTiles();
 				break;
 
 			case KILL:
+				turnOffAllColors();
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
@@ -165,6 +168,7 @@ public class PlayController implements Initializable {
 				System.out.println("the other piece is:" + otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
+				showYellowTiles();
 				break;
 			default:
 				break;
@@ -222,7 +226,7 @@ public class PlayController implements Initializable {
 
 			}
 		}
-		if (currentPlayer.equals(player_2)) {
+		else{
 			if (piece.getPieceType().equals(PieceType.RED)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2, false);
 
@@ -262,14 +266,25 @@ public class PlayController implements Initializable {
 			int x = tile.getRows();
 			int y = tile.getCols();
 			TileView tileView = new TileView(Color.YELLOW, y, x);
-			boardView[x][y] = tileView;
+//			boardView[x][y] = tileView;
+			boardView[y][x].setFill(Color.YELLOW);
 			System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
 					
 
-			tileGroup.getChildren().add(tileView);
+//			tileGroup.getChildren().add(tileView);
 
 		}
 
+	}
+	
+	private void turnOffAllColors() {
+		Color color;
+		for(int x=0; x<Consts.COLS ; x++) {
+			for(int y=0; y<Consts.ROWS ; y++) {
+				color = ((x + y) % 2 == 0 ? Color.WHITE : Color.BLACK);
+				boardView[x][y].setFill(color);
+			}
+		}
 	}
 
 	private void popQuestion(int x, int y) {
