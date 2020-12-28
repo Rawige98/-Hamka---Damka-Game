@@ -260,7 +260,8 @@ public class Board {
 	 * this methods randomly choose tile and if her color is black, then it will be
 	 * changed to yellow
 	 */
-	public void showYellowTiles() {
+	public ArrayList<Tile>  showYellowTiles() {
+		ArrayList<Tile> yellowTiles = new ArrayList<Tile>(); 
 		int x, y, yellowCount = 0;
 		Random random = new Random();
 		boolean done = false;
@@ -272,12 +273,14 @@ public class Board {
 				y = random.nextInt(Consts.COLS);
 				Tile randomTile = myBoard[x][y];
 				if (!randomTile.getColor().equals(Color.white) && randomTile.getColor().equals(Color.black)
-						&& !randomTile.getColor().equals(Color.yellow)) {
+						&& !randomTile.getColor().equals(Color.yellow)&&randomTile.getValue()==0) {
 					randomTile.setColor(Color.yellow);
+					yellowTiles.add(randomTile);
 					yellowCount++;
 				}
 			}
 		}
+		return yellowTiles;
 	}
 
 //	public void showRedGreenTile(boolean isP1Turn , Color color) {

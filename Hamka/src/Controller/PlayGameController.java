@@ -1,13 +1,16 @@
 package Controller;
 
+import java.util.ArrayList;
+
 import Model.Game;
 import Model.Player;
+import Model.Tile;
 import Utils.GameStatus;
 import Utils.MoveType;
 
 public class PlayGameController {
 	private static PlayGameController instance;
-	private  Game game;
+	private Game game;
 
 	private PlayGameController() {
 	}
@@ -24,9 +27,21 @@ public class PlayGameController {
 
 	}
 
-	public MoveType movePiece(int oldX, int oldY, int newX, int newY,Player p,boolean isTurn) {
-		
+	public MoveType movePiece(int oldX, int oldY, int newX, int newY, Player p, boolean isTurn) {
+
 		return game.getBoard().move(oldX, oldY, newX, newY, isTurn, p);
+	}
+
+	public ArrayList<Tile> returnYellowTiles() {
+		return (game.getBoard().showYellowTiles());
+	}
+
+	public boolean isYellowTile(int x, int y) {
+		if (game.getBoard().getTile(y, x).getColor().equals(java.awt.Color.YELLOW)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/*
@@ -67,8 +82,4 @@ public class PlayGameController {
 		this.game = game;
 	}
 
-
-	
-	
-	
 }
