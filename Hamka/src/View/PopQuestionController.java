@@ -65,12 +65,26 @@ public class PopQuestionController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Question q = p.popQuestion();
+		ans1.setVisible(true);
+		ans2.setVisible(true);
+		ans3.setVisible(true);
+		ans4.setVisible(true);
 		rightA= q.getRightAnswer();
 		question.setText(q.getText());
 		ans1.setText(q.getAnswers().get(0));
 		ans2.setText(q.getAnswers().get(1));
-		ans3.setText(q.getAnswers().get(2));
-		ans4.setText(q.getAnswers().get(3));
+		if(q.getAnswers().get(2).equals(""))
+		{
+			ans3.setVisible(false);
+			ans4.setVisible(false);
+		}
+		else
+		{
+			ans3.setText(q.getAnswers().get(2));
+			ans4.setText(q.getAnswers().get(3));
+			
+		}
+		
 		
 //		question.getScene().setFill(Color.TRANSPARENT);
 //		stage.initStyle(StageStyle.TRANSPARENT);
