@@ -1,5 +1,6 @@
 package View;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -238,45 +239,48 @@ public class PlayController implements Initializable {
 			}
 
 		}
-
-		System.out.println("your index is:" + newY + "," + newX);
-		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[newX][newY].getColor());
-
-		if (/* boardView[x1][y1].getFill().equals(Color.YELLOW)&& */PlayGameController.getInstance().isYellowTile(newX,
-				newY)) {
-			count++;
-			System.out.println(count + " **yellow:" + newY + "," + newX);
-		}
-
-		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
-			// boardView[x1][y1].getPiece().setPieceType();
-		}
 		updateScore(player_1);
 		updateScore(player_2);
 
 		return new MoveResult(result, boardView[x1][y1].getPiece());
+	}
+
+//		System.out.println("your index is:" + newY + "," + newX);
+//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[newX][newY].getColor());
+//
+//		if (/* boardView[x1][y1].getFill().equals(Color.YELLOW)&& */PlayGameController.getInstance().isYellowTile(newX,
+//				newY)) {
+//			count++;
+//			System.out.println(count + " **yellow:" + newY + "," + newX);
+//		}
+//
+//		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
+//			// boardView[x1][y1].getPiece().setPieceType();
+//		}
+//		updateScore(player_1);
+//		updateScore(player_2);
+//
+//		return new MoveResult(result, boardView[x1][y1].getPiece());
+//
+//	}
+
+private void showYellowTiles(){
+	ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
+	for (Tile tile : yellowTiles) {
+		// System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
+	}
+	for (Tile tile : yellowTiles) {
+		int x = tile.getRows();
+		int y = tile.getCols();
+//		TileView tileView = new TileView(Color.YELLOW, y, x);
+//		boardView[x][y] = tileView;
+		boardView[y][x].setFill(Color.YELLOW);
+
+//		tileGroup.getChildren().add(tileView);
 
 	}
 
-	private void showYellowTiles() {
-		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
-		for (Tile tile : yellowTiles) {
-			//System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
-		}
-		for (Tile tile : yellowTiles) {
-			int x = tile.getRows();
-			int y = tile.getCols();
-			TileView tileView = new TileView(Color.YELLOW, y, x);
-//			boardView[x][y] = tileView;
-			boardView[y][x].setFill(Color.YELLOW);
-			System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
-
-
-//			tileGroup.getChildren().add(tileView);
-
-		}
-
-	}
+}
 
 	private void turnOffAllColors() {
 		Color color;
@@ -288,7 +292,15 @@ public class PlayController implements Initializable {
 		}
 	}
 
-	private void popQuestion(int x, int y) {
+	private void popQuestion() throws IOException {
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
+		Scene scene = new Scene(root, 473, 310);
+		primaryStage.initStyle(StageStyle.TRANSPARENT);
+		scene.setFill(Color.TRANSPARENT);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("questions");
+		primaryStage.show();
 
 	}
 
@@ -317,9 +329,6 @@ public class PlayController implements Initializable {
 		PlayerTimer1 = new TimerForPlayer1();
 		tp1 =  new Thread(PlayerTimer1);
 		tp1.start();
-
-
-
 
 		player1.setText(MainPageController.getPlayer1().getUsername());
 		player2.setText(MainPageController.getPlayer2().getUsername());

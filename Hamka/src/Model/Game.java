@@ -230,6 +230,7 @@ public class Game {
 	public boolean isP1Turn() {
 		return isP1Turn;
 	}
+
 	public static  boolean getIsP1Turn() {
 		return isP1Turn;
 	}
