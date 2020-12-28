@@ -55,6 +55,8 @@ public class MainPageController implements Initializable {
 
 	@FXML
 	private Button history;
+    @FXML
+    private Button loadGame;
 
 	@FXML
 	private Button exit;
@@ -205,10 +207,11 @@ public class MainPageController implements Initializable {
 	public void pop(ActionEvent event) throws Exception {
 
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
-		Scene scene = new Scene(root, 473, 310);
-		primaryStage.initStyle(StageStyle.TRANSPARENT);
-		scene.setFill(Color.TRANSPARENT);
+		Parent root = FXMLLoader.load(getClass().getResource("/View/Winner.fxml"));
+		Scene scene = new Scene(root, 430, 256);
+		//Scene scene = new Scene(root, 473, 310);
+		//primaryStage.initStyle(StageStyle.TRANSPARENT);
+		//scene.setFill(Color.TRANSPARENT);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Play");
 		primaryStage.show();
