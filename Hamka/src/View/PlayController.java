@@ -14,7 +14,6 @@ import Model.Player;
 import Model.Question;
 import Model.Tile;
 import Utils.Consts;
-import Utils.Difficulty;
 import Utils.MoveResult;
 import Utils.MoveType;
 import Utils.PieceType;
@@ -95,7 +94,6 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private RadioButton ans4;
-	Question q;
 	PopQ p = new PopQ();
 	int rightA;
 
@@ -334,7 +332,7 @@ public class PlayController implements Initializable {
 		boardPane.setDisable(true);
 //		boardPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
 		questionPane.setVisible(true);
-		 q = p.popQuestion();
+		Question q = p.popQuestion();
 		ans1.setVisible(true);
 		ans2.setVisible(true);
 		ans3.setVisible(true);
@@ -647,35 +645,11 @@ public class PlayController implements Initializable {
 		if((ans1.isSelected()&&rightA==1) || (ans2.isSelected()&&rightA==2) || 
 				(ans3.isSelected()&&rightA==3) || (ans4.isSelected()&&rightA==4))
 		{
-			if (q.getDifficulty().equals(Difficulty.HARD)) {
-				currentPlayer.updateScore(500);
-			} else if (q.getDifficulty().equals(Difficulty.MEDIUM)) {
-				currentPlayer.updateScore(200);
-
-			} else if (q.getDifficulty().equals(Difficulty.EASY)) {
-				currentPlayer.updateScore(100);
-
-			}
-			
-			updateScore(currentPlayer);
-
 			System.out.println("true");
 		}
 		else
 		{
-			if (q.getDifficulty().equals(Difficulty.HARD)) {
-				currentPlayer.updateScore(-50);
-			} else if (q.getDifficulty().equals(Difficulty.MEDIUM)) {
-				currentPlayer.updateScore(-100);
-
-			} else if (q.getDifficulty().equals(Difficulty.EASY)) {
-				currentPlayer.updateScore(-250);
-
-			}
-
 			System.out.println("false");
-			updateScore(currentPlayer);
-
 		}
 
 //		Game.setP1Turn(!Game.getIsP1Turn());
