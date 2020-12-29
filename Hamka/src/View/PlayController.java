@@ -259,36 +259,15 @@ public class PlayController implements Initializable {
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 
-//		System.out.println("your index is:" + newY + "," + newX);
-//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[newX][newY].getColor());
-//
-//		if (/* boardView[x1][y1].getFill().equals(Color.YELLOW)&& */PlayGameController.getInstance().isYellowTile(newX,
-//				newY)) {
-//			count++;
-//			System.out.println(count + " **yellow:" + newY + "," + newX);
-//		}
-//
-//		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
-//			// boardView[x1][y1].getPiece().setPieceType();
-//		}
-//		updateScore(player_1);
-//		updateScore(player_2);
-//
-//		return new MoveResult(result, boardView[x1][y1].getPiece());
-//
-//	}
+
 
 
 	private void showYellowTiles() {
 		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
-		for (Tile tile : yellowTiles) {
-			// System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
-		}
+		
 		for (Tile tile : yellowTiles) {
 			int x = tile.getRows();
 			int y = tile.getCols();
-//			TileView tileView = new TileView(Color.YELLOW, y, x);
-//			boardView[x][y] = tileView;
 			boardView[y][x].setFill(Color.YELLOW);
 
 
