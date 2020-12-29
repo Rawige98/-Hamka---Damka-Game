@@ -300,16 +300,6 @@ public class PlayController implements Initializable {
 
 	}
 
-	private void showYellowTiles() {
-		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
-		
-		for (Tile tile : yellowTiles) {
-			int x = tile.getRows();
-			int y = tile.getCols();
-			boardView[y][x].setFill(Color.YELLOW);
-		}
-
-	}
 
 	private void refreshBoardTilesColors() {
 		for(int x=0 ; x<Consts.COLS ; x++) {
