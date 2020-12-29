@@ -83,9 +83,15 @@ public class Tile implements Cloneable,TileOperations{
 
 	@Override
 	public String toString() {
+//		return "row: " + rows + " col: " + cols + " color: "+color;
+		return value+"";
+	}
+	
+	public String longString() {
 		return "row: " + rows + " col: " + cols + " color: "+color;
 	}
-
+	
+	
 	@Override
 	public boolean upgradeToQueen() {
 		// TODO Auto-generated method stub

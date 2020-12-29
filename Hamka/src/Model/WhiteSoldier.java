@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class WhiteSoldier extends Tile{
 
 	public WhiteSoldier(int cols, int rows) {
-		super(1,  Color.WHITE, cols, rows);
+		super(1,  Color.BLACK, cols, rows);
 	}
 	@Override
 	public boolean upgradeToQueen() {

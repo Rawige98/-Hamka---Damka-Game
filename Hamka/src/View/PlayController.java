@@ -7,10 +7,12 @@ import java.util.ResourceBundle;
 
 
 import Controller.PlayGameController;
+import Controller.PopQ;
+import Model.ColorTilesHandler;
 import Model.Game;
 import Model.Player;
+import Model.Question;
 import Model.Tile;
-import Model.TimeForPlayer;
 import Utils.Consts;
 import Utils.MoveResult;
 import Utils.MoveType;
@@ -24,12 +26,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -43,6 +49,9 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private Circle player2image;
+
+	@FXML
+	private Pane questionPane;
 
 	@FXML
 	private Label player2;
@@ -64,6 +73,30 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private BorderPane rootBorderPane;
+
+	@FXML
+	private Button check;
+
+	@FXML
+	private Text question;
+
+	@FXML
+	private RadioButton ans1;
+
+	@FXML
+	private ToggleGroup answers;
+
+	@FXML
+	private RadioButton ans2;
+
+	@FXML
+	private RadioButton ans3;
+
+	@FXML
+	private RadioButton ans4;
+	PopQ p = new PopQ();
+	int rightA;
+
 
 	private Group tileGroup;
 	private Group pieceGroup;
@@ -142,34 +175,29 @@ public class PlayController implements Initializable {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
 			// calling tryMoveTest instead of tryMove
+			currentPlayer = PlayGameController.getInstance().getCurrentPlayer();
 			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
-			if (boardView[newX][newY].getFill().equals(Color.YELLOW)) {
-				try {
-					popQuestion();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.out.println("************** YELLOW TILE *******************");
-			}
+
 			switch (moveResult.getType()) {
 			case NONE:
 				piece.aboartMove();
 				break;
 			case NORMAL:
-				turnOffAllColors();
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
-//				showYellowTiles();
+				//				showYellowTiles();
+				if (boardView[newX][newY].getFill().equals(Color.YELLOW)) 
+					popQuestion();
+				else
+					PlayGameController.getInstance().switchTurnNow();
 				colorTiles();
 				break;
 
 			case KILL:
-				turnOffAllColors();
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
@@ -178,7 +206,11 @@ public class PlayController implements Initializable {
 				System.out.println("the other piece is:" + otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
-//				showYellowTiles();
+				//				showYellowTiles();
+				if (boardView[newX][newY].getFill().equals(Color.YELLOW))
+					popQuestion();
+				else
+					PlayGameController.getInstance().switchTurnNow();
 				colorTiles();
 				break;
 			default:
@@ -218,7 +250,6 @@ public class PlayController implements Initializable {
 
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
-
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
 			return new MoveResult(MoveType.NONE);
 
@@ -230,19 +261,19 @@ public class PlayController implements Initializable {
 
 		if (currentPlayer.equals(player_1)) {
 			if (piece.getPieceType().equals(PieceType.BLUE)) {
-				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1, true);
+				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
 				PlayGameController.getInstance().getGame();
-				Game.setP1Turn(!Game.getIsP1Turn());
-				currentPlayer = player_2;
+				//				Game.setP1Turn(!Game.getIsP1Turn());
+				//				currentPlayer = player_2;
 
 			}
 		} else {
 			if (piece.getPieceType().equals(PieceType.RED)) {
-				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2, false);
+				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
 
 				PlayGameController.getInstance().getGame();
-				Game.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
-				currentPlayer = player_1;
+				//				Game.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				//				currentPlayer = player_1;
 
 			}
 
@@ -274,22 +305,26 @@ public class PlayController implements Initializable {
 	//	}
 
 
-//	private void showYellowTiles() {
-//		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
-//		for (Tile tile : yellowTiles) {
-//			// System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
-//		}
-//		for (Tile tile : yellowTiles) {
-//			int x = tile.getRows();
-//			int y = tile.getCols();
-//			//			TileView tileView = new TileView(Color.YELLOW, y, x);
-//			//			boardView[x][y] = tileView;
-//			boardView[y][x].setFill(Color.YELLOW);
-//		}
-//	}
-	
+	//	private void showYellowTiles() {
+	//		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
+	//		for (Tile tile : yellowTiles) {
+	//			// System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
+	//		}
+	//		for (Tile tile : yellowTiles) {
+	//			int x = tile.getRows();
+	//			int y = tile.getCols();
+	//			//			TileView tileView = new TileView(Color.YELLOW, y, x);
+	//			//			boardView[x][y] = tileView;
+	//			boardView[y][x].setFill(Color.YELLOW);
+	//		}
+	//	}
+
 	private void colorTiles() {
 		PlayGameController.getInstance().checkTilesToBeColored();
+		refreshBoardTilesColors();
+	}
+
+	private void refreshBoardTilesColors() {
 		for(int x=0 ; x<Consts.COLS ; x++) {
 			for(int y=0 ; y<Consts.COLS ; y++) {
 				Color color = PlayGameController.getInstance().getTileColor(y, x);
@@ -298,25 +333,48 @@ public class PlayController implements Initializable {
 		}
 	}
 
-	private void turnOffAllColors() {
-		Color color;
-		for (int x = 0; x < Consts.COLS; x++) {
-			for (int y = 0; y < Consts.ROWS; y++) {
-				color = ((x + y) % 2 == 0 ? Color.WHITE : Color.BLACK);
-				boardView[x][y].setFill(color);
-			}
-		}
-	}
+	//	private void turnOffAllColors() {
+	//		Color color;
+	//		for (int x = 0; x < Consts.COLS; x++) {
+	//			for (int y = 0; y < Consts.ROWS; y++) {
+	//				color = ((x + y) % 2 == 0 ? Color.WHITE : Color.BLACK);
+	//				boardView[x][y].setFill(color);
+	//			}
+	//		}
+	//	}
 
-	private void popQuestion() throws IOException {
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
-		Scene scene = new Scene(root, 473, 310);
-		primaryStage.initStyle(StageStyle.TRANSPARENT);
-		scene.setFill(Color.TRANSPARENT);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("questions");
-		primaryStage.show();
+	public void popQuestion(){
+		//		Stage primaryStage = new Stage();
+		//		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
+		//		Scene scene = new Scene(root, 473, 310);
+		//		primaryStage.initStyle(StageStyle.TRANSPARENT);
+		//		scene.setFill(Color.TRANSPARENT);
+		//		primaryStage.setScene(scene);
+		//		primaryStage.setTitle("questions");
+		//		primaryStage.show();
+		boardPane.setDisable(true);
+//		boardPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
+		questionPane.setVisible(true);
+		Question q = p.popQuestion();
+		ans1.setVisible(true);
+		ans2.setVisible(true);
+		ans3.setVisible(true);
+		ans4.setVisible(true);
+		rightA= q.getRightAnswer();
+		question.setText(q.getText());
+		ans1.setText(q.getAnswers().get(0));
+		ans2.setText(q.getAnswers().get(1));
+		if(q.getAnswers().get(2).equals(""))
+		{
+			ans3.setVisible(false);
+			ans4.setVisible(false);
+		}
+		else
+		{
+			ans3.setText(q.getAnswers().get(2));
+			ans4.setText(q.getAnswers().get(3));
+
+		}
 
 	}
 
@@ -333,16 +391,30 @@ public class PlayController implements Initializable {
 		return (int) (pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
 	}
 
+	public ArrayList<Tile> getSuggestedTilesArray(){
+		return PlayGameController.getInstance().getSuggestedTilesArrayForPlayer();
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+//		questionPane.setVisible(false);
 		Game.notFinished=true;
 		Game.setP1Turn(true);
 		timer = new TimerForGame();
 		t = new Thread(timer);
 		t.start();
 		////////////////////////////
-		PlayerTimer1 = new TimerForPlayer1();
+		PlayerTimer1 = new TimerForPlayer1(new ColorTilesHandler() {
+			@Override
+			public void showColor(Color color) {
+				// TODO Auto-generated method stub
+				ArrayList<Tile> suggestedTiles = getSuggestedTilesArray();
+				if (color.equals(Color.GREEN))
+					PlayGameController.getInstance().colorRandomTile(suggestedTiles, color);
+				else if (color.equals(Color.ORANGE))
+					PlayGameController.getInstance().colorAllTiles(suggestedTiles, color);
+				refreshBoardTilesColors();
+			}});
 		tp1 =  new Thread(PlayerTimer1);
 		tp1.start();
 
@@ -358,7 +430,7 @@ public class PlayController implements Initializable {
 		player_2 = MainPageController.getPlayer2();
 		currentPlayer = player_1;
 		PlayGameController.getInstance().startGame(player_1, player_2);
-//		showYellowTiles();
+		//		showYellowTiles();
 
 		colorTiles();
 	}
@@ -368,6 +440,7 @@ public class PlayController implements Initializable {
 		private int second;
 		private int mints;
 		private Label l;
+		ColorTilesHandler handler;
 
 		public Label getL() {
 			return l;
@@ -397,9 +470,10 @@ public class PlayController implements Initializable {
 			this.second = -1;
 			this.mints = 0;
 		}
-		public TimerForPlayer1() {
+		public TimerForPlayer1(ColorTilesHandler handler) {
 			this.second = -1;
 			this.mints = 0;
+			this.handler = handler;
 		}
 
 
@@ -421,6 +495,10 @@ public class PlayController implements Initializable {
 					mints++;
 				}
 
+				if(second == 10 && mints ==0) 
+					handler.showColor(Color.GREEN);
+				if(second == 20 && mints == 0)
+					handler.showColor(Color.ORANGE);
 
 				Platform.runLater(()->{
 
@@ -544,8 +622,6 @@ public class PlayController implements Initializable {
 
 		@Override
 		public void run() {
-			System.out.println("aya");
-
 			while (Game.notFinished) {
 
 				second++;
@@ -588,6 +664,22 @@ public class PlayController implements Initializable {
 	}
 
 
+	public void check(ActionEvent event) throws Exception {
+		if((ans1.isSelected()&&rightA==1) || (ans2.isSelected()&&rightA==2) || 
+				(ans3.isSelected()&&rightA==3) || (ans4.isSelected()&&rightA==4))
+		{
+			System.out.println("true");
+		}
+		else
+		{
+			System.out.println("false");
+		}
 
+//		Game.setP1Turn(!Game.getIsP1Turn());
+		PlayGameController.getInstance().switchTurnNow();
+
+		questionPane.setVisible(false);
+		boardPane.setDisable(false);
+	}
 
 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
@@ -7,7 +12,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootBorderPane" prefHeight="989.0" prefWidth="1171.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PlayController">
+<BorderPane fx:id="rootBorderPane" prefHeight="989.0" prefWidth="1171.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PlayController">
    <bottom>
       <Pane prefHeight="45.0" prefWidth="635.0" BorderPane.alignment="CENTER">
          <children>
@@ -80,4 +85,50 @@
          </children>
       </Pane>
    </top>
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Pane fx:id="questionPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="473.0" style="-fx-background-color: rgba(255,255,200,0.5); -fx-background-radius: 30;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="check" layoutX="398.0" layoutY="265.0" mnemonicParsing="false" onAction="#check" prefHeight="37.0" prefWidth="68.0" style="-fx-background-radius: 30;" text="check">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Button>
+            <Text fx:id="question" layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question ?? vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv" wrappingWidth="452.1366996765137">
+               <font>
+                  <Font name="Berlin Sans FB" size="18.0" />
+               </font>
+            </Text>
+            <VBox layoutX="14.0" layoutY="98.0" prefHeight="167.0" prefWidth="452.0" spacing="20.0">
+               <children>
+                  <RadioButton fx:id="ans1" mnemonicParsing="false" style="-fx-border-insets: 0; -fx-background-insets: 0;" text="answer 1">
+                     <font>
+                        <Font name="Berlin Sans FB" size="16.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="answers" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="ans2" mnemonicParsing="false" text="answer 2" toggleGroup="$answers">
+                     <font>
+                        <Font name="Berlin Sans FB" size="16.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="ans3" mnemonicParsing="false" text="answer 3" toggleGroup="$answers">
+                     <font>
+                        <Font name="Berlin Sans FB" size="16.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton fx:id="ans4" lineSpacing="10.0" mnemonicParsing="false" text="answer 4" toggleGroup="$answers">
+                     <font>
+                        <Font name="Berlin Sans FB" size="16.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </right>
 </BorderPane>

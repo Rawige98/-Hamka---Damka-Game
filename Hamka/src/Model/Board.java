@@ -34,7 +34,6 @@ public class Board {
 		for (int i = 0; i < Consts.ROWS; i++) {
 			for (int j = 0; j < Consts.COLS; j++) {
 				myBoard[j][i] = factory.makeTile(i, j);
-				System.out.println("------------"+myBoard[j][i]);
 			}
 		}
 	}
@@ -231,7 +230,9 @@ public class Board {
 			}
 		}
 		for (Tile t : mySoldiers) {
-			availableMoves.put(t, avilableMovesForTile(t, isP1Turn));
+			ArrayList<Tile> tt = avilableMovesForTile(t, isP1Turn);
+			if(tt.size() != 0)
+				availableMoves.put(t, tt);
 		}
 		return availableMoves;
 	}
@@ -245,15 +246,18 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableMovesForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
-				MoveValidation v = new MoveValidation(t.getRows(), t.getCols(), i, j, this, isP1Turn, true);
+				MoveValidation v = new MoveValidation(t.getRows(), i, t.getCols(), j, this, isP1Turn, true);
 				if (v.moveValidation()) {
 					mymoves.add(myBoard[j][i]);
 				}
 			}
 		}
+		System.out.println("===================================");
+		System.out.println("Tile: " + t);
+		System.out.println(mymoves);
+		System.out.println();
 		return mymoves;
 	}
 
@@ -277,7 +281,7 @@ public class Board {
 				y = random.nextInt(Consts.COLS);
 				Tile randomTile = myBoard[x][y];
 				if (!randomTile.getColor().equals(Color.WHITE) && randomTile.getColor().equals(Color.BLACK)
-						&& !randomTile.getColor().equals(Color.YELLOW)&&randomTile.getValue()==0) {
+						&& !randomTile.getColor().equals(Color.YELLOW) && randomTile.getValue()==0) {
 					randomTile.setColor(Color.YELLOW);
 //					yellowTiles.add(randomTile);
 					yellowCount++;
@@ -357,7 +361,7 @@ public class Board {
 		ArrayList<Tile> tt = null;
 		for (Tile t : mySoldiers) {
 			tt = avilableSkipsForTile(t, isP1Turn);
-			if (tt != null)
+			if (tt.size() != 0)
 				availableMoves.put(t, tt);
 		}
 		return availableMoves;
@@ -374,7 +378,7 @@ public class Board {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
-				MoveValidation v = new MoveValidation(t.getRows(), t.getCols(), i, j, this, isP1Turn, true);
+				MoveValidation v = new MoveValidation(t.getRows(),i, t.getCols(), j, this, isP1Turn, true);
 				if (v.moveValidation()) {
 					if (isSkip(t.getRows(), t.getCols(), i, j, isP1Turn))
 						mymoves.add(myBoard[j][i]);
@@ -394,9 +398,15 @@ public class Board {
 		if (!myBoard[yStart][xStart].isQueen()) {
 			// if its not a skip
 			if (Math.abs(dx) == 2) {
-				return false;
-			} else {
+				int xmid = (xStart + xEnd) / 2;
+				int ymid = (yStart + yEnd) / 2;
+				if ((myBoard[yStart][xStart] instanceof WhiteSoldier &&!(myBoard[ymid][xmid] instanceof BlackSoldier))
+						|| (myBoard[yStart][xStart] instanceof BlackSoldier && !(myBoard[ymid][xmid] instanceof WhiteSoldier)))
+					return false;
+
 				return true;
+			} else {
+				return false;
 			}
 		}
 		// Queen

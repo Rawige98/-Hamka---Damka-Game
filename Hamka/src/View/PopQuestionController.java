@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controller.PopQ;
+import Model.Game;
 import Model.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,6 +59,8 @@ public class PopQuestionController implements Initializable {
 		{
 			System.out.println("false");
 		}
+		
+		Game.setP1Turn(!Game.getIsP1Turn());
 		closeWindow();
 		
 	}

@@ -28,11 +28,21 @@ public class PlayGameController {
 
 	}
 
-	public MoveType movePiece(int oldX, int oldY, int newX, int newY, Player p, boolean isTurn) {
-
-		return game.getBoard().move(oldX, oldY, newX, newY, isTurn, p);
+	public MoveType movePiece(int oldX, int oldY, int newX, int newY) {
+		MoveType type = game.move(oldX, oldY, newX, newY);
+		Tile tile = game.getBoard().getMyBoard()[newY][newX];
+//		if(type.equals(MoveType.KILL) || type.equals(MoveType.NORMAL)) {
+//			if(tile.getColor().equals(Color.YELLOW))
+//				
+//		}
+		
+		return type;
 	}
 
+	public void switchTurnNow() {
+		game.switchTurn();
+	}
+	
 //	public ArrayList<Tile> returnYellowTiles() {
 //		return (game.getBoard().showYellowTiles());
 //	}
@@ -88,7 +98,23 @@ public class PlayGameController {
 	}
 
 	public Color getTileColor(int x, int y) {
-		System.out.println(game.getBoard().getMyBoard()[x][y]);
 		return game.getBoard().getMyBoard()[x][y].getColor();
+	}
+	
+	public ArrayList<Tile> getSuggestedTilesArrayForPlayer(){
+		return game.getSuggestedTilesArray();
+	}
+	
+	public void colorRandomTile(ArrayList<Tile> tiles , Color color) {
+		game.getBoard().colorRandomTile(tiles, color);
+	}
+	
+	public void colorAllTiles(ArrayList<Tile> tiles , Color color) {
+		game.getBoard().colorAllTiles(tiles, color);
+	}
+
+	public Player getCurrentPlayer() {
+		// TODO Auto-generated method stub
+		return game.isP1Turn() ? game.getPlayer1() : game.getPlayer2();
 	}
 }
