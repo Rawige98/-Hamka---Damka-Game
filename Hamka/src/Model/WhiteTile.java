@@ -1,6 +1,6 @@
 package Model;
 
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public class WhiteTile extends Tile{
 
@@ -9,8 +9,7 @@ public class WhiteTile extends Tile{
 	 */
 	private static final long serialVersionUID = 1L;
 	public WhiteTile(int cols, int rows) {
-		super(0,  Color.white, cols, rows);
-		// TODO Auto-generated constructor stub
+		super(0,  Color.WHITE, cols, rows);
 	}
 	@Override
 	public boolean upgradeToQueen() {

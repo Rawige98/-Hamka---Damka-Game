@@ -122,8 +122,8 @@ public class Question {
 	
 	@Override
 	public String toString() {
-	   return text+" ?- level :"+difficulty+ "\n"+ answers.get(0)+"\n"+answers.get(1)+"\n"
-			   +answers.get(2)+"\n"+answers.get(3)+"\nTeam:"+team+"\n----------------------------------------";
+	   return text+" ?- level :"+difficulty+ "\n1)"+ answers.get(0)+"\n2)"+answers.get(1)+"\n3)"
+			   +answers.get(2)+"\n4)"+answers.get(3)+"\nTeam:"+team+"\n----------------------------------------------------------------------------------------";
 	}
 
 	@Override

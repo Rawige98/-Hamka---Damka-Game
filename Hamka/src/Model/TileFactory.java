@@ -1,6 +1,5 @@
 package Model;
 
-import java.awt.Color;
 public class TileFactory {
 	public Tile makeTile(int i,int j) {
 		

@@ -1,29 +1,22 @@
 package Model;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import Utils.Consts;
 import Utils.MoveType;
+import javafx.scene.paint.Color;
 
-public class Board implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Board {
 	private Tile[][] myBoard;
-	public List<Tile> r=new ArrayList<Tile>();
+
 	public Board() {
 		setMyBoard(new Tile[Consts.ROWS][Consts.COLS]);
 		initBoard();
-	}	
+	}
+
 	public Tile[][] getMyBoard() {
 		return myBoard;
 	}
@@ -85,6 +78,7 @@ public class Board implements Serializable{
 				if (Math.abs(dx) != 2) {
 					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
+					turnOffAllTilesColor();
 					return MoveType.NORMAL;
 				} else {
 					int xmid = (xStart + xEnd) / 2;
@@ -93,6 +87,7 @@ public class Board implements Serializable{
 					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					p.setScore(100);
+					turnOffAllTilesColor();
 					return MoveType.KILL;
 				}
 			}
@@ -187,10 +182,12 @@ public class Board implements Serializable{
 					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					p.setScore(100);
+					turnOffAllTilesColor();
 					return MoveType.KILL;
 				} else {
 					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
+					turnOffAllTilesColor();
 					return MoveType.NORMAL;
 				}
 			}
@@ -233,7 +230,9 @@ public class Board implements Serializable{
 			}
 		}
 		for (Tile t : mySoldiers) {
-			availableMoves.put(t, avilableMovesForTile(t, isP1Turn));
+			ArrayList<Tile> tt = avilableMovesForTile(t, isP1Turn);
+			if(tt.size() != 0)
+				availableMoves.put(t, tt);
 		}
 		return availableMoves;
 	}
@@ -247,15 +246,18 @@ public class Board implements Serializable{
 	 */
 	public ArrayList<Tile> avilableMovesForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
-				MoveValidation v = new MoveValidation(t.getRows(), t.getCols(), i, j, this, isP1Turn, true);
+				MoveValidation v = new MoveValidation(t.getRows(), i, t.getCols(), j, this, isP1Turn, true);
 				if (v.moveValidation()) {
 					mymoves.add(myBoard[j][i]);
 				}
 			}
 		}
+		System.out.println("===================================");
+		System.out.println("Tile: " + t);
+		System.out.println(mymoves);
+		System.out.println();
 		return mymoves;
 	}
 
@@ -266,7 +268,8 @@ public class Board implements Serializable{
 	 * this methods randomly choose tile and if her color is black, then it will be
 	 * changed to yellow
 	 */
-	public void showYellowTiles() {
+	public void  showYellowTiles() {
+//		ArrayList<Tile> yellowTiles = new ArrayList<Tile>(); 
 		int x, y, yellowCount = 0;
 		Random random = new Random();
 		boolean done = false;
@@ -277,13 +280,15 @@ public class Board implements Serializable{
 				x = random.nextInt(Consts.ROWS);
 				y = random.nextInt(Consts.COLS);
 				Tile randomTile = myBoard[x][y];
-				if (!randomTile.getColor().equals(Color.white) && randomTile.getColor().equals(Color.black)
-						&& !randomTile.getColor().equals(Color.yellow)) {
-					randomTile.setColor(Color.yellow);
+				if (!randomTile.getColor().equals(Color.WHITE) && randomTile.getColor().equals(Color.BLACK)
+						&& !randomTile.getColor().equals(Color.YELLOW) && randomTile.getValue()==0) {
+					randomTile.setColor(Color.YELLOW);
+//					yellowTiles.add(randomTile);
 					yellowCount++;
 				}
 			}
 		}
+//		return yellowTiles;
 	}
 
 //	public void showRedGreenTile(boolean isP1Turn , Color color) {
@@ -317,7 +322,7 @@ public class Board implements Serializable{
 //	}
 
 	public void turnOffTileColor(Tile tile) {
-		tile.setColor(Color.black);
+		tile.setColor(Color.BLACK);
 	}
 
 	public void turnOffAllTilesColor() {
@@ -325,8 +330,8 @@ public class Board implements Serializable{
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard[i].length; j++) {
 				tile = myBoard[i][j];
-				if (!tile.getColor().equals(Color.white))
-					tile.setColor(Color.black);
+				if (!tile.getColor().equals(Color.WHITE))
+					tile.setColor(Color.BLACK);
 			}
 		}
 	}
@@ -349,13 +354,14 @@ public class Board implements Serializable{
 				} else {
 					if (myBoard[i][j] instanceof BlackSoldier)
 						mySoldiers.add(myBoard[i][j]);
+
 				}
 			}
 		}
 		ArrayList<Tile> tt = null;
 		for (Tile t : mySoldiers) {
 			tt = avilableSkipsForTile(t, isP1Turn);
-			if (tt != null)
+			if (tt.size() != 0)
 				availableMoves.put(t, tt);
 		}
 		return availableMoves;
@@ -372,7 +378,7 @@ public class Board implements Serializable{
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
-				MoveValidation v = new MoveValidation(t.getRows(), t.getCols(), i, j, this, isP1Turn, true);
+				MoveValidation v = new MoveValidation(t.getRows(),i, t.getCols(), j, this, isP1Turn, true);
 				if (v.moveValidation()) {
 					if (isSkip(t.getRows(), t.getCols(), i, j, isP1Turn))
 						mymoves.add(myBoard[j][i]);
@@ -392,9 +398,15 @@ public class Board implements Serializable{
 		if (!myBoard[yStart][xStart].isQueen()) {
 			// if its not a skip
 			if (Math.abs(dx) == 2) {
-				return false;
-			} else {
+				int xmid = (xStart + xEnd) / 2;
+				int ymid = (yStart + yEnd) / 2;
+				if ((myBoard[yStart][xStart] instanceof WhiteSoldier &&!(myBoard[ymid][xmid] instanceof BlackSoldier))
+						|| (myBoard[yStart][xStart] instanceof BlackSoldier && !(myBoard[ymid][xmid] instanceof WhiteSoldier)))
+					return false;
+
 				return true;
+			} else {
+				return false;
 			}
 		}
 		// Queen

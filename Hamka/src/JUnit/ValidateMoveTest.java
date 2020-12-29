@@ -1,4 +1,4 @@
-package JUnit;
+'package JUnit;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

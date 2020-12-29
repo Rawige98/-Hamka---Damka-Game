@@ -42,6 +42,8 @@ public class MainPageController implements Initializable {
 
 	@FXML
 	private Button history;
+    @FXML
+    private Button loadGame;
 
 	@FXML
 	private Button exit;
@@ -199,6 +201,7 @@ public class MainPageController implements Initializable {
 
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
+		//Scene scene = new Scene(root, 430, 256);
 		Scene scene = new Scene(root, 473, 310);
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		scene.setFill(Color.TRANSPARENT);

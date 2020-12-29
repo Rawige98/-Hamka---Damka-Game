@@ -1,19 +1,24 @@
 package View;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+
 import Controller.PlayGameController;
-import Model.BlackSoldier;
+import Controller.PopQ;
+import Model.ColorTilesHandler;
 import Model.Game;
 import Model.Player;
+import Model.Question;
 import Model.Tile;
-import Model.TimeForPlayer;
-import Model.WhiteSoldier;
 import Utils.Consts;
+import Utils.Difficulty;
 import Utils.MoveResult;
 import Utils.MoveType;
 import Utils.PieceType;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,12 +27,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -41,6 +50,9 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private Circle player2image;
+
+	@FXML
+	private Pane questionPane;
 
 	@FXML
 	private Label player2;
@@ -57,27 +69,68 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private AnchorPane rootPane;
+	@FXML
+	private Label gameTimer;
 
 	@FXML
 	private BorderPane rootBorderPane;
 
+	@FXML
+	private Button check;
+
+	@FXML
+	private Text question;
+
+	@FXML
+	private RadioButton ans1;
+
+	@FXML
+	private ToggleGroup answers;
+
+	@FXML
+	private RadioButton ans2;
+
+	@FXML
+	private RadioButton ans3;
+
+	@FXML
+	private RadioButton ans4;
+	Question q;
+	PopQ p = new PopQ();
+	int rightA;
+
+
 	private Group tileGroup;
 	private Group pieceGroup;
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
-
+	private Thread t = null;
+	private Thread tp1 = null;
+	//	private Thread tp2 = null;
 	private Game game;
 	private Player player_1;
 	private Player player_2;
 	private boolean gameInProgress; // Is a game currently in progress?
 	private Player currentPlayer; // Whose turn is it now? The possible values
-
+	private TimerForGame timer;
+	private TimerForPlayer1 PlayerTimer1;
+	int count = 0;
+	//private TimerForPlayer2 PlayerTimer2;
 	@FXML
 	void closeWindow(ActionEvent event) {
+
+
+		//tp1.stop();
+		Game.notFinished=false;
+		t.stop();
+		tp1.stop();
 		((Stage) player1.getScene().getWindow()).close();
 	}
 
 	@FXML
 	public void back(ActionEvent event) throws Exception {
+		Game.notFinished=false;
+		t.stop();
+		tp1.stop();
 		((Stage) player1.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
@@ -86,38 +139,27 @@ public class PlayController implements Initializable {
 		primaryStage.setTitle("Hamka game");
 		primaryStage.show();
 	}
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		player1.setText(PlayGameController.getInstance().getPlayer1().getUsername());
-		player2.setText(PlayGameController.getInstance().getPlayer2().getUsername());
-		point1.setText(Integer.toString(PlayGameController.getInstance().getPlayer1().getScore()));
-		point2.setText(Integer.toString(PlayGameController.getInstance().getPlayer2().getScore()));
-		tileGroup = new Group();
-		pieceGroup = new Group();
-		player_1 = PlayGameController.getInstance().getPlayer1();
-		player_2 = PlayGameController.getInstance().getPlayer2();
-		currentPlayer = player_1;
-		game =PlayGameController.getInstance().getGame();
-		System.out.println("*********************8");
-		System.out.println(game.getGameState());
-		rootBorderPane.setCenter(createBoardView());
-	}
+
+
+
 	public Pane createBoardView() {
 		boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
 		boardPane.getChildren().addAll(tileGroup, pieceGroup);
-		System.out.println(game.getGameState());
+
 		for (int y = 0; y < Consts.ROWS; y++) {
 			for (int x = 0; x < Consts.COLS; x++) {
+
 				TileView tileView = new TileView((x + y) % 2 == 0, x, y);
 				boardView[x][y] = tileView;
 				tileGroup.getChildren().add(tileView);
+
 				Piece piece = null;
 				// changes in (if)
-				if (game.getBoard().getMyBoard()[x][y] instanceof BlackSoldier) {
+				if (y <= 2 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.RED, x, y);
 				}
-				if (game.getBoard().getMyBoard()[x][y] instanceof WhiteSoldier) {
+				if (y >= 5 && (x + y) % 2 != 0) {
 					piece = makePiece(PieceType.BLUE, x, y);
 				}
 				if (piece != null) {
@@ -128,13 +170,14 @@ public class PlayController implements Initializable {
 		}
 		return boardPane;
 	}
+
 	private Piece makePiece(PieceType type, int x, int y) {
 		Piece piece = new Piece(type, x, y, "b.jpg");
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
-
 			// calling tryMoveTest instead of tryMove
+			currentPlayer = PlayGameController.getInstance().getCurrentPlayer();
 			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 
 			int x0 = toBoard(piece.getOldX());
@@ -148,6 +191,15 @@ public class PlayController implements Initializable {
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
+				//				showYellowTiles();
+				if (boardView[newX][newY].getFill().equals(Color.YELLOW)) {
+					popQuestion();
+					updateScore(player_1);
+					updateScore(player_2);
+				}
+				else
+					PlayGameController.getInstance().switchTurnNow();
+				colorTiles();
 				break;
 
 			case KILL:
@@ -159,18 +211,52 @@ public class PlayController implements Initializable {
 				System.out.println("the other piece is:" + otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
+				//				showYellowTiles();
+				if (boardView[newX][newY].getFill().equals(Color.YELLOW))
+					popQuestion();
+				else
+					PlayGameController.getInstance().switchTurnNow();
+				colorTiles();
 				break;
 			default:
 				break;
 			}
 
+			
 		});
+		
 		return piece;
+	}
+
+	private MoveResult tryMove(Piece piece, int newX, int newY) {
+
+		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
+			return new MoveResult(MoveType.NONE);
+
+		if (boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
+			return new MoveResult(MoveType.NONE);
+		}
+
+		int x0 = toBoard(piece.getOldX());
+		int y0 = toBoard(piece.getOldY());
+
+		if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getPieceType().moveDir) {
+			return new MoveResult(MoveType.NORMAL);
+		} else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getPieceType().moveDir * 2) {
+
+			int x1 = x0 + (newX - x0) / 2;
+			int y1 = y0 + (newY - y0) / 2;
+
+			if (boardView[x1][y1].hasPiece() && boardView[x1][y1].getPiece().getPieceType() != piece.getPieceType()) {
+				return new MoveResult(MoveType.KILL, boardView[x1][y1].getPiece());
+			}
+		}
+
+		return new MoveResult(MoveType.NONE);
 	}
 
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
-
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
 			return new MoveResult(MoveType.NONE);
 
@@ -180,46 +266,98 @@ public class PlayController implements Initializable {
 		int x1 = oldX + (newX - oldX) / 2;
 		int y1 = oldY + (newY - oldY) / 2;
 
-		System.out.println("the old move Y is:" + oldX + " old X is:" + oldY);
-		System.out.println("the new move Y is:" + newX + " new X is:" + newY);
-		System.out.println(PlayGameController.getInstance().getGame().getBoard().toString());
-		System.out.println("this piece color is:" + piece.getPieceType());
-
-		// if (PlayGameController.getInstance().getGame().isP1Turn()) {
 		if (currentPlayer.equals(player_1)) {
 			if (piece.getPieceType().equals(PieceType.BLUE)) {
-				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_1, true);
-				PlayGameController.getInstance().getGame()
-						.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
-				currentPlayer = player_2;
+				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
+				PlayGameController.getInstance().getGame();
+				//				Game.setP1Turn(!Game.getIsP1Turn());
+				//				currentPlayer = player_2;
 
 			}
-		}
-		if (currentPlayer.equals(player_2)) {
-			// if (!PlayGameController.getInstance().getGame().isP1Turn()) {
+		} else {
 			if (piece.getPieceType().equals(PieceType.RED)) {
-				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX, player_2, false);
+				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
 
-				PlayGameController.getInstance().getGame()
-						.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
-				currentPlayer = player_1;
+				PlayGameController.getInstance().getGame();
+				//				Game.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
+				//				currentPlayer = player_1;
 
 			}
 
 		}
+		
+		
 
-		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
-			// boardView[x1][y1].getPiece().setPieceType();
-		}
-		System.out.println("the result is:" + result);
 		updateScore(player_1);
 		updateScore(player_2);
 
 		return new MoveResult(result, boardView[x1][y1].getPiece());
+	}
+
+
+
+	private void colorTiles() {
+		PlayGameController.getInstance().checkTilesToBeColored();
+		refreshBoardTilesColors();
 
 	}
 
-	private void updateScore(Player p) {
+
+	private void refreshBoardTilesColors() {
+		for(int x=0 ; x<Consts.COLS ; x++) {
+			for(int y=0 ; y<Consts.COLS ; y++) {
+				Color color = PlayGameController.getInstance().getTileColor(y, x);
+				boardView[y][x].setFill(color);
+			}
+		}
+	}
+
+	//	private void turnOffAllColors() {
+	//		Color color;
+	//		for (int x = 0; x < Consts.COLS; x++) {
+	//			for (int y = 0; y < Consts.ROWS; y++) {
+	//				color = ((x + y) % 2 == 0 ? Color.WHITE : Color.BLACK);
+	//				boardView[x][y].setFill(color);
+	//			}
+	//		}
+	//	}
+
+	public void popQuestion(){
+		//		Stage primaryStage = new Stage();
+		//		Parent root = FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
+		//		Scene scene = new Scene(root, 473, 310);
+		//		primaryStage.initStyle(StageStyle.TRANSPARENT);
+		//		scene.setFill(Color.TRANSPARENT);
+		//		primaryStage.setScene(scene);
+		//		primaryStage.setTitle("questions");
+		//		primaryStage.show();
+		boardPane.setDisable(true);
+//		boardPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
+		questionPane.setVisible(true);
+		 q = p.popQuestion();
+		ans1.setVisible(true);
+		ans2.setVisible(true);
+		ans3.setVisible(true);
+		ans4.setVisible(true);
+		rightA= q.getRightAnswer();
+		question.setText(q.getText());
+		ans1.setText(q.getAnswers().get(0));
+		ans2.setText(q.getAnswers().get(1));
+		if(q.getAnswers().get(2).equals(""))
+		{
+			ans3.setVisible(false);
+			ans4.setVisible(false);
+		}
+		else
+		{
+			ans3.setText(q.getAnswers().get(2));
+			ans4.setText(q.getAnswers().get(3));
+
+		}
+
+	}
+
+	public  void updateScore(Player p) {
 		if (p.equals(player_1)) {
 			point1.setText(String.valueOf(player_1.getScore()));
 		} else if (p.equals(player_2)) {
@@ -231,4 +369,320 @@ public class PlayController implements Initializable {
 	private int toBoard(double pixel) {
 		return (int) (pixel + Consts.TILE_SIZE / 2) / Consts.TILE_SIZE;
 	}
+
+	public ArrayList<Tile> getSuggestedTilesArray(){
+		return PlayGameController.getInstance().getSuggestedTilesArrayForPlayer();
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+//		questionPane.setVisible(false);
+		Game.notFinished=true;
+		Game.setP1Turn(true);
+		timer = new TimerForGame();
+		t = new Thread(timer);
+		t.start();
+		////////////////////////////
+		PlayerTimer1 = new TimerForPlayer1(new ColorTilesHandler() {
+			@Override
+			public void showColor(Color color) {
+				// TODO Auto-generated method stub
+				ArrayList<Tile> suggestedTiles = getSuggestedTilesArray();
+				if (color.equals(Color.GREEN))
+					PlayGameController.getInstance().colorRandomTile(suggestedTiles, color);
+				else if (color.equals(Color.ORANGE))
+					PlayGameController.getInstance().colorAllTiles(suggestedTiles, color);
+				refreshBoardTilesColors();
+			}});
+		tp1 =  new Thread(PlayerTimer1);
+		tp1.start();
+
+		player1.setText(MainPageController.getPlayer1().getUsername());
+		player2.setText(MainPageController.getPlayer2().getUsername());
+		point1.setText(Integer.toString(MainPageController.getPlayer1().getScore()));
+		point2.setText(Integer.toString(MainPageController.getPlayer2().getScore()));
+		tileGroup = new Group();
+		pieceGroup = new Group();
+		rootBorderPane.setCenter(createBoardView());
+
+		player_1 = MainPageController.getPlayer1();
+		player_2 = MainPageController.getPlayer2();
+		currentPlayer = player_1;
+		PlayGameController.getInstance().startGame(player_1, player_2);
+		//		showYellowTiles();
+
+		colorTiles();
+	}
+
+	public class TimerForPlayer1 implements Runnable {
+
+		private int second;
+		private int mints;
+		private Label l;
+		ColorTilesHandler handler;
+
+		public Label getL() {
+			return l;
+		}
+
+		public void setL(Label l) {
+			this.l = l;
+		}
+
+		public int getSecond() {
+			return second;
+		}
+
+		public int getMints() {
+			return mints;
+		}
+
+		public void setMints(int mints) {
+			this.mints = mints;
+		}
+
+		public void setSecond(int second) {
+			this.second = second;
+		}
+
+		public void reset() {
+			this.second = -1;
+			this.mints = 0;
+		}
+		public TimerForPlayer1(ColorTilesHandler handler) {
+			this.second = -1;
+			this.mints = 0;
+			this.handler = handler;
+		}
+
+
+		public void getLabel(Label text) {
+			l=text;
+		}
+
+		@Override
+		public void run() {
+			//System.out.println("aya");
+			//System.out.println(Game.getIsP1Turn());
+			reset();
+
+			while (Game.getIsP1Turn()&&Game.notFinished) {
+
+				second++;
+				if (second >= 60) {
+					second = 0;
+					mints++;
+				}
+
+				if(second == 10 && mints ==0) 
+					handler.showColor(Color.GREEN);
+				if(second == 20 && mints == 0)
+					handler.showColor(Color.ORANGE);
+
+				Platform.runLater(()->{
+
+					if(mints<10 && second <10)
+					{
+						playerTimer.setText("0"+mints+" : 0"+second);
+					}
+					else if(mints<10)
+					{
+						playerTimer.setText("0"+mints+" : "+second);
+					}
+					else if(second<10)
+					{
+						playerTimer.setText(mints+" : 0"+second);
+					}
+					else
+					{
+						playerTimer.setText(mints+" : "+second);
+					}
+
+				});
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			reset();
+
+			while (!Game.getIsP1Turn()&&Game.notFinished) {
+
+				second++;
+				if (second >= 60) {
+					second = 0;
+					mints++;
+				}
+
+				Platform.runLater(()->{
+					if(mints<10 && second <10)
+					{
+						playerTimer.setText("0"+mints+" : 0"+second);
+					}
+					else if(mints<10)
+					{
+						playerTimer.setText("0"+mints+" : "+second);
+					}
+					else if(second<10)
+					{
+						playerTimer.setText(mints+" : 0"+second);
+					}
+					else
+					{
+						playerTimer.setText(mints+" : "+second);
+					}
+
+				});
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(Game.notFinished){
+				run();
+			}
+
+
+
+		}
+
+	}
+
+
+
+
+	public class TimerForGame implements Runnable {
+
+		private int second;
+		private int mints;
+		private Label l;
+
+		public Label getL() {
+			return l;
+		}
+
+		public void setL(Label l) {
+			this.l = l;
+		}
+
+		public int getSecond() {
+			return second;
+		}
+
+		public int getMints() {
+			return mints;
+		}
+
+		public void setMints(int mints) {
+			this.mints = mints;
+		}
+
+		public void setSecond(int second) {
+			this.second = second;
+		}
+
+		public void reset() {
+			this.second = -1;
+			this.mints = 0;
+		}
+		public TimerForGame() {
+			this.second = -1;
+			this.mints = 0;
+		}
+
+
+		public void getLabel(Label text) {
+			l=text;
+		}
+
+		@Override
+		public void run() {
+			while (Game.notFinished) {
+
+				second++;
+				if (second >= 60) {
+					second = 0;
+					mints++;
+				}
+
+				Platform.runLater(()->{
+					if(mints<10 && second <10)
+					{
+						gameTimer.setText("0"+mints+" : 0"+second);
+					}
+					else if(mints<10)
+					{
+						gameTimer.setText("0"+mints+" : "+second);
+					}
+					else if(second<10)
+					{
+						gameTimer.setText(mints+" : 0"+second);
+					}
+					else
+					{
+						gameTimer.setText(mints+" : "+second);
+					}
+
+				});
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+
+
+		}
+
+	}
+
+
+	public void check(ActionEvent event) throws Exception {
+		if((ans1.isSelected()&&rightA==1) || (ans2.isSelected()&&rightA==2) || 
+				(ans3.isSelected()&&rightA==3) || (ans4.isSelected()&&rightA==4))
+		{
+			if (q.getDifficulty().equals(Difficulty.HARD)) {
+				currentPlayer.updateScore(500);
+			} else if (q.getDifficulty().equals(Difficulty.MEDIUM)) {
+				currentPlayer.updateScore(200);
+
+			} else if (q.getDifficulty().equals(Difficulty.EASY)) {
+				currentPlayer.updateScore(100);
+
+			}
+			
+			updateScore(currentPlayer);
+
+			System.out.println("true");
+		}
+		else
+		{
+			if (q.getDifficulty().equals(Difficulty.HARD)) {
+				currentPlayer.updateScore(-50);
+			} else if (q.getDifficulty().equals(Difficulty.MEDIUM)) {
+				currentPlayer.updateScore(-100);
+
+			} else if (q.getDifficulty().equals(Difficulty.EASY)) {
+				currentPlayer.updateScore(-250);
+
+			}
+
+			System.out.println("false");
+			updateScore(currentPlayer);
+
+		}
+
+//		Game.setP1Turn(!Game.getIsP1Turn());
+		PlayGameController.getInstance().switchTurnNow();
+
+		questionPane.setVisible(false);
+		boardPane.setDisable(false);
+	}
+
 }
