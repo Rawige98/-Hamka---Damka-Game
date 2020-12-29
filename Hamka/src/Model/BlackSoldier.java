@@ -1,11 +1,11 @@
 package Model;
 
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public class BlackSoldier extends Tile {
 
 	public BlackSoldier(int cols, int rows) {
-		super(2, Color.black, cols, rows);
+		super(2, Color.BLACK, cols, rows);
 		// TODO Auto-generated constructor stub
 	}
 

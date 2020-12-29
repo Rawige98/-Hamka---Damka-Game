@@ -43,7 +43,7 @@ public class Main {
 				System.out.println();
 				Game game = new Game(player1, player2);
 //				main.runGame(game);
-				game.run();
+//				game.run();
 				break;
 			case 2:
 				main.printRules();

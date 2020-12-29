@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import Controller.PlayGameController;
 import Controller.PopQ;
+import Model.Game;
 import Model.Player;
 import Model.Question;
 import Utils.Difficulty;
@@ -89,6 +90,8 @@ public class PopQuestionController implements Initializable {
 
 			System.out.println("false");
 		}
+		
+		Game.setP1Turn(!Game.getIsP1Turn());
 		closeWindow();
 
 	}

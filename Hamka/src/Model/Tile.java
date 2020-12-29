@@ -1,27 +1,14 @@
 package Model;
 
-import java.awt.Color;
-
+import javafx.scene.paint.Color;
 
 public class Tile implements Cloneable,TileOperations{
 	private int value;
-	private java.awt.Color color;
+	private Color color;
 	private int rows;
 	private int cols;
-	public static final String TEXT_RESET = "\u001B[0m";
-	public static final String TEXT_BLACK = "\u001B[30m";
-	public static final String TEXT_RED = "\u001B[31m";
-	public static final String TEXT_GREEN = "\u001B[32m";
-	public static final String TEXT_YELLOW = "\u001B[33m";
-	public static final String TEXT_BLUE = "\u001B[34m";
-	public static final String ANSI_PURPLE = "\u001B[35m";
-	public static final String TEXT_WHITE = "\u001B[37m";
-	public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-
-
 	
-	public Tile(int value, java.awt.Color color,  int cols,int rows) {
+	public Tile(int value, Color color,  int cols,int rows) {
 		super();
 		this.value = value;
 		this.color = color;
@@ -38,11 +25,11 @@ public class Tile implements Cloneable,TileOperations{
 		this.value = value;
 	}
 
-	public java.awt.Color getColor() {
+	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(java.awt.Color color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
@@ -96,9 +83,15 @@ public class Tile implements Cloneable,TileOperations{
 
 	@Override
 	public String toString() {
+//		return "row: " + rows + " col: " + cols + " color: "+color;
 		return value+"";
 	}
-
+	
+	public String longString() {
+		return "row: " + rows + " col: " + cols + " color: "+color;
+	}
+	
+	
 	@Override
 	public boolean upgradeToQueen() {
 		// TODO Auto-generated method stub
