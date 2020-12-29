@@ -12,7 +12,25 @@ import javafx.scene.paint.Color;
 public class PlayGameController {
 	private static PlayGameController instance;
 	private Game game;
+	
+	public Player getPlayer1() {
+		return player1;
+	}
 
+	public void setPlayer1(Player player1) {
+		this.player1 = player1;
+	}
+
+	public Player getPlayer2() {
+		return player2;
+	}
+
+	public void setPlayer2(Player player2) {
+		this.player2 = player2;
+	}
+
+	private  Player player1;
+	private  Player player2;
 	private PlayGameController() {
 	}
 
@@ -23,7 +41,8 @@ public class PlayGameController {
 	}
 
 	public void startGame(Player p1, Player p2) {
-
+		player1=p1;
+		player2=p2;
 		game = new Game(p1, p2);
 
 	}

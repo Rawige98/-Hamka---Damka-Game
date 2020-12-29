@@ -88,6 +88,25 @@ public class MainPageController implements Initializable {
 
 	public static boolean isSoundOn = true;
 
+	public static Player getPlayer1() {
+		return player1;
+	}
+
+	public static void setPlayer1(Player player1) {
+		MainPageController.player1 = player1;
+	}
+
+	public static Player getPlayer2() {
+		return player2;
+	}
+
+	public static void setPlayer2(Player player2) {
+		MainPageController.player2 = player2;
+	}
+
+	private static Player player1;
+	private static Player player2;
+
 	/***************************************
 	 * main page
 	 *****************************************************/
@@ -133,7 +152,7 @@ public class MainPageController implements Initializable {
     	closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/LoadGame.fxml"));
-		Scene scene = new Scene(root, 533, 368);
+		Scene scene = new Scene(root, 541, 368);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Load Game");
 		primaryStage.show();
@@ -149,6 +168,19 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("login");
 		primaryStage.show();
 	}
+
+    @FXML
+    void LoadB(ActionEvent event) throws IOException {
+    	closeWindow();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/LoadGame.fxml"));
+		Scene scene = new Scene(root, 454, 236);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("LoadGame");
+		primaryStage.show();
+
+    }
+
 
 	@FXML
 	public void Play(ActionEvent event) throws Exception {
@@ -235,6 +267,8 @@ public class MainPageController implements Initializable {
 		Player player2 = new Player(p2.getText());
 		players.add(player1);
 		players.add(player2);
+		MainPageController.player1=player1;
+		MainPageController.player2=player2;
 		PlayGameController.getInstance().startGame(player1,player2);
 		Player firstPlayer = players.get(new Random().nextInt(players.size()));
 		Player secondPlayer;
