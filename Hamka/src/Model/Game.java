@@ -1,7 +1,5 @@
 package Model;
 
-import java.awt.Color;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -12,11 +10,10 @@ import java.util.Timer;
 
 import org.hamcrest.core.IsSame;
 
-import com.sun.media.jfxmedia.events.NewFrameEvent;
-
 import Utils.Consts;
 import Utils.GameStatus;
 import Utils.MoveType;
+import javafx.scene.paint.Color;
 
 public class Game {
 	private static int Serial = 0;
@@ -48,9 +45,9 @@ public class Game {
 			public void showColor(Color color) {
 				// TODO Auto-generated method stub
 				ArrayList<Tile> suggestedTiles = getSuggestedTilesArray();
-				if (color.equals(Color.green))
+				if (color.equals(Color.GREEN))
 					board.colorRandomTile(suggestedTiles, color);
-				else if (color.equals(Color.orange))
+				else if (color.equals(Color.ORANGE))
 					board.colorAllTiles(suggestedTiles, color);
 				// refreshBoard();
 			}
@@ -349,9 +346,9 @@ public class Game {
 
 	private void checkDestinatonTile(Tile destinationTile) {
 		// TODO Auto-generated method stub
-		if (destinationTile.getColor().equals(Color.yellow))
+		if (destinationTile.getColor().equals(Color.YELLOW))
 			popQuestion();
-		else if (destinationTile.getColor().equals(Color.blue)) {
+		else if (destinationTile.getColor().equals(Color.BLUE)) {
 			System.out.println("Congrats! you had earned a chance to bring back a soldier from death.");
 			String tileInput;
 			boolean leaglTile = false;
@@ -367,7 +364,7 @@ public class Game {
 				int x = Integer.parseInt(String.valueOf(moveArr[1]));
 				int y = Integer.parseInt(String.valueOf(moveArr[3]));
 				Tile tile = board.getTile(x, y);
-				if (tile.getColor().equals(Color.white)) {
+				if (tile.getColor().equals(Color.WHITE)) {
 					System.out.println("You must choose a black tile. Try again!");
 				} else {
 					HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
@@ -379,11 +376,11 @@ public class Game {
 					}
 				}
 			}
-		} else if (destinationTile.getColor().equals(Color.green)) {
+		} else if (destinationTile.getColor().equals(Color.GREEN)) {
 			Player player = isP1Turn ? player1 : player2;
 			player.updateScore(Consts.POINTS_FOR_GREEN_TILE);
 			System.out.println("You had earned " + Consts.POINTS_FOR_GREEN_TILE + " points.");
-		} else if (destinationTile.getColor().equals(Color.red)) {
+		} else if (destinationTile.getColor().equals(Color.RED)) {
 			System.out.println("You had won a one more turn with the same soldier. [indexes: ("
 					+ destinationTile.getRows() + "," + destinationTile.getCols() + ")");
 			myTimer.reset();
@@ -417,7 +414,7 @@ public class Game {
 		// ************ Red tile **********
 		HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
 		if (suggestedSkips.isEmpty()) {
-			board.colorAllTiles(suggestedTiles, Color.red);
+			board.colorAllTiles(suggestedTiles, Color.RED);
 		}
 
 		// *********** Blue tile **********
@@ -441,7 +438,7 @@ public class Game {
 		}
 
 		if (sCount == 2 && qCount == 1)
-			board.colorRandomTile(suggestedTiles, Color.blue);
+			board.colorRandomTile(suggestedTiles, Color.BLUE);
 	}
 	
 

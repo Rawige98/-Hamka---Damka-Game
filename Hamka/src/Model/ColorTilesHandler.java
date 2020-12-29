@@ -1,6 +1,6 @@
 package Model;
 
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public interface ColorTilesHandler {
 	void showColor(Color color);

@@ -70,7 +70,7 @@ public class PlayController implements Initializable {
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
 	private Thread t = null;
 	private Thread tp1 = null;
-//	private Thread tp2 = null;
+	//	private Thread tp2 = null;
 	private Game game;
 	private Player player_1;
 	private Player player_2;
@@ -164,7 +164,8 @@ public class PlayController implements Initializable {
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
-				showYellowTiles();
+//				showYellowTiles();
+				colorTiles();
 				break;
 
 			case KILL:
@@ -177,7 +178,8 @@ public class PlayController implements Initializable {
 				System.out.println("the other piece is:" + otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
-				showYellowTiles();
+//				showYellowTiles();
+				colorTiles();
 				break;
 			default:
 				break;
@@ -252,43 +254,49 @@ public class PlayController implements Initializable {
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 
-//		System.out.println("your index is:" + newY + "," + newX);
-//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[newX][newY].getColor());
-//
-//		if (/* boardView[x1][y1].getFill().equals(Color.YELLOW)&& */PlayGameController.getInstance().isYellowTile(newX,
-//				newY)) {
-//			count++;
-//			System.out.println(count + " **yellow:" + newY + "," + newX);
+	//		System.out.println("your index is:" + newY + "," + newX);
+	//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[newX][newY].getColor());
+	//
+	//		if (/* boardView[x1][y1].getFill().equals(Color.YELLOW)&& */PlayGameController.getInstance().isYellowTile(newX,
+	//				newY)) {
+	//			count++;
+	//			System.out.println(count + " **yellow:" + newY + "," + newX);
+	//		}
+	//
+	//		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
+	//			// boardView[x1][y1].getPiece().setPieceType();
+	//		}
+	//		updateScore(player_1);
+	//		updateScore(player_2);
+	//
+	//		return new MoveResult(result, boardView[x1][y1].getPiece());
+	//
+	//	}
+
+
+//	private void showYellowTiles() {
+//		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
+//		for (Tile tile : yellowTiles) {
+//			// System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
 //		}
-//
-//		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
-//			// boardView[x1][y1].getPiece().setPieceType();
+//		for (Tile tile : yellowTiles) {
+//			int x = tile.getRows();
+//			int y = tile.getCols();
+//			//			TileView tileView = new TileView(Color.YELLOW, y, x);
+//			//			boardView[x][y] = tileView;
+//			boardView[y][x].setFill(Color.YELLOW);
 //		}
-//		updateScore(player_1);
-//		updateScore(player_2);
-//
-//		return new MoveResult(result, boardView[x1][y1].getPiece());
-//
 //	}
-
-
-	private void showYellowTiles() {
-		ArrayList<Tile> yellowTiles = PlayGameController.getInstance().returnYellowTiles();
-		for (Tile tile : yellowTiles) {
-			// System.out.println("(" + tile.getRows() + "," + tile.getCols() + ")");
+	
+	private void colorTiles() {
+		PlayGameController.getInstance().checkTilesToBeColored();
+		for(int x=0 ; x<Consts.COLS ; x++) {
+			for(int y=0 ; y<Consts.COLS ; y++) {
+				Color color = PlayGameController.getInstance().getTileColor(y, x);
+				boardView[y][x].setFill(color);
+			}
 		}
-		for (Tile tile : yellowTiles) {
-			int x = tile.getRows();
-			int y = tile.getCols();
-//			TileView tileView = new TileView(Color.YELLOW, y, x);
-//			boardView[x][y] = tileView;
-			boardView[y][x].setFill(Color.YELLOW);
-
-
 	}
-
-}
-
 
 	private void turnOffAllColors() {
 		Color color;
@@ -350,8 +358,9 @@ public class PlayController implements Initializable {
 		player_2 = MainPageController.getPlayer2();
 		currentPlayer = player_1;
 		PlayGameController.getInstance().startGame(player_1, player_2);
-		showYellowTiles();
+//		showYellowTiles();
 
+		colorTiles();
 	}
 
 	public class TimerForPlayer1 implements Runnable {
@@ -395,7 +404,7 @@ public class PlayController implements Initializable {
 
 
 		public void getLabel(Label text) {
-		   l=text;
+			l=text;
 		}
 
 		@Override
@@ -476,9 +485,9 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-           if(Game.notFinished){
-        	   run();
-           }
+			if(Game.notFinished){
+				run();
+			}
 
 
 
@@ -530,7 +539,7 @@ public class PlayController implements Initializable {
 
 
 		public void getLabel(Label text) {
-		   l=text;
+			l=text;
 		}
 
 		@Override

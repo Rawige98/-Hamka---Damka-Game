@@ -1,6 +1,6 @@
 package Model;
 
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public class TimeForPlayer implements Runnable {
 
@@ -48,9 +48,9 @@ public class TimeForPlayer implements Runnable {
 				mints++;
 			}
 			if(second == 30 && mints ==0) 
-				handler.showColor(Color.green);
+				handler.showColor(Color.GREEN);
 			if(second == 30 && mints == 1)
-				handler.showColor(Color.orange);
+				handler.showColor(Color.ORANGE);
 			
 			try {
 				Thread.sleep(1000);

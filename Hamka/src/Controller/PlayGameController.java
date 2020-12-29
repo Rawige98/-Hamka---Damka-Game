@@ -7,6 +7,7 @@ import Model.Player;
 import Model.Tile;
 import Utils.GameStatus;
 import Utils.MoveType;
+import javafx.scene.paint.Color;
 
 public class PlayGameController {
 	private static PlayGameController instance;
@@ -32,12 +33,12 @@ public class PlayGameController {
 		return game.getBoard().move(oldX, oldY, newX, newY, isTurn, p);
 	}
 
-	public ArrayList<Tile> returnYellowTiles() {
-		return (game.getBoard().showYellowTiles());
-	}
+//	public ArrayList<Tile> returnYellowTiles() {
+//		return (game.getBoard().showYellowTiles());
+//	}
 
 	public boolean isYellowTile(int x, int y) {
-		if (game.getBoard().getTile(y, x).getColor().equals(java.awt.Color.YELLOW)) {
+		if (game.getBoard().getTile(y, x).getColor().equals(Color.YELLOW)) {
 			return true;
 		}
 
@@ -82,4 +83,12 @@ public class PlayGameController {
 		this.game = game;
 	}
 
+	public void checkTilesToBeColored() {
+		game.checkColorsToShow();
+	}
+
+	public Color getTileColor(int x, int y) {
+		System.out.println(game.getBoard().getMyBoard()[x][y]);
+		return game.getBoard().getMyBoard()[x][y].getColor();
+	}
 }

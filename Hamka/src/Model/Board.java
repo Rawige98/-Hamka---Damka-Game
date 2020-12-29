@@ -1,7 +1,5 @@
 package Model;
 
-import java.awt.Color;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +7,7 @@ import java.util.Random;
 
 import Utils.Consts;
 import Utils.MoveType;
+import javafx.scene.paint.Color;
 
 public class Board {
 	private Tile[][] myBoard;
@@ -35,6 +34,7 @@ public class Board {
 		for (int i = 0; i < Consts.ROWS; i++) {
 			for (int j = 0; j < Consts.COLS; j++) {
 				myBoard[j][i] = factory.makeTile(i, j);
+				System.out.println("------------"+myBoard[j][i]);
 			}
 		}
 	}
@@ -264,8 +264,8 @@ public class Board {
 	 * this methods randomly choose tile and if her color is black, then it will be
 	 * changed to yellow
 	 */
-	public ArrayList<Tile>  showYellowTiles() {
-		ArrayList<Tile> yellowTiles = new ArrayList<Tile>(); 
+	public void  showYellowTiles() {
+//		ArrayList<Tile> yellowTiles = new ArrayList<Tile>(); 
 		int x, y, yellowCount = 0;
 		Random random = new Random();
 		boolean done = false;
@@ -276,15 +276,15 @@ public class Board {
 				x = random.nextInt(Consts.ROWS);
 				y = random.nextInt(Consts.COLS);
 				Tile randomTile = myBoard[x][y];
-				if (!randomTile.getColor().equals(Color.white) && randomTile.getColor().equals(Color.black)
-						&& !randomTile.getColor().equals(Color.yellow)&&randomTile.getValue()==0) {
-					randomTile.setColor(Color.yellow);
-					yellowTiles.add(randomTile);
+				if (!randomTile.getColor().equals(Color.WHITE) && randomTile.getColor().equals(Color.BLACK)
+						&& !randomTile.getColor().equals(Color.YELLOW)&&randomTile.getValue()==0) {
+					randomTile.setColor(Color.YELLOW);
+//					yellowTiles.add(randomTile);
 					yellowCount++;
 				}
 			}
 		}
-		return yellowTiles;
+//		return yellowTiles;
 	}
 
 //	public void showRedGreenTile(boolean isP1Turn , Color color) {
@@ -318,7 +318,7 @@ public class Board {
 //	}
 
 	public void turnOffTileColor(Tile tile) {
-		tile.setColor(Color.black);
+		tile.setColor(Color.BLACK);
 	}
 
 	public void turnOffAllTilesColor() {
@@ -326,8 +326,8 @@ public class Board {
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard[i].length; j++) {
 				tile = myBoard[i][j];
-				if (!tile.getColor().equals(Color.white))
-					tile.setColor(Color.black);
+				if (!tile.getColor().equals(Color.WHITE))
+					tile.setColor(Color.BLACK);
 			}
 		}
 	}
