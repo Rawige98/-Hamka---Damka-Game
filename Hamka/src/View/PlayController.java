@@ -149,6 +149,9 @@ public class PlayController implements Initializable {
 			if (boardView[newX][newY].getFill().equals(Color.YELLOW)) {
 				try {
 					popQuestion();
+					updateScore(player_1);
+					updateScore(player_2);
+					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -183,7 +186,9 @@ public class PlayController implements Initializable {
 				break;
 			}
 
+			
 		});
+		
 		return piece;
 	}
 
@@ -245,6 +250,8 @@ public class PlayController implements Initializable {
 			}
 
 		}
+		
+		
 
 		updateScore(player_1);
 		updateScore(player_2);
@@ -312,7 +319,7 @@ public class PlayController implements Initializable {
 
 	}
 
-	private void updateScore(Player p) {
+	public  void updateScore(Player p) {
 		if (p.equals(player_1)) {
 			point1.setText(String.valueOf(player_1.getScore()));
 		} else if (p.equals(player_2)) {
