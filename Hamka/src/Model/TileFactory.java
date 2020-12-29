@@ -17,4 +17,21 @@ public class TileFactory {
 			}
 		}
 	}
+	public Tile getSubTile(int col,int row,int val) {
+		if(val==1||val==11) {
+			WhiteSoldier x=new WhiteSoldier(col, row);
+			x.setValue(val);
+			return x;
+			
+		}
+		else if(val==2||val==22) {
+			BlackSoldier x=new BlackSoldier(col, row);
+			x.setValue(val);
+			return x;
+		}
+		else 
+		return makeTile(row, col);	
+	}
+	
+	
 }

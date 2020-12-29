@@ -36,24 +36,26 @@ public class HistoryControl implements Initializable {
 	private ListView<Game> HistoryList;
 	ObservableList<Game> observableList = FXCollections.observableArrayList();
 	Set<Game> finishedGames;
-	ArrayList<Game> arr = SysData.getInstance().getGames();
+	ArrayList<Game> arr ;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		Player x=new Player("Nagwan");
-		Game m=new Game(x,new Player("tony"));
-		m.setWinner(x);
-		SysData.getInstance().addFinishedGame(m);
-		SysData.getInstance().writeData(DataType.FINISHED_GAMES);
-		SysData.getInstance().loadData(DataType.FINISHED_GAMES);
+		//Player x = new Player("Nagwan");
+		//Game m = new Game(x, new Player("tony"));
+		//m.setWinner(x);
+		 //m.move(5, 0, 4, 1);
+		 //m.move(2, 3, 3, 2);
+		//SysData.getInstance().addFinishedGame(m);
+		//SysData.getInstance().saveGame(DataType.FINISHED_GAMES);
+		SysData.getInstance().LoadGames(DataType.FINISHED_GAMES);
 		finishedGames = new HashSet<Game>();
+		arr=SysData.getInstance().getGames();
 		finishedGames.addAll(arr);
 		setListView();
 	}
 
 	public void setListView() {
-
 		observableList.setAll(finishedGames);
 		HistoryList.setItems(observableList);
 		HistoryList.setCellFactory(new Callback<ListView<Game>, javafx.scene.control.ListCell<Game>>() {
@@ -61,9 +63,7 @@ public class HistoryControl implements Initializable {
 			public ListCell<Game> call(ListView<Game> listView) {
 				return new ListViewCell();
 			}
-
 		});
-
 	}
 
 	public class ListViewCell extends ListCell<Game> {
@@ -72,12 +72,9 @@ public class HistoryControl implements Initializable {
 			super.updateItem(string, empty);
 			if (string != null) {
 				Data data = new Data();
-				
 				data.setInfo(string);
 				setGraphic(data.getBox());
 			}
 		}
-
 	}
-
 }

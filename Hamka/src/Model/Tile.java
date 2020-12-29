@@ -1,14 +1,34 @@
 package Model;
 
-import javafx.scene.paint.Color;
+import java.io.Serializable;
 
-public class Tile implements Cloneable,TileOperations{
+
+public abstract class Tile implements Cloneable,Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private int value;
-	private Color color;
+	private java.awt.Color color;
 	private int rows;
 	private int cols;
+	public static final String TEXT_RESET = "\u001B[0m";
+	public static final String TEXT_BLACK = "\u001B[30m";
+	public static final String TEXT_RED = "\u001B[31m";
+	public static final String TEXT_GREEN = "\u001B[32m";
+	public static final String TEXT_YELLOW = "\u001B[33m";
+	public static final String TEXT_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String TEXT_WHITE = "\u001B[37m";
+	public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+
+
 	
-	public Tile(int value, Color color,  int cols,int rows) {
+	public Tile(int value, java.awt.Color color,  int cols,int rows) {
 		super();
 		this.value = value;
 		this.color = color;
@@ -25,11 +45,11 @@ public class Tile implements Cloneable,TileOperations{
 		this.value = value;
 	}
 
-	public Color getColor() {
+	public java.awt.Color getColor() {
 		return color;
 	}
 
-	public void setColor(Color color) {
+	public void setColor(java.awt.Color color) {
 		this.color = color;
 	}
 
@@ -83,31 +103,18 @@ public class Tile implements Cloneable,TileOperations{
 
 	@Override
 	public String toString() {
-//		return "row: " + rows + " col: " + cols + " color: "+color;
 		return value+"";
 	}
-	
-	public String longString() {
-		return "row: " + rows + " col: " + cols + " color: "+color;
-	}
-	
-	
-	@Override
-	public boolean upgradeToQueen() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public boolean isQueen() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Tile makeCopy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/**
+	 * in this method we upgrade the soldier to queen
+	 * 
+	 * @param TileView T
+	 * @return true if the soldier upgraded successfully
+	 */
+	public abstract boolean upgradeToQueen() ;
+	public abstract boolean isQueen();
+	public abstract Tile makeCopy();
+	public abstract String subClass();
 
 }

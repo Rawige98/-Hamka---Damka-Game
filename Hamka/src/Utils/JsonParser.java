@@ -1,9 +1,7 @@
 package Utils;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
-
 import org.omg.CORBA.IRObject;
 
 import com.google.gson.ExclusionStrategy;
@@ -12,13 +10,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-
 import Model.BlackSoldier;
 import Model.BlackTile;
 import Model.Board;
 import Model.Game;
 import Model.Player;
 import Model.Question;
+import Model.RuntimeTypeAdapterFactory;
 import Model.Tile;
 import Model.WhiteSoldier;
 import Model.WhiteTile;
@@ -39,12 +37,20 @@ public class JsonParser {
 
 	private JsonParser() {
 		builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+//		RuntimeTypeAdapterFactory<Tile> adapter = RuntimeTypeAdapterFactory.of(Tile.class, Tile.class.getName())
+//				.registerSubtype(Tile.class, Tile.class.getName())
+//				.registerSubtype(BlackTile.class, BlackTile.class.getName())
+//				.registerSubtype(BlackSoldier.class, BlackSoldier.class.getName())
+//				.registerSubtype(WhiteTile.class, WhiteTile.class.getName())
+//				.registerSubtype(WhiteSoldier.class, WhiteSoldier.class.getName());
+//		builder.registerTypeAdapterFactory(adapter);
+		builder.registerTypeAdapter(Tile[][].class, new InterfaceAdapter<Tile[][]>());
 		gson = builder.setExclusionStrategies(new ExclusionStrategy() {
 			@Override
 			public boolean shouldSkipField(FieldAttributes f) {
 				return f.getDeclaringClass().equals(IRObject.class);
 			}
-
 			@Override
 			public boolean shouldSkipClass(Class<?> clazz) {
 				return false;
@@ -52,13 +58,11 @@ public class JsonParser {
 		}).create();
 		;
 	}
-
 	public static JsonParser getInstance() {
 		if (instance == null)
 			instance = new JsonParser();
 		return instance;
 	}
-
 	/**
 	 * This method parses JsonArray to List of objects
 	 * 
@@ -84,18 +88,18 @@ public class JsonParser {
 			else if (clazz instanceof Question)
 				type = new TypeToken<List<Question>>() {
 				}.getType();
-//			else if (clazz instanceof BlackSoldier)
-//				type = new TypeToken<BlackSoldier>() {
-//				}.getType();
-//			else if (clazz instanceof WhiteSoldier)
-//				type = new TypeToken<WhiteSoldier>() {
-//				}.getType();
-//			else if (clazz instanceof BlackTile)
-//				type = new TypeToken<BlackTile>() {
-//				}.getType();
-//			else if (clazz instanceof WhiteTile)
-//				type = new TypeToken<WhiteTile>() {
-//				}.getType();
+			else if (clazz instanceof BlackSoldier)
+				type = new TypeToken<BlackSoldier>() {
+				}.getType();
+			else if (clazz instanceof BlackTile)
+				type = new TypeToken<BlackTile>() {
+				}.getType();
+			else if (clazz instanceof WhiteSoldier)
+				type = new TypeToken<WhiteSoldier>() {
+				}.getType();
+			else if (clazz instanceof WhiteTile)
+				type = new TypeToken<WhiteTile>() {
+				}.getType();
 			else if (clazz instanceof Tile)
 				type = new TypeToken<Tile>() {
 				}.getType();
@@ -137,18 +141,18 @@ public class JsonParser {
 			else if (clazz instanceof Question)
 				type = new TypeToken<Question>() {
 				}.getType();
-//			else if (clazz instanceof BlackSoldier)
-//				type = new TypeToken<BlackSoldier>() {
-//				}.getType();
-//			else if (clazz instanceof WhiteSoldier)
-//				type = new TypeToken<WhiteSoldier>() {
-//				}.getType();
-//			else if (clazz instanceof BlackTile)
-//				type = new TypeToken<BlackTile>() {
-//				}.getType();
-//			else if (clazz instanceof WhiteTile)
-//				type = new TypeToken<WhiteTile>() {
-//				}.getType();
+			else if (clazz instanceof BlackSoldier)
+				type = new TypeToken<BlackSoldier>() {
+				}.getType();
+			else if (clazz instanceof BlackTile)
+				type = new TypeToken<BlackTile>() {
+				}.getType();
+			else if (clazz instanceof WhiteSoldier)
+				type = new TypeToken<WhiteSoldier>() {
+				}.getType();
+			else if (clazz instanceof WhiteTile)
+				type = new TypeToken<WhiteTile>() {
+				}.getType();
 			else if (clazz instanceof Tile)
 				type = new TypeToken<Tile>() {
 				}.getType();
@@ -187,18 +191,18 @@ public class JsonParser {
 			else if (clazz instanceof Question)
 				type = new TypeToken<List<Question>>() {
 				}.getType();
-//			else if (clazz instanceof BlackSoldier)
-//				type = new TypeToken<BlackSoldier>() {
-//				}.getType();
-//			else if (clazz instanceof WhiteSoldier)
-//				type = new TypeToken<WhiteSoldier>() {
-//				}.getType();
-//			else if (clazz instanceof BlackTile)
-//				type = new TypeToken<BlackTile>() {
-//				}.getType();
-//			else if (clazz instanceof WhiteTile)
-//				type = new TypeToken<WhiteTile>() {
-//				}.getType();
+			else if (clazz instanceof BlackSoldier)
+				type = new TypeToken<BlackSoldier>() {
+				}.getType();
+			else if (clazz instanceof BlackTile)
+				type = new TypeToken<BlackTile>() {
+				}.getType();
+			else if (clazz instanceof WhiteSoldier)
+				type = new TypeToken<WhiteSoldier>() {
+				}.getType();
+			else if (clazz instanceof WhiteTile)
+				type = new TypeToken<WhiteTile>() {
+				}.getType();
 			else if (clazz instanceof Tile)
 				type = new TypeToken<Tile>() {
 				}.getType();
@@ -236,18 +240,18 @@ public class JsonParser {
 			else if (object instanceof Question)
 				type = new TypeToken<Question>() {
 				}.getType();
-//			else if (object instanceof BlackSoldier)
-//				type = new TypeToken<BlackSoldier>() {
-//				}.getType();
-//			else if (object instanceof WhiteSoldier)
-//				type = new TypeToken<WhiteSoldier>() {
-//				}.getType();
-//			else if (object instanceof BlackTile)
-//				type = new TypeToken<BlackTile>() {
-//				}.getType();
-//			else if (object instanceof WhiteTile)
-//				type = new TypeToken<WhiteTile>() {
-//				}.getType();
+			else if (object instanceof BlackSoldier)
+				type = new TypeToken<BlackSoldier>() {
+				}.getType();
+			else if (object instanceof BlackTile)
+				type = new TypeToken<BlackTile>() {
+				}.getType();
+			else if (object instanceof WhiteSoldier)
+				type = new TypeToken<WhiteSoldier>() {
+				}.getType();
+			else if (object instanceof WhiteTile)
+				type = new TypeToken<WhiteTile>() {
+				}.getType();
 			else if (object instanceof Tile)
 				type = new TypeToken<Tile>() {
 				}.getType();
@@ -259,4 +263,5 @@ public class JsonParser {
 			return null;
 		}
 	}
+
 }

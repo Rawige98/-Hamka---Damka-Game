@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="288.0" prefWidth="663.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.HistoryControl">
+<AnchorPane prefHeight="317.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.HistoryControl">
    <children>
       <AnchorPane prefHeight="329.0" prefWidth="679.0">
          <children>

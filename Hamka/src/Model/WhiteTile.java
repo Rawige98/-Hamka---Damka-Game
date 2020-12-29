@@ -4,6 +4,10 @@ import javafx.scene.paint.Color;
 
 public class WhiteTile extends Tile{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public WhiteTile(int cols, int rows) {
 		super(0,  Color.WHITE, cols, rows);
 	}
@@ -27,6 +31,11 @@ public class WhiteTile extends Tile{
 			e.printStackTrace();
 		}
 		return w;
+	}
+	@Override
+	public String subClass() {
+		// TODO Auto-generated method stub
+		return "WhiteTile";
 	}
 
 }

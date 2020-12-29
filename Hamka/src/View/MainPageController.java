@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import Controller.PlayGameController;
+import Model.Game;
 import Model.Player;
 import Model.SysData;
 import javafx.animation.PathTransition;
@@ -28,21 +30,6 @@ import javafx.util.Duration;
 
 public class MainPageController implements Initializable {
 
-	public static Player getPlayer1() {
-		return player1;
-	}
-
-	public static void setPlayer1(Player player1) {
-		MainPageController.player1 = player1;
-	}
-
-	public static Player getPlayer2() {
-		return player2;
-	}
-
-	public static void setPlayer2(Player player2) {
-		MainPageController.player2 = player2;
-	}
 
 	@FXML
 	private Button play;
@@ -65,6 +52,8 @@ public class MainPageController implements Initializable {
 
 	@FXML
 	private ImageView cloud1;
+	@FXML
+    private Button loadB;
 
 	@FXML
 	private ImageView cloud2;
@@ -97,8 +86,6 @@ public class MainPageController implements Initializable {
 	@FXML
 	private ImageView menu;
 
-	private static Player player1;
-	private static Player player2;
 	public static boolean isSoundOn = true;
 
 	/***************************************
@@ -140,8 +127,17 @@ public class MainPageController implements Initializable {
 		play.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
 		rules.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
 		history.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
-
 	}
+    @FXML
+    void LoadG(ActionEvent event) throws IOException {
+    	closeWindow();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/LoadGame.fxml"));
+		Scene scene = new Scene(root, 533, 368);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Load Game");
+		primaryStage.show();
+    }
 
 	@FXML
 	public void Admin(ActionEvent event) throws Exception {
@@ -177,7 +173,6 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("RULES");
 		primaryStage.show();
 	}
-
 	@FXML
 	void History(ActionEvent event) throws IOException {
 		closeWindow();
@@ -188,7 +183,6 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("History");
 		primaryStage.show();
 	}
-
 	@FXML
 	void soundClicked(MouseEvent event) {
 		if (MainPageController.isSoundOn) {
@@ -203,7 +197,6 @@ public class MainPageController implements Initializable {
 			MainPageController.isSoundOn = true;
 		}
 	}
-
 	public void pop(ActionEvent event) throws Exception {
 
 		Stage primaryStage = new Stage();
@@ -216,7 +209,6 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("Play");
 		primaryStage.show();
 	}
-
 	/**********************************************
 	 * nick name page
 	 *****************************************/
@@ -239,10 +231,11 @@ public class MainPageController implements Initializable {
 	public void Start(ActionEvent event) throws Exception {
 		ArrayList<Player> players = new ArrayList<Player>();
 
-		player1 = new Player(p1.getText());
-		player2 = new Player(p2.getText());
+		Player player1 = new Player(p1.getText());
+		Player player2 = new Player(p2.getText());
 		players.add(player1);
 		players.add(player2);
+		PlayGameController.getInstance().startGame(player1,player2);
 		Player firstPlayer = players.get(new Random().nextInt(players.size()));
 		Player secondPlayer;
 		if (firstPlayer.equals(player1)) {
@@ -260,7 +253,6 @@ public class MainPageController implements Initializable {
 		primaryStage.setTitle("Play");
 		primaryStage.show();
 	}
-
 	public void back(ActionEvent event) throws Exception {
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
@@ -274,7 +266,6 @@ public class MainPageController implements Initializable {
 	public void startColor() {
 		start.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 30;" + ""
 				+ "-fx-border-color: transparent;" + "-fx-border-radius: 30;" + "-fx-text-fill: #cd4f06");
-
 	}
 
 	@Override

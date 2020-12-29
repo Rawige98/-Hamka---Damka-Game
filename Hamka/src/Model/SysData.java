@@ -8,17 +8,23 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import Utils.Consts;
 import Utils.DataType;
 import Utils.Difficulty;
 import Utils.E_Teams;
@@ -319,106 +325,9 @@ public class SysData {
 		quesJsonPath = originalPath;
 	}
 
-	// public boolean loadPausedGames() {
-	// // TODO Auto-generated catch block
-	// try {
-	// String file = "src/JSON/pausedGames_json.txt";
-	// String json = readFileAsString(file);
-	//
-	// List<Game> games = JsonParser.getInstance().parseToList(json, new Game());
-	// pausedGames.clear();
-	// pausedGames.addAll(games);
-	// return true;
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// resetPathToDefault();
-	// return false;
-	// }
-	//
-	// }
-
 	public static String readFileAsString(String file) throws Exception {
 		return new String(Files.readAllBytes(Paths.get(file)));
 	}
-
-	// public boolean writePausedGames() {
-	// FileWriter writer = null;
-	// try {
-	// String filePath = "src/JSON/pausedGames_json.txt";
-	// writer = new FileWriter(filePath);
-	// String parsedListToJson =
-	// JsonParser.getInstance().parseListToJsonArray(pausedGames, new Game());
-	// writer.write(parsedListToJson);
-	// return true;
-	// }
-	//
-	// catch (Exception e) {
-	// e.printStackTrace();
-	// resetPathToDefault();
-	// return false;
-	// } finally {
-	// try {
-	// writer.flush();
-	// writer.close();
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	//
-	// public boolean loadFinishedGames() {
-	// // TODO Auto-generated method stub
-	// FileWriter writer = null;
-	// try {
-	// String filePath = "src/JSON/finishedGames_json.txt";
-	// writer = new FileWriter(filePath);
-	// String parsedListToJson = JsonParser.getInstance().pa(, new Game());
-	// writer.write(parsedListToJson);
-	// return true;
-	// }
-	//
-	// catch (Exception e) {
-	// e.printStackTrace();
-	// resetPathToDefault();
-	// return false;
-	// }finally {
-	// try {
-	// writer.flush();
-	// writer.close();
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	//
-	// public boolean writeRules() {
-	// // TODO Auto-generated method stub
-	// FileWriter writer = null;
-	// try {
-	// String filePath = "src/JSON/rules_json.txt";
-	// writer = new FileWriter(filePath);
-	// String parsedListToJson =
-	// JsonParser.getInstance().parseListToJsonArray(rules, new String());
-	// writer.write(parsedListToJson);
-	// return true;
-	// }
-	//
-	// catch (Exception e) {
-	// e.printStackTrace();
-	// resetPathToDefault();
-	// return false;
-	// } finally {
-	// try {
-	// writer.flush();
-	// writer.close();
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	// }
 
 	public boolean loadRules() {
 		// TODO Auto-generated method stub
@@ -460,23 +369,11 @@ public class SysData {
 				List<Game> games = JsonParser.getInstance().parseToList(json, new Game());
 				if (games != null) {
 					pausedGames.clear();
+
 					pausedGames.addAll(games);
 				}
 				return true;
-			}
-
-			// else if (type.equals(DataType.QUESTIONS)) {
-			// String file = "src/JSON/question_json.txt";
-			// String json = readFileAsString(file);
-			// List<Question> questions = JsonParser.getInstance().parseToList(json, new
-			// Question());
-			// if(questions != null){
-			// this.questions.clear();
-			// this.questions.addAll(questions);
-			// }
-			// return true;
-			// }
-			else if (type.equals(DataType.FINISHED_GAMES)) {
+			} else if (type.equals(DataType.FINISHED_GAMES)) {
 				String file = "src/JSON/finishedGames_json.txt";
 				String json = readFileAsString(file);
 				List<Game> finishedGames = JsonParser.getInstance().parseToList(json, new Game());
@@ -556,4 +453,156 @@ public class SysData {
 		return writeData(DataType.FINISHED_GAMES) && writeData(DataType.PAUSED_GAMES) && writeData(DataType.RULES);
 	}
 
+	// *******************************************loadQuestions************************************************************************
+
+	@SuppressWarnings("unchecked")
+	public boolean LoadGames(DataType d) {
+		String externalPath = null;
+		ArrayList<Game> aa = new ArrayList<Game>();
+		if (d.equals(DataType.FINISHED_GAMES)) {
+			externalPath = gameJsonPath;
+		}
+		if (d.equals(DataType.PAUSED_GAMES)) {
+			externalPath = "src/JSON/pausedGames_json.txt";
+		}
+
+		// Logger.log("Reading questions form path: " + quesJsonPath);
+		JSONParser parser = new JSONParser();
+		try {
+			// get question's JSON file
+			FileInputStream fis = new FileInputStream(externalPath);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+			Object obj = (Object) parser.parse(reader);
+			JSONObject jo = (JSONObject) obj;
+			// convert Games's JSON file to array.
+			JSONArray gamesArray = (JSONArray) jo.get("games");
+			// iterate over the values (Games).
+			Iterator<JSONObject> gameIterator = gamesArray.iterator();
+			// get the Games data.
+			while (gameIterator.hasNext()) {
+				JSONObject g = gameIterator.next();
+				// get Games content
+				Player p1 = new Player((String) g.get("p1Username"));
+				Player p2 = new Player((String) g.get("p2Username"));
+				p1.setScore(Integer.valueOf(g.get("p1Score").toString()));
+				p2.setScore(Integer.valueOf(g.get("p2Score").toString()));
+				String winnerUser = (String) g.get("WUsername");
+				// Date gameDate =new Date(g.get("gameDate").toString());
+				// Timer gameDuration = (Timer) g.get("gameDuration");
+				boolean isP1T = (boolean) g.get("isP1Turn");
+				int id = Integer.valueOf(g.get("id").toString());
+				JSONArray board = (JSONArray) g.get("Board");
+				JSONArray row = null;
+				Tile[][] x = new Tile[Consts.COLS][Consts.ROWS];
+				TileFactory factory = new TileFactory();
+				for (int i = 0; i < Consts.COLS; i++) {
+					row = (JSONArray) board.get(i);
+					for (int j = 0; j < Consts.ROWS; j++) {
+						x[j][i] = factory.getSubTile(j, i, Integer.valueOf(row.get(j).toString()));
+					}
+				}
+				Game s = new Game(p1, p2);
+				if (p1.getUsername().equals(winnerUser))
+					s.setWinner(p1);
+				else
+					s.setWinner(p2);
+				s.getBoard().setMyBoard(x);
+				s.setP1Turn(isP1T);
+				s.setId(id);
+				aa.add(s);
+			}
+			if (d.equals(DataType.FINISHED_GAMES)) {
+				games.addAll(aa);
+			}
+			if (d.equals(DataType.PAUSED_GAMES)) {
+				pausedGames.addAll(aa);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			resetPathToDefault();
+			return false;
+		}
+		resetPathToDefault();
+		return true;
+	}
+
+	// ***********************************************SaveGames****************************************************************************
+	@SuppressWarnings({ "unchecked", "resource" })
+	public void saveGame(DataType d) {
+		String externalPath = null;
+		if (d.equals(DataType.FINISHED_GAMES)) {
+			externalPath = gameJsonPath;
+		}
+		if (d.equals(DataType.PAUSED_GAMES)) {
+			externalPath = "src/JSON/pausedGames_json.txt";
+		}
+		if (externalPath != null) {
+			gameJsonPath = externalPath;
+		}
+		BufferedReader reader = null;
+		FileInputStream fis = null;
+		FileWriter file = null;
+		try {
+			JSONParser parser = new JSONParser();
+			// get question's JSON file
+			fis = new FileInputStream(externalPath);
+			reader = new BufferedReader(new InputStreamReader(fis));
+			if (reader.ready()) {
+				Object obj = parser.parse(reader);
+				JSONObject jo = (JSONObject) obj;
+				jo.clear();
+			}
+			JSONArray JSONGame = new JSONArray();
+			JSONObject toWrite = new JSONObject();
+			ArrayList<Game> gamesToPars = new ArrayList<Game>();
+			if (d.equals(DataType.FINISHED_GAMES))
+				gamesToPars = games;
+			if (d.equals(DataType.PAUSED_GAMES))
+				gamesToPars = pausedGames;
+			// go over all questions and add every question to json file
+			for (Game game : gamesToPars) {
+				if (game == null)
+					continue;
+				// get each question from the ArrayList
+				JSONObject ja = new JSONObject();
+				// get all answers
+				JSONArray Board = new JSONArray();
+				for (int i = 0; i < Consts.COLS; i++) {
+					JSONArray row = new JSONArray();
+					for (int j = 0; j < Consts.ROWS; j++) {
+						row.add(game.getBoard().getMyBoard()[j][i].getValue());
+					}
+					Board.add(row);
+				}
+				// put fields in the object
+				ja.put("p1Username", game.getPlayer1().getUsername());
+				ja.put("p1Score", game.getPlayer1().getScore());
+				ja.put("p2Username", game.getPlayer2().getUsername());
+				ja.put("p2Score", game.getPlayer2().getScore());
+				ja.put("WUsername", game.getWinner().getUsername());
+				ja.put("id", game.getId());
+				ja.put("gameDate", game.getGameDate().toString());
+				ja.put("winner", game.getWinner().getId());
+				ja.put("gameDuration", game.getGameDuration());
+				ja.put("isP1Turn", game.isP1Turn());
+				ja.put("Board", Board);
+				JSONGame.add(ja);
+				// add json array to object question
+				toWrite.put("games", JSONGame);
+			}
+			// write the JSONObject to .json file
+			file = new FileWriter(externalPath);
+			file.write(toWrite.toJSONString());
+			file.flush();
+			System.out.println("Game JSON was saved");
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		resetPathToDefault();
+	}
 }
