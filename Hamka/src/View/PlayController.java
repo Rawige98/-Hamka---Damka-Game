@@ -96,7 +96,6 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private RadioButton ans4;
-	Question q;
 	PopQ p = new PopQ();
 	int rightA;
 
@@ -114,6 +113,7 @@ public class PlayController implements Initializable {
 	private TimerForGame timer;
 	private TimerForPlayer1 PlayerTimer1;
 	int count = 0;
+	private Question q;
 
 	// private TimerForPlayer2 PlayerTimer2;
 	@FXML
@@ -324,6 +324,7 @@ public class PlayController implements Initializable {
 //		boardPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
 		questionPane.setVisible(true);
 		q = p.popQuestion();
+
 		ans1.setVisible(true);
 		ans2.setVisible(true);
 		ans3.setVisible(true);
@@ -622,10 +623,6 @@ public class PlayController implements Initializable {
 				currentPlayer.updateScore(-250);
 
 			}
-
-			System.out.println("false");
-			updateScore(currentPlayer);
-
 		}
 
 //		Game.setP1Turn(!Game.getIsP1Turn());
