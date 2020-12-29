@@ -1,9 +1,16 @@
 package Model;
 
-import java.awt.Color;
+import java.io.Serializable;
 
 
-public class Tile implements Cloneable,TileOperations{
+public abstract class Tile implements Cloneable,Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private int value;
 	private java.awt.Color color;
 	private int rows;
@@ -99,22 +106,15 @@ public class Tile implements Cloneable,TileOperations{
 		return value+"";
 	}
 
-	@Override
-	public boolean upgradeToQueen() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isQueen() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Tile makeCopy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/**
+	 * in this method we upgrade the soldier to queen
+	 * 
+	 * @param TileView T
+	 * @return true if the soldier upgraded successfully
+	 */
+	public abstract boolean upgradeToQueen() ;
+	public abstract boolean isQueen();
+	public abstract Tile makeCopy();
+	public abstract String subClass();
 
 }

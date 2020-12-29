@@ -2,6 +2,7 @@ package Model;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,13 +19,20 @@ import Utils.Consts;
 import Utils.GameStatus;
 import Utils.MoveType;
 
-public class Game {
+public class Game implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private static int Serial = 0;
 	private int id;
 	private Player player1;
 	private Player player2;
-	private Date gameDate;
-	private Board board;
+	private Date gameDate;	
+	private  Board board;
 	private Player winner;
 	private Timer gameDuration;
 	private static boolean isP1Turn;
@@ -32,7 +40,6 @@ public class Game {
 	static boolean notFinished = false;
 	private int Time = 0;
 	Scanner runGameScanner;
-
 	public Game(Player player1, Player player2) {
 		super();
 		this.player1 = player1;

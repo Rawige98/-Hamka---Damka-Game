@@ -2,22 +2,28 @@ package Model;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import Utils.Consts;
 import Utils.MoveType;
 
-public class Board {
+public class Board implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Tile[][] myBoard;
-
+	public List<Tile> r=new ArrayList<Tile>();
 	public Board() {
 		setMyBoard(new Tile[Consts.ROWS][Consts.COLS]);
 		initBoard();
-	}
-
+	}	
 	public Tile[][] getMyBoard() {
 		return myBoard;
 	}
@@ -343,7 +349,6 @@ public class Board {
 				} else {
 					if (myBoard[i][j] instanceof BlackSoldier)
 						mySoldiers.add(myBoard[i][j]);
-
 				}
 			}
 		}

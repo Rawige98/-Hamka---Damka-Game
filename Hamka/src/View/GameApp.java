@@ -20,7 +20,7 @@ public class GameApp extends Pane{
 	public GameApp gameApp() {
 		return (GameApp) createContent();
 	}
-	
+
 	private Parent createContent() {
 		Pane rootPane = new Pane();
 		rootPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE , Consts.ROWS * Consts.TILE_SIZE);
@@ -96,7 +96,6 @@ public class GameApp extends Pane{
 		});
 		return piece;
 	}
-	
 	 private MoveResult tryMove(Piece piece, int newX, int newY) {
 	        if (boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
 	            return new MoveResult(MoveType.NONE);

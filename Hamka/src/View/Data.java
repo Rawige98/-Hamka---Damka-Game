@@ -2,16 +2,20 @@ package View;
 
 import java.io.IOException;
 
+import Controller.PlayGameController;
 import Model.Game;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 public class Data {
 
@@ -77,14 +81,27 @@ public class Data {
 		b1.setText("Show Board");
 		cellGame = game;
 		Data.game=cellGame;
-		System.out.println(game.getBoard().getMyBoard()[0][0].getClass());
 	b1.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				System.out.println(cellGame.getPlayer1());
-			}
+				PlayGameController.getInstance().setGame(getCellGame());
+				PlayGameController.getInstance().setPlayer1(getCellGame().getPlayer1());
+				PlayGameController.getInstance().setPlayer2(getCellGame().getPlayer2());
+				Stage primaryStage = new Stage();
+				Parent root;
+				try {
+					root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
+					Scene scene = new Scene(root, 650, 600);
+					primaryStage.setScene(scene);
+					primaryStage.setTitle("Play");
+					primaryStage.show();	
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+						}
 		});
 	}
 

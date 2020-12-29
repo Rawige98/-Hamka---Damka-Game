@@ -8,19 +8,23 @@ import java.awt.Color;
 
 import org.junit.Test;
 
+import Model.BlackSoldier;
+import Model.BlackTile;
 import Model.Tile;
+import Model.WhiteSoldier;
 
 public class UpgradeToQueenTest {
 
 	@Test
 	public void test() {
 
-		Tile tile1 = new Tile(2, Color.black, 1, 3);
-		Tile tile2 = new Tile(1, Color.white, 1, 0);
-		Tile tile3 = new Tile(22, Color.black, 1, 1);
-		Tile tile4 = new Tile(1, Color.black, 7, 7);
-		Tile tile5 = new Tile(2, Color.black, 7, 7);
-		Tile tile6 = new Tile(1, Color.black, 2,0);
+		Tile tile1 = new BlackTile( 1, 3);
+		Tile tile2 = new WhiteSoldier(1, 0);
+		Tile tile3 = new BlackSoldier(1, 1);
+		tile3.setValue(22);
+		Tile tile4 = new WhiteSoldier(7, 7);
+		Tile tile5 = new BlackSoldier( 7, 7);
+		Tile tile6 = new WhiteSoldier(2,0);
 
 		assertFalse(tile1.upgradeToQueen());
 		assertFalse(tile2.upgradeToQueen());

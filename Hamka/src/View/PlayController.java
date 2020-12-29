@@ -4,10 +4,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controller.PlayGameController;
+import Model.BlackSoldier;
 import Model.Game;
 import Model.Player;
 import Model.Tile;
 import Model.TimeForPlayer;
+import Model.WhiteSoldier;
 import Utils.Consts;
 import Utils.MoveResult;
 import Utils.MoveType;
@@ -84,40 +86,38 @@ public class PlayController implements Initializable {
 		primaryStage.setTitle("Hamka game");
 		primaryStage.show();
 	}
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		player1.setText(MainPageController.getPlayer1().getUsername());
-		player2.setText(MainPageController.getPlayer2().getUsername());
-		point1.setText(Integer.toString(MainPageController.getPlayer1().getScore()));
-		point2.setText(Integer.toString(MainPageController.getPlayer2().getScore()));
+		player1.setText(PlayGameController.getInstance().getPlayer1().getUsername());
+		player2.setText(PlayGameController.getInstance().getPlayer2().getUsername());
+		point1.setText(Integer.toString(PlayGameController.getInstance().getPlayer1().getScore()));
+		point2.setText(Integer.toString(PlayGameController.getInstance().getPlayer2().getScore()));
 		tileGroup = new Group();
 		pieceGroup = new Group();
-		rootBorderPane.setCenter(createBoardView());
-
-		player_1 = MainPageController.getPlayer1();
-		player_2 = MainPageController.getPlayer2();
+		player_1 = PlayGameController.getInstance().getPlayer1();
+		player_2 = PlayGameController.getInstance().getPlayer2();
 		currentPlayer = player_1;
-		PlayGameController.getInstance().startGame(player_1, player_2);
-
+		game =PlayGameController.getInstance().getGame();
+		System.out.println("*********************8");
+		System.out.println(game.getGameState());
+		rootBorderPane.setCenter(createBoardView());
 	}
-
 	public Pane createBoardView() {
 		boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
 		boardPane.getChildren().addAll(tileGroup, pieceGroup);
+		System.out.println(game.getGameState());
 		for (int y = 0; y < Consts.ROWS; y++) {
 			for (int x = 0; x < Consts.COLS; x++) {
 				TileView tileView = new TileView((x + y) % 2 == 0, x, y);
 				boardView[x][y] = tileView;
 				tileGroup.getChildren().add(tileView);
-
 				Piece piece = null;
 				// changes in (if)
-				if (y <= 2 && (x + y) % 2 != 0) {
+				if (game.getBoard().getMyBoard()[x][y] instanceof BlackSoldier) {
 					piece = makePiece(PieceType.RED, x, y);
 				}
-				if (y >= 5 && (x + y) % 2 != 0) {
+				if (game.getBoard().getMyBoard()[x][y] instanceof WhiteSoldier) {
 					piece = makePiece(PieceType.BLUE, x, y);
 				}
 				if (piece != null) {
@@ -128,7 +128,6 @@ public class PlayController implements Initializable {
 		}
 		return boardPane;
 	}
-
 	private Piece makePiece(PieceType type, int x, int y) {
 		Piece piece = new Piece(type, x, y, "b.jpg");
 		piece.setOnMouseReleased(e -> {
@@ -167,33 +166,6 @@ public class PlayController implements Initializable {
 
 		});
 		return piece;
-	}
-
-	private MoveResult tryMove(Piece piece, int newX, int newY) {
-
-		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
-			return new MoveResult(MoveType.NONE);
-
-		if (boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
-			return new MoveResult(MoveType.NONE);
-		}
-
-		int x0 = toBoard(piece.getOldX());
-		int y0 = toBoard(piece.getOldY());
-
-		if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getPieceType().moveDir) {
-			return new MoveResult(MoveType.NORMAL);
-		} else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getPieceType().moveDir * 2) {
-
-			int x1 = x0 + (newX - x0) / 2;
-			int y1 = y0 + (newY - y0) / 2;
-
-			if (boardView[x1][y1].hasPiece() && boardView[x1][y1].getPiece().getPieceType() != piece.getPieceType()) {
-				return new MoveResult(MoveType.KILL, boardView[x1][y1].getPiece());
-			}
-		}
-
-		return new MoveResult(MoveType.NONE);
 	}
 
 	// move update(Model)
@@ -235,10 +207,9 @@ public class PlayController implements Initializable {
 			}
 
 		}
-		
-		if(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen())
-		{
-		//	boardView[x1][y1].getPiece().setPieceType();
+
+		if (PlayGameController.getInstance().getGame().getBoard().getMyBoard()[oldX][oldY].upgradeToQueen()) {
+			// boardView[x1][y1].getPiece().setPieceType();
 		}
 		System.out.println("the result is:" + result);
 		updateScore(player_1);
