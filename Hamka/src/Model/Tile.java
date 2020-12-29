@@ -2,6 +2,8 @@ package Model;
 
 import java.io.Serializable;
 
+import javafx.scene.paint.Color;
+
 
 public abstract class Tile implements Cloneable,Serializable{
 	/**
@@ -12,7 +14,7 @@ public abstract class Tile implements Cloneable,Serializable{
 	 * 
 	 */
 	private int value;
-	private java.awt.Color color;
+	private Color color;
 	private int rows;
 	private int cols;
 	public static final String TEXT_RESET = "\u001B[0m";
@@ -28,10 +30,10 @@ public abstract class Tile implements Cloneable,Serializable{
 
 
 	
-	public Tile(int value, java.awt.Color color,  int cols,int rows) {
+	public Tile(int value, Color color,  int cols,int rows) {
 		super();
 		this.value = value;
-		this.color = color;
+		this.setColor(color);
 		this.rows = rows;
 		this.cols = cols;
 	}
@@ -45,13 +47,6 @@ public abstract class Tile implements Cloneable,Serializable{
 		this.value = value;
 	}
 
-	public java.awt.Color getColor() {
-		return color;
-	}
-
-	public void setColor(java.awt.Color color) {
-		this.color = color;
-	}
 
 	public int getRows() {
 		return rows;
@@ -116,5 +111,13 @@ public abstract class Tile implements Cloneable,Serializable{
 	public abstract boolean isQueen();
 	public abstract Tile makeCopy();
 	public abstract String subClass();
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 }

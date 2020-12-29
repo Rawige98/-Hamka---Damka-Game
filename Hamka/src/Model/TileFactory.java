@@ -22,7 +22,6 @@ public class TileFactory {
 			WhiteSoldier x=new WhiteSoldier(col, row);
 			x.setValue(val);
 			return x;
-			
 		}
 		else if(val==2||val==22) {
 			BlackSoldier x=new BlackSoldier(col, row);
@@ -30,8 +29,10 @@ public class TileFactory {
 			return x;
 		}
 		else 
-		return makeTile(row, col);	
+			if((col+row)%2==0)
+				return new WhiteTile(col,row);
+			else
+				return new BlackTile(col,row);
 	}
-	
 	
 }

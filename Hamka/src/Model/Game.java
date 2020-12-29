@@ -381,17 +381,17 @@ public class Game {
 
 		// ************ Red tile **********
 		HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
-		System.out.println("***************** SKIPS ************************");
-		for(Tile key : suggestedSkips.keySet()) {
-			System.out.println(key.longString());
-			for(Tile tile : suggestedSkips.get(key))
-					System.out.println("\t"+tile.longString());
-		}
-		System.out.println(getGameState());
-		System.out.println();
-		if (suggestedSkips.isEmpty()) {
-			board.colorAllTiles(suggestedTiles, Color.RED);
-		}
+//		System.out.println("***************** SKIPS ************************");
+//		for(Tile key : suggestedSkips.keySet()) {
+//			System.out.println(key.longString());
+//			for(Tile tile : suggestedSkips.get(key))
+//					System.out.println("\t"+tile.longString());
+//		}
+//		System.out.println(getGameState());
+//		System.out.println();
+//		if (suggestedSkips.isEmpty()) {
+//			board.colorAllTiles(suggestedTiles, Color.RED);
+//		}
 
 		// *********** Blue tile **********
 		int qCount = 0, sCount = 0, queen, soldier;

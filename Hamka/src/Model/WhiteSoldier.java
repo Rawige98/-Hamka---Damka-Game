@@ -9,7 +9,7 @@ public class WhiteSoldier extends Tile{
 	 */
 	private static final long serialVersionUID = 1L;
 	public WhiteSoldier(int cols, int rows) {
-		super(1,  Color.black, cols, rows);
+		super(1,  javafx.scene.paint.Color.BLACK, cols, rows);
 		// TODO Auto-generated constructor stub
 	}
 	@Override

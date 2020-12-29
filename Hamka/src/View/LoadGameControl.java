@@ -41,8 +41,7 @@ public class LoadGameControl implements Initializable{
     }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		SysData.getInstance().loadData(DataType.PAUSED_GAMES);
-		System.out.println(SysData.getInstance().getPausedGames().get(0).getGameState());
+		SysData.getInstance().LoadGames(DataType.PAUSED_GAMES);
 		LoadList.getItems().addAll(SysData.getInstance().getPausedGames());
 	}
 }
