@@ -144,7 +144,6 @@ public class PlayController implements Initializable {
 		//boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
 		boardPane.getChildren().addAll(tileGroup, pieceGroup);
-		System.out.println(game.getGameState());
 		for (int y = 0; y < Consts.ROWS; y++) {
 			for (int x = 0; x < Consts.COLS; x++) {
 				TileView tileView = new TileView((x + y) % 2 == 0, x, y);
@@ -203,7 +202,6 @@ public class PlayController implements Initializable {
 				boardView[newX][newY].setPiece(piece);
 
 				Piece otherPiece = moveResult.getPiece();
-				System.out.println("the other piece is:" + otherPiece);
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
 				// showYellowTiles();
@@ -251,6 +249,7 @@ public class PlayController implements Initializable {
 
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
+		
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
 			return new MoveResult(MoveType.NONE);
 
@@ -259,7 +258,6 @@ public class PlayController implements Initializable {
 		int oldY = toBoard(piece.getOldY());
 		int x1 = oldX + (newX - oldX) / 2;
 		int y1 = oldY + (newY - oldY) / 2;
-
 		if (currentPlayer.equals(player_1)) {
 			if (piece.getPieceType().equals(PieceType.BLUE)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
@@ -271,7 +269,6 @@ public class PlayController implements Initializable {
 		} else {
 			if (piece.getPieceType().equals(PieceType.RED)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
-
 				PlayGameController.getInstance().getGame();
 				// Game.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
 				// currentPlayer = player_1;
@@ -279,10 +276,9 @@ public class PlayController implements Initializable {
 			}
 
 		}
-
 		updateScore(player_1);
 		updateScore(player_2);
-
+		System.out.println(game.getGameState());
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 

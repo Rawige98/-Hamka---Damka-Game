@@ -76,7 +76,7 @@ public class Board {
 			if (!myBoard[yStart][xStart].isQueen()) {
 				// if its not a skip
 				if (Math.abs(dx) != 2) {
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					turnOffAllTilesColor();
 					return MoveType.NORMAL;
@@ -84,7 +84,7 @@ public class Board {
 					int xmid = (xStart + xEnd) / 2;
 					int ymid = (yStart + yEnd) / 2;
 					myBoard[ymid][xmid] = new BlackTile(ymid, xmid);
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					p.setScore(100);
 					turnOffAllTilesColor();
@@ -179,13 +179,13 @@ public class Board {
 				}
 				if (isSkip) {
 					myBoard[col][row] = new BlackTile(col, row);
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					p.setScore(100);
 					turnOffAllTilesColor();
 					return MoveType.KILL;
 				} else {
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy();
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					turnOffAllTilesColor();
 					return MoveType.NORMAL;
@@ -254,10 +254,7 @@ public class Board {
 				}
 			}
 		}
-		System.out.println("===================================");
-		System.out.println("Tile: " + t);
-		System.out.println(mymoves);
-		System.out.println();
+
 		return mymoves;
 	}
 
