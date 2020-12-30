@@ -46,70 +46,48 @@ public class Game {
 
 	}
 
-	/*public void run() {
-		GameStatus status = GameStatus.FINISH;
-		String turnString, scoresStatus, moveInput;
-		Player playerToPlay;
-		int fromX, fromY, toX, toY;
-		System.out.println(
-				"NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game");
-		System.out.println();
-		while (!finishGame(status)) {
-			playerToPlay = isP1Turn() ? getPlayer1() : getPlayer2();
-			turnString = String.format("%s's turn:", playerToPlay.getUsername());
-			System.out.println(turnString);
-			System.out.println("Time for previos turn : " + getTime());
-			scoresStatus = "Current scores status: " + getPlayer1().getUsername() + ": " + getPlayer1().getScore()
-					+ " , " + getPlayer2().getUsername() + ": " + getPlayer2().getScore();
-			System.out.println(scoresStatus);
-			checkColorsToShow();
-			System.out.println(getGameState());
-			boolean legalFirstMoveInput = false;
-			while (!legalFirstMoveInput) {
-				System.out
-				.println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:");
-				moveInput = runGameScanner.nextLine();
-				if (moveInput.equals("quit")) {
-					status = GameStatus.QUIT;
-					finishGame(status);
-					System.out.println("Game finished. " + playerToPlay.getUsername() + " had quited");
-					System.out.println(getWinner().getUsername() + " wins !!!");
-					SysData.getInstance().addFinishedGame(this);
-					legalFirstMoveInput = true;
-				} else if (moveInput.equals("save game")) {
-					SysData.getInstance().addPausedGame(this);
-					System.out.println("This game had been paused and saved\nSee you later");
-					status = GameStatus.PAUSE;
-					legalFirstMoveInput = true;
-				} else {
-					if (validateMoveInput(moveInput)) {
-						boolean legalSecondMoveInput = false;
-						char[] moveArr = moveInput.toCharArray();
-						fromX = Integer.parseInt(String.valueOf(moveArr[1]));
-						fromY = Integer.parseInt(String.valueOf(moveArr[3]));
-						while (!legalSecondMoveInput) {
-							System.out.println("Please enter the indexes [format: (row,col)] of the distination tile:");
-							moveInput = runGameScanner.nextLine();
-							if (validateMoveInput(moveInput)) {
-								moveArr = moveInput.toCharArray();
-								toX = Integer.parseInt(String.valueOf(moveArr[1]));
-								toY = Integer.parseInt(String.valueOf(moveArr[3]));
-								move(fromX, fromY, toX, toY);
-								board.turnOffAllTilesColor();
-								legalSecondMoveInput = true;
-							} else {
-								System.out.println("Illegal move input! Try Again");
-							}
-						}
-						legalFirstMoveInput = true;
-					}
-				}
-				if (!legalFirstMoveInput)
-					System.out.println("Illegal move input! Try Again");
-			}
-
-		}
-	} */
+	/*
+	 * public void run() { GameStatus status = GameStatus.FINISH; String turnString,
+	 * scoresStatus, moveInput; Player playerToPlay; int fromX, fromY, toX, toY;
+	 * System.out.println(
+	 * "NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game"
+	 * ); System.out.println(); while (!finishGame(status)) { playerToPlay =
+	 * isP1Turn() ? getPlayer1() : getPlayer2(); turnString =
+	 * String.format("%s's turn:", playerToPlay.getUsername());
+	 * System.out.println(turnString); System.out.println("Time for previos turn : "
+	 * + getTime()); scoresStatus = "Current scores status: " +
+	 * getPlayer1().getUsername() + ": " + getPlayer1().getScore() + " , " +
+	 * getPlayer2().getUsername() + ": " + getPlayer2().getScore();
+	 * System.out.println(scoresStatus); checkColorsToShow();
+	 * System.out.println(getGameState()); boolean legalFirstMoveInput = false;
+	 * while (!legalFirstMoveInput) { System.out
+	 * .println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:"
+	 * ); moveInput = runGameScanner.nextLine(); if (moveInput.equals("quit")) {
+	 * status = GameStatus.QUIT; finishGame(status);
+	 * System.out.println("Game finished. " + playerToPlay.getUsername() +
+	 * " had quited"); System.out.println(getWinner().getUsername() + " wins !!!");
+	 * SysData.getInstance().addFinishedGame(this); legalFirstMoveInput = true; }
+	 * else if (moveInput.equals("save game")) {
+	 * SysData.getInstance().addPausedGame(this);
+	 * System.out.println("This game had been paused and saved\nSee you later");
+	 * status = GameStatus.PAUSE; legalFirstMoveInput = true; } else { if
+	 * (validateMoveInput(moveInput)) { boolean legalSecondMoveInput = false; char[]
+	 * moveArr = moveInput.toCharArray(); fromX =
+	 * Integer.parseInt(String.valueOf(moveArr[1])); fromY =
+	 * Integer.parseInt(String.valueOf(moveArr[3])); while (!legalSecondMoveInput) {
+	 * System.out.
+	 * println("Please enter the indexes [format: (row,col)] of the distination tile:"
+	 * ); moveInput = runGameScanner.nextLine(); if (validateMoveInput(moveInput)) {
+	 * moveArr = moveInput.toCharArray(); toX =
+	 * Integer.parseInt(String.valueOf(moveArr[1])); toY =
+	 * Integer.parseInt(String.valueOf(moveArr[3])); move(fromX, fromY, toX, toY);
+	 * board.turnOffAllTilesColor(); legalSecondMoveInput = true; } else {
+	 * System.out.println("Illegal move input! Try Again"); } } legalFirstMoveInput
+	 * = true; } } if (!legalFirstMoveInput)
+	 * System.out.println("Illegal move input! Try Again"); }
+	 * 
+	 * } }
+	 */
 
 	public Player showPlayerTurn() {
 
@@ -207,7 +185,7 @@ public class Game {
 		return isP1Turn;
 	}
 
-	public static  boolean getIsP1Turn() {
+	public static boolean getIsP1Turn() {
 		return isP1Turn;
 	}
 
@@ -243,30 +221,22 @@ public class Game {
 		} else
 			return false;
 	}
-/*
-	public void popQuestion() {
-		Question question = SysData.getInstance().popQuestion();
-		System.out.println("You Got a bunos question :D ===>");
-		System.out.println("Question: " + question.getText());
-		System.out.print("Answers: ");
-		int i = 0;
-		for (String answer : question.getAnswers()) {
-			System.out.print("\t" + i + ". " + answer);
-		}
-		System.out.println();
-
-		System.out.println("Enter the number of the right question:");
-		Scanner scan = new Scanner(System.in);
-		int ans = scan.nextInt();
-		int score = question.checkAnswer(ans);
-		if (score > 0)
-			System.out.println("Good job!! You had earned: " + score + " points.");
-		else
-			System.out.println("Bad luck :( You had lost: " + score + " points.");
-		Player player = isP1Turn ? player1 : player2;
-		player.updateScore(score);
-	}
-*/
+	/*
+	 * public void popQuestion() { Question question =
+	 * SysData.getInstance().popQuestion();
+	 * System.out.println("You Got a bunos question :D ===>");
+	 * System.out.println("Question: " + question.getText());
+	 * System.out.print("Answers: "); int i = 0; for (String answer :
+	 * question.getAnswers()) { System.out.print("\t" + i + ". " + answer); }
+	 * System.out.println();
+	 * 
+	 * System.out.println("Enter the number of the right question:"); Scanner scan =
+	 * new Scanner(System.in); int ans = scan.nextInt(); int score =
+	 * question.checkAnswer(ans); if (score > 0)
+	 * System.out.println("Good job!! You had earned: " + score + " points."); else
+	 * System.out.println("Bad luck :( You had lost: " + score + " points."); Player
+	 * player = isP1Turn ? player1 : player2; player.updateScore(score); }
+	 */
 
 	public MoveType move(int xStart, int yStart, int xEnd, int yEnd) {
 		Player p = null;
@@ -294,11 +264,11 @@ public class Game {
 //				isSkip = true;
 //			}
 //		}
-		MoveType MType=board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p);
-		if (MType.equals(MoveType.KILL)||MType.equals(MoveType.NORMAL)) {
+		MoveType MType = board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p);
+		if (MType.equals(MoveType.KILL) || MType.equals(MoveType.NORMAL)) {
 			board.upgradeQueen(xEnd, yEnd);
-		//	Tile destinationTile = board.getTile(xEnd, yEnd);
-			//checkDestinatonTile(destinationTile);
+			// Tile destinationTile = board.getTile(xEnd, yEnd);
+			// checkDestinatonTile(destinationTile);
 //			if (!(isSkip && board.checkAvailableSkips(isP1Turn).containsKey(board.getMyBoard()[xEnd][yEnd])) && !board.getMyBoard()[xEnd][yEnd].getColor().equals(Color.YELLOW) )
 //				isP1Turn = !isP1Turn;
 //			notFinished = true;
@@ -309,63 +279,44 @@ public class Game {
 		}
 		return MType;
 	}
-	
+
 	public void switchTurn() {
 		isP1Turn = !isP1Turn;
 	}
-	
-	/*private void checkDestinatonTile(Tile destinationTile) {
-		// TODO Auto-generated method stub
-		if (destinationTile.getColor().equals(Color.YELLOW))
-			popQuestion();
-		else if (destinationTile.getColor().equals(Color.BLUE)) {
-			System.out.println("Congrats! you had earned a chance to bring back a soldier from death.");
-			String tileInput;
-			boolean leaglTile = false;
-			Scanner scanner = new Scanner(System.in);
-			while (!leaglTile) {
-				do {
-					System.out.println(
-							"Please enter the tile coordinates [format: (row,col)] that you want the soldier to return to:");
-					tileInput = scanner.nextLine();
-				} while (!validateMoveInput(tileInput));
-				scanner.close();
-				char[] moveArr = tileInput.toCharArray();
-				int x = Integer.parseInt(String.valueOf(moveArr[1]));
-				int y = Integer.parseInt(String.valueOf(moveArr[3]));
-				Tile tile = board.getTile(x, y);
-				if (tile.getColor().equals(Color.WHITE)) {
-					System.out.println("You must choose a black tile. Try again!");
-				} else {
-					HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
-					if (suggestedSkips.containsKey(tile))
-						System.out.println("Illegal tile! You are to close of the contest's soldiers");
-					else {
-						leaglTile = true;
-						tile.setValue(isP1Turn ? 1 : 2);
-					}
-				}
-			}
-		} else if (destinationTile.getColor().equals(Color.GREEN)) {
-			Player player = isP1Turn ? player1 : player2;
-			player.updateScore(Consts.POINTS_FOR_GREEN_TILE);
-			System.out.println("You had earned " + Consts.POINTS_FOR_GREEN_TILE + " points.");
-		} else if (destinationTile.getColor().equals(Color.RED)) {
-			System.out.println("You had won a one more turn with the same soldier. [indexes: ("
-					+ destinationTile.getRows() + "," + destinationTile.getCols() + ")");
-			Scanner scanner = new Scanner(System.in);
-			String input;
-			do {
-				System.out.println("Enter a new destination tile");
-				input = scanner.nextLine();
-			} while (!validateMoveInput(input));
-			char[] moveArr = input.toCharArray();
-			int x = Integer.parseInt(String.valueOf(moveArr[1]));
-			int y = Integer.parseInt(String.valueOf(moveArr[3]));
-			move(destinationTile.getRows(), destinationTile.getCols(), x, y);
-		}
-	}
-*/
+
+	/*
+	 * private void checkDestinatonTile(Tile destinationTile) { // TODO
+	 * Auto-generated method stub if
+	 * (destinationTile.getColor().equals(Color.YELLOW)) popQuestion(); else if
+	 * (destinationTile.getColor().equals(Color.BLUE)) { System.out.
+	 * println("Congrats! you had earned a chance to bring back a soldier from death."
+	 * ); String tileInput; boolean leaglTile = false; Scanner scanner = new
+	 * Scanner(System.in); while (!leaglTile) { do { System.out.println(
+	 * "Please enter the tile coordinates [format: (row,col)] that you want the soldier to return to:"
+	 * ); tileInput = scanner.nextLine(); } while (!validateMoveInput(tileInput));
+	 * scanner.close(); char[] moveArr = tileInput.toCharArray(); int x =
+	 * Integer.parseInt(String.valueOf(moveArr[1])); int y =
+	 * Integer.parseInt(String.valueOf(moveArr[3])); Tile tile = board.getTile(x,
+	 * y); if (tile.getColor().equals(Color.WHITE)) {
+	 * System.out.println("You must choose a black tile. Try again!"); } else {
+	 * HashMap<Tile, ArrayList<Tile>> suggestedSkips =
+	 * board.checkAvailableSkips(isP1Turn); if (suggestedSkips.containsKey(tile))
+	 * System.out.println("Illegal tile! You are to close of the contest's soldiers"
+	 * ); else { leaglTile = true; tile.setValue(isP1Turn ? 1 : 2); } } } } else if
+	 * (destinationTile.getColor().equals(Color.GREEN)) { Player player = isP1Turn ?
+	 * player1 : player2; player.updateScore(Consts.POINTS_FOR_GREEN_TILE);
+	 * System.out.println("You had earned " + Consts.POINTS_FOR_GREEN_TILE +
+	 * " points."); } else if (destinationTile.getColor().equals(Color.RED)) {
+	 * System.out.
+	 * println("You had won a one more turn with the same soldier. [indexes: (" +
+	 * destinationTile.getRows() + "," + destinationTile.getCols() + ")"); Scanner
+	 * scanner = new Scanner(System.in); String input; do {
+	 * System.out.println("Enter a new destination tile"); input =
+	 * scanner.nextLine(); } while (!validateMoveInput(input)); char[] moveArr =
+	 * input.toCharArray(); int x = Integer.parseInt(String.valueOf(moveArr[1]));
+	 * int y = Integer.parseInt(String.valueOf(moveArr[3]));
+	 * move(destinationTile.getRows(), destinationTile.getCols(), x, y); } }
+	 */
 	public String getGameState() {
 		return board.toString();
 	}
@@ -416,11 +367,10 @@ public class Game {
 		if (sCount == 2 && qCount == 1)
 			board.colorRandomTile(suggestedTiles, Color.BLUE);
 
-		//*********** Yellow tiles ****************
+		// *********** Yellow tiles ****************
 		board.showYellowTiles();
 
 	}
-
 
 	public ArrayList<Tile> getSuggestedTilesArray() {
 		// TODO Auto-generated method stub
@@ -432,15 +382,15 @@ public class Game {
 		}
 		return tiles;
 	}
-	
-	public HashMap<Tile, ArrayList<Tile>> getAvailableMoves(){
+
+	public HashMap<Tile, ArrayList<Tile>> getAvailableMoves() {
 		return board.checkAvailableMoves(isP1Turn);
 	}
 
 	@Override
 	public String toString() {
-		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
-				+ ", winner=" + winner + ", gameDuration=" + gameDuration;
+		return "--------------------------------------------------\nPlayer 1 :" + player1.getUsername() + " Player 2 :"
+				+ player2.getUsername() + "\n--------------------------------------------------";
 	}
 
 	public String briefToString() {

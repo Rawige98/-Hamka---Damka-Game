@@ -53,7 +53,9 @@ public class SkipValidation {
 			int i = xStart, j = yStart;
 			int c = 0;
 			// check if the road to the target is clear
-			while ((i != xEnd && j != yEnd)) {
+			int r=0;
+			while ((i != xEnd && j != yEnd)&&r!=20) {
+				r++;
 				if (Math.abs(dx) == Math.abs(dy)) {
 					if (dx > 0 && dy > 0) {
 						i++;
@@ -129,7 +131,7 @@ public class SkipValidation {
 						|| isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier)))
 					c++;
 			}
-			if (c != 1)
+			if (c > 1)
 				return false;
 		}
 		return true;

@@ -146,7 +146,15 @@ public class MainPageController implements Initializable {
 		play.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
 		rules.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
 		history.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
+		loadGame.setStyle("-fx-background-color: silver;" + "-fx-background-radius: 30;");
+
 	}
+	  @FXML
+	    void loadColor(MouseEvent event) {
+			loadGame.setStyle("-fx-background-color: transparent;" + "-fx-background-radius: 30;" + ""
+					+ "-fx-border-color: silver;" + "-fx-border-radius: 30;" + "-fx-border-width: 3");
+	    }
+
     @FXML
     void LoadG(ActionEvent event) throws IOException {
     	closeWindow();
@@ -174,7 +182,7 @@ public class MainPageController implements Initializable {
     	closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/LoadGame.fxml"));
-		Scene scene = new Scene(root, 454, 236);
+		Scene scene = new Scene(root, 533, 368);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("LoadGame");
 		primaryStage.show();
