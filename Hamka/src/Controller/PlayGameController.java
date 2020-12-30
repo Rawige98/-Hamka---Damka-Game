@@ -1,18 +1,20 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Model.Game;
 import Model.Player;
 import Model.Tile;
 import Utils.GameStatus;
 import Utils.MoveType;
+import View.Piece;
 import javafx.scene.paint.Color;
 
 public class PlayGameController {
 	private static PlayGameController instance;
 	private Game game;
-	
+
 	public Player getPlayer1() {
 		return player1;
 	}
@@ -50,21 +52,21 @@ public class PlayGameController {
 	public MoveType movePiece(int oldX, int oldY, int newX, int newY) {
 		MoveType type = game.move(oldX, oldY, newX, newY);
 		Tile tile = game.getBoard().getMyBoard()[newY][newX];
-//		if(type.equals(MoveType.KILL) || type.equals(MoveType.NORMAL)) {
-//			if(tile.getColor().equals(Color.YELLOW))
-//				
-//		}
-		
+		//		if(type.equals(MoveType.KILL) || type.equals(MoveType.NORMAL)) {
+		//			if(tile.getColor().equals(Color.YELLOW))
+		//				
+		//		}
+
 		return type;
 	}
 
 	public void switchTurnNow() {
 		game.switchTurn();
 	}
-	
-//	public ArrayList<Tile> returnYellowTiles() {
-//		return (game.getBoard().showYellowTiles());
-//	}
+
+	//	public ArrayList<Tile> returnYellowTiles() {
+	//		return (game.getBoard().showYellowTiles());
+	//	}
 
 	public boolean isYellowTile(int x, int y) {
 		if (game.getBoard().getTile(y, x).getColor().equals(Color.YELLOW)) {
@@ -119,15 +121,15 @@ public class PlayGameController {
 	public Color getTileColor(int x, int y) {
 		return game.getBoard().getMyBoard()[x][y].getColor();
 	}
-	
+
 	public ArrayList<Tile> getSuggestedTilesArrayForPlayer(){
 		return game.getSuggestedTilesArray();
 	}
-	
+
 	public void colorRandomTile(ArrayList<Tile> tiles , Color color) {
 		game.getBoard().colorRandomTile(tiles, color);
 	}
-	
+
 	public void colorAllTiles(ArrayList<Tile> tiles , Color color) {
 		game.getBoard().colorAllTiles(tiles, color);
 	}
@@ -135,5 +137,11 @@ public class PlayGameController {
 	public Player getCurrentPlayer() {
 		// TODO Auto-generated method stub
 		return game.isP1Turn() ? game.getPlayer1() : game.getPlayer2();
+	}
+
+	public boolean checkMovesAvailability(int x , int y) {
+		HashMap<Tile, ArrayList<Tile>> suggestedMoves= game.getAvailableMoves();
+		Tile tile = game.getBoard().getMyBoard()[x][y];
+		return suggestedMoves.keySet().contains(tile);
 	}
 }

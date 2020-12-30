@@ -432,6 +432,10 @@ public class Game {
 		}
 		return tiles;
 	}
+	
+	public HashMap<Tile, ArrayList<Tile>> getAvailableMoves(){
+		return board.checkAvailableMoves(isP1Turn);
+	}
 
 	@Override
 	public String toString() {

@@ -17,18 +17,6 @@ public abstract class Tile implements Cloneable,Serializable{
 	private Color color;
 	private int rows;
 	private int cols;
-	public static final String TEXT_RESET = "\u001B[0m";
-	public static final String TEXT_BLACK = "\u001B[30m";
-	public static final String TEXT_RED = "\u001B[31m";
-	public static final String TEXT_GREEN = "\u001B[32m";
-	public static final String TEXT_YELLOW = "\u001B[33m";
-	public static final String TEXT_BLUE = "\u001B[34m";
-	public static final String ANSI_PURPLE = "\u001B[35m";
-	public static final String TEXT_WHITE = "\u001B[37m";
-	public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-
-
 	
 	public Tile(int value, Color color,  int cols,int rows) {
 		super();
@@ -74,8 +62,10 @@ public abstract class Tile implements Cloneable,Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + cols;
 		result = prime * result + rows;
+		result = prime * result + value;
 		return result;
 	}
 
@@ -88,9 +78,16 @@ public abstract class Tile implements Cloneable,Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Tile other = (Tile) obj;
+		if (color == null) {
+			if (other.color != null)
+				return false;
+		} else if (!color.equals(other.color))
+			return false;
 		if (cols != other.cols)
 			return false;
 		if (rows != other.rows)
+			return false;
+		if (value != other.value)
 			return false;
 		return true;
 	}
@@ -119,4 +116,5 @@ public abstract class Tile implements Cloneable,Serializable{
 		this.color = color;
 	}
 
+	
 }
