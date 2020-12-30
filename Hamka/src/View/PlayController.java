@@ -114,6 +114,9 @@ public class PlayController implements Initializable {
 	private TimerForPlayer1 PlayerTimer1;
 	int count = 0;
 	private Question q;
+	private static TileView lastTile;
+	private boolean samePlayerTurn = false;
+	private static Color lastColor = Color.BLACK;
 
 	// private TimerForPlayer2 PlayerTimer2;
 	@FXML
@@ -171,12 +174,27 @@ public class PlayController implements Initializable {
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
+			int x0 = toBoard(piece.getOldX());
+			int y0 = toBoard(piece.getOldY());
 			// calling tryMoveTest instead of tryMove
 			currentPlayer = PlayGameController.getInstance().getCurrentPlayer();
 			MoveResult moveResult = tryMoveTest(piece, newX, newY);
-
-			int x0 = toBoard(piece.getOldX());
-			int y0 = toBoard(piece.getOldY());
+			if(lastTile == null) {
+				lastTile = boardView[x0][y0];
+			}
+			if(lastColor.equals(Color.RED)) {
+				System.out.println(piece);
+				System.out.println(lastTile.getPiece());
+				Piece lastPiece = lastTile.getPiece();
+				
+				if(!lastPiece.equals(piece)) {
+					System.out.println("You must move the same soldier");
+					moveResult.setType(MoveType.NONE);
+				}else {
+					System.out.println("GOOD");
+				}
+			}
+			
 
 			switch (moveResult.getType()) {
 			case NONE:
@@ -187,12 +205,7 @@ public class PlayController implements Initializable {
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
 				// showYellowTiles();
-				if (boardView[newX][newY].getFill().equals(Color.YELLOW)) {
-					popQuestion();
-					updateScore(player_1);
-					updateScore(player_2);
-				} else
-					PlayGameController.getInstance().switchTurnNow();
+				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
 				break;
 
@@ -205,10 +218,7 @@ public class PlayController implements Initializable {
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
 				// showYellowTiles();
-				if (boardView[newX][newY].getFill().equals(Color.YELLOW))
-					popQuestion();
-				else
-					PlayGameController.getInstance().switchTurnNow();
+				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
 				break;
 			default:
@@ -220,6 +230,39 @@ public class PlayController implements Initializable {
 		return piece;
 	}
 
+	private void checkDestinationTile(TileView tileView) {
+		lastTile = tileView;
+		if (tileView.getFill().equals(Color.YELLOW)) {
+			popQuestion();
+			samePlayerTurn = true;
+			lastColor = Color.YELLOW;
+		}else if(tileView.getFill().equals(Color.RED)) {
+			if(PlayGameController.getInstance().checkMovesAvailability(tileView.getX_value(), tileView.getY_value())) {
+				samePlayerTurn = true;
+				lastColor = Color.RED;
+			}
+			else {
+				samePlayerTurn = false;
+				lastColor = Color.BLACK;
+			}
+		}else if(tileView.getFill().equals(Color.GREEN)) {
+			currentPlayer.updateScore(Consts.POINTS_FOR_GREEN_TILE);
+			updateScore(currentPlayer);
+			samePlayerTurn = false;
+			lastColor = Color.GREEN;
+		}else if(tileView.getFill().equals(Color.BLUE)) {
+			lastColor = Color.BLUE;
+			samePlayerTurn = true;
+		}else {
+			samePlayerTurn = false;
+			lastColor = Color.BLACK;
+		}
+		if(!samePlayerTurn) {
+			PlayGameController.getInstance().switchTurnNow();
+			lastColor = Color.BLACK;
+		}
+	}
+	
 	private MoveResult tryMove(Piece piece, int newX, int newY) {
 
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
@@ -249,32 +292,24 @@ public class PlayController implements Initializable {
 
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
+		int oldX = toBoard(piece.getOldX());
+		int oldY = toBoard(piece.getOldY());
 		
-		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
+		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS || oldX == newX || oldY == newY)
 			return new MoveResult(MoveType.NONE);
 
 		MoveType result = MoveType.NONE;
-		int oldX = toBoard(piece.getOldX());
-		int oldY = toBoard(piece.getOldY());
+
 		int x1 = oldX + (newX - oldX) / 2;
 		int y1 = oldY + (newY - oldY) / 2;
 		if (currentPlayer.equals(player_1)) {
 			if (piece.getPieceType().equals(PieceType.BLUE)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
-				PlayGameController.getInstance().getGame();
-				// Game.setP1Turn(!Game.getIsP1Turn());
-				// currentPlayer = player_2;
-
 			}
 		} else {
 			if (piece.getPieceType().equals(PieceType.RED)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
-				PlayGameController.getInstance().getGame();
-				// Game.setP1Turn(!PlayGameController.getInstance().getGame().isP1Turn());
-				// currentPlayer = player_1;
-
 			}
-
 		}
 		updateScore(player_1);
 		updateScore(player_2);
@@ -285,7 +320,6 @@ public class PlayController implements Initializable {
 	private void colorTiles() {
 		PlayGameController.getInstance().checkTilesToBeColored();
 		refreshBoardTilesColors();
-
 	}
 
 	private void refreshBoardTilesColors() {
@@ -296,15 +330,6 @@ public class PlayController implements Initializable {
 			}
 		}
 	}
-	// private void turnOffAllColors() {
-	// Color color;
-	// for (int x = 0; x < Consts.COLS; x++) {
-	// for (int y = 0; y < Consts.ROWS; y++) {
-	// color = ((x + y) % 2 == 0 ? Color.WHITE : Color.BLACK);
-	// boardView[x][y].setFill(color);
-	// }
-	// }
-	// }
 
 	public void popQuestion() {
 		// Stage primaryStage = new Stage();
@@ -316,11 +341,14 @@ public class PlayController implements Initializable {
 		// primaryStage.setScene(scene);
 		// primaryStage.setTitle("questions");
 		// primaryStage.show();
-		//boardPane.setDisable(true);
+		ans1.setSelected(false);
+		ans2.setSelected(false);
+		ans3.setSelected(false);
+		ans4.setSelected(false);
+		boardPane.setDisable(true);
 //		boardPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
 		questionPane.setVisible(true);
 		q = p.popQuestion();
-
 		ans1.setVisible(true);
 		ans2.setVisible(true);
 		ans3.setVisible(true);
@@ -448,6 +476,8 @@ public class PlayController implements Initializable {
 			reset();
 
 			while (Game.getIsP1Turn() && Game.notFinished) {
+				player1.setTextFill(Color.RED);
+				player2.setTextFill(Color.BLACK);
 
 				second++;
 				if (second >= 60) {
@@ -455,9 +485,9 @@ public class PlayController implements Initializable {
 					mints++;
 				}
 
-				if (second == 10 && mints == 0)
+				if (second == 30 && mints == 0)
 					handler.showColor(Color.GREEN);
-				if (second == 20 && mints == 0)
+				if (second == 30 && mints == 1)
 					handler.showColor(Color.ORANGE);
 
 				Platform.runLater(() -> {
@@ -483,6 +513,8 @@ public class PlayController implements Initializable {
 			reset();
 
 			while (!Game.getIsP1Turn() && Game.notFinished) {
+				player2.setTextFill(Color.RED);
+				player1.setTextFill(Color.BLACK);
 
 				second++;
 				if (second >= 60) {
@@ -595,7 +627,7 @@ public class PlayController implements Initializable {
 
 	}
 
-	public void check(ActionEvent event) throws Exception {
+	public void check(ActionEvent event){
 		if ((ans1.isSelected() && rightA == 1) || (ans2.isSelected() && rightA == 2)
 				|| (ans3.isSelected() && rightA == 3) || (ans4.isSelected() && rightA == 4)) {
 			if (q.getDifficulty().equals(Difficulty.HARD)) {
@@ -607,9 +639,6 @@ public class PlayController implements Initializable {
 				currentPlayer.updateScore(100);
 
 			}
-
-			updateScore(currentPlayer);
-
 			System.out.println("true");
 		} else {
 			if (q.getDifficulty().equals(Difficulty.HARD)) {
@@ -622,10 +651,9 @@ public class PlayController implements Initializable {
 
 			}
 		}
-
-//		Game.setP1Turn(!Game.getIsP1Turn());
+		updateScore(player_1);
+		updateScore(player_2);
 		PlayGameController.getInstance().switchTurnNow();
-
 		questionPane.setVisible(false);
 		boardPane.setDisable(false);
 	}

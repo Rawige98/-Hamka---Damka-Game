@@ -74,4 +74,5 @@ public class Piece extends StackPane {
 	public void aboartMove() {
 		relocate(oldX, oldY);
 	}
+	
 }

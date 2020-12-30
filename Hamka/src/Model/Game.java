@@ -389,9 +389,9 @@ public class Game {
 //		}
 //		System.out.println(getGameState());
 //		System.out.println();
-//		if (suggestedSkips.isEmpty()) {
-//			board.colorAllTiles(suggestedTiles, Color.RED);
-//		}
+		if (suggestedSkips.isEmpty()) {
+			board.colorRandomTile(suggestedTiles, Color.RED);
+		}
 
 		// *********** Blue tile **********
 		int qCount = 0, sCount = 0, queen, soldier;
@@ -431,6 +431,10 @@ public class Game {
 				tiles.add(tile);
 		}
 		return tiles;
+	}
+	
+	public HashMap<Tile, ArrayList<Tile>> getAvailableMoves(){
+		return board.checkAvailableMoves(isP1Turn);
 	}
 
 	@Override
