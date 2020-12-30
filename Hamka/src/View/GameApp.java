@@ -33,10 +33,10 @@ public class GameApp extends Pane{
 
 				Piece piece = null;
 				if(y <= 2 && (x+y)%2 != 0) {
-					piece = makePiece(PieceType.RED, x, y);
+					piece = makePiece(PieceType.WHITE, x, y);
 				}
 				if(y >= 5 && (x+y)%2 != 0) {
-					piece = makePiece(PieceType.BLUE, x, y);
+					piece = makePiece(PieceType.GREY, x, y);
 				}
 				if(piece != null) {
 					tileView.setPiece(piece);
