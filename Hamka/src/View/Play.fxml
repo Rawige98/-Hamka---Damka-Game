@@ -124,28 +124,44 @@
             </VBox>
          </children>
       </Pane>
-      <VBox layoutX="572.0" layoutY="90.0" prefHeight="208.0" prefWidth="37.0">
+      <VBox layoutX="547.0" layoutY="90.0" prefHeight="161.0" prefWidth="26.0">
          <children>
-            <Circle fx:id="player2image11" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image111" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image112" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image113" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image114" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image115" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image116" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image117" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="w1" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w3" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w5" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w7" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w9" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w11" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
          </children>
       </VBox>
-      <VBox layoutX="574.0" layoutY="321.0" prefHeight="208.0" prefWidth="37.0">
+      <VBox layoutX="549.0" layoutY="379.0" prefHeight="161.0" prefWidth="26.0">
          <children>
-            <Circle fx:id="player2image111" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image1111" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image1121" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image1131" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image1141" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image1151" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image1161" fill="#fefefe" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="player2image1171" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="b1" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b3" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b5" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b7" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b9" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b11" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+         </children>
+      </VBox>
+      <VBox layoutX="574.0" layoutY="90.0" prefHeight="161.0" prefWidth="26.0">
+         <children>
+            <Circle fx:id="w2" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w4" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w6" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w8" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w10" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="w12" fill="WHITE" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+         </children>
+      </VBox>
+      <VBox layoutX="577.0" layoutY="378.0" prefHeight="167.0" prefWidth="26.0">
+         <children>
+            <Circle fx:id="b2" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b4" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b6" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b8" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b10" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Circle fx:id="b12" fill="GREY" radius="13.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
          </children>
       </VBox>
    </children>

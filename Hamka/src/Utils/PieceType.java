@@ -1,7 +1,7 @@
 package Utils;
 
 public enum PieceType {
-	RED(1), BLUE(-1);
+	WHITE(1), GREY(-1);
 
 	public final int moveDir;
 	
