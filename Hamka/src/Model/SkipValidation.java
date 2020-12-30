@@ -131,7 +131,7 @@ public class SkipValidation {
 						|| isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier)))
 					c++;
 			}
-			if (c != 1)
+			if (c > 1)
 				return false;
 		}
 		return true;

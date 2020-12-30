@@ -380,7 +380,7 @@ public class Game {
 		ArrayList<Tile> suggestedTiles = getSuggestedTilesArray();
 
 		// ************ Red tile **********
-		HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
+//		HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
 //		System.out.println("***************** SKIPS ************************");
 //		for(Tile key : suggestedSkips.keySet()) {
 //			System.out.println(key.longString());
@@ -435,8 +435,7 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
-				+ ", winner=" + winner + ", gameDuration=" + gameDuration;
+		return "--------------------------------------------------\nPlayer 1 :"+player1.getUsername()+" Player 2 :"+player2.getUsername()+"\n--------------------------------------------------";
 	}
 
 	public String briefToString() {

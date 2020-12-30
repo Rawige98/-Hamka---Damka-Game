@@ -174,7 +174,7 @@ public class MainPageController implements Initializable {
     	closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/LoadGame.fxml"));
-		Scene scene = new Scene(root, 454, 236);
+		Scene scene = new Scene(root, 533, 368);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("LoadGame");
 		primaryStage.show();
