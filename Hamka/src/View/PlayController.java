@@ -66,15 +66,15 @@ public class PlayController implements Initializable {
 	private Label point2;
 
 	@FXML
-	public static Pane boardPane;
+	public  Pane boardPane;
 
 	@FXML
 	private AnchorPane rootPane;
 	@FXML
 	private Label gameTimer;
 
-	@FXML
-	private BorderPane rootBorderPane;
+    @FXML
+    private AnchorPane rootBorderPane;
 
 	@FXML
 	private Button check;
@@ -141,7 +141,7 @@ public class PlayController implements Initializable {
 	}
 
 	public Pane createBoardView() {
-		boardPane = new Pane();
+		//boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
 		boardPane.getChildren().addAll(tileGroup, pieceGroup);
 		System.out.println(game.getGameState());
@@ -320,7 +320,7 @@ public class PlayController implements Initializable {
 		// primaryStage.setScene(scene);
 		// primaryStage.setTitle("questions");
 		// primaryStage.show();
-		boardPane.setDisable(true);
+		//boardPane.setDisable(true);
 //		boardPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
 		questionPane.setVisible(true);
 		q = p.popQuestion();
@@ -363,7 +363,7 @@ public class PlayController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-//		questionPane.setVisible(false);
+		questionPane.setVisible(false);
 		Game.notFinished = true;
 		Game.setP1Turn(true);
 		timer = new TimerForGame();
@@ -394,7 +394,9 @@ public class PlayController implements Initializable {
 		player_2 = PlayGameController.getInstance().getPlayer2();
 		currentPlayer = player_1;
 		game = PlayGameController.getInstance().getGame();
-		rootBorderPane.setCenter(createBoardView());
+
+		createBoardView();
+
 		colorTiles();
 	}
 	public class TimerForPlayer1 implements Runnable {
