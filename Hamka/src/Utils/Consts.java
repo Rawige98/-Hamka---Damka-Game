@@ -23,6 +23,6 @@ public class Consts {
 	public static final int MAX_ANSWERS_NUM = 4;
 	public static final int MIN_EMPTY_TILES_BETWEEN_RETURNED_SOLDIER_TO_OPPONENT = 2;
 	
-	public static final int TILE_SIZE = 60;
+	public static final int TILE_SIZE = 66;
 
 }
