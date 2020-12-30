@@ -61,9 +61,11 @@ public class ValidateDistance {
 		int dy = yEnd - yStart;
 		int dx = xEnd - xStart;
 		int i = xStart, j = yStart;
+		int r=0;
 		if (Math.abs(dx) != Math.abs(dy) && Math.abs(dx) + Math.abs(dy) != 8)
 			// check if the road to the target is clear
-			while ((i != xEnd && j != yEnd)) {
+			while ((i != xEnd && j != yEnd)&&r!=20) {
+				r++;
 				if (Math.abs(dx) == Math.abs(dy)) {
 					if (dx > 0 && dy > 0) {
 						i++;

@@ -57,7 +57,6 @@ public class PlayGameController {
 		
 		return type;
 	}
-
 	public void switchTurnNow() {
 		game.switchTurn();
 	}
@@ -73,7 +72,6 @@ public class PlayGameController {
 
 		return false;
 	}
-
 	/*
 	 * public void startGame(String username1, String username2) {
 	 * 
