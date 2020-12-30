@@ -24,9 +24,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ListView.EditEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.io.IOException;
 
@@ -37,6 +40,9 @@ public class HistoryControl implements Initializable {
 	ObservableList<Game> observableList = FXCollections.observableArrayList();
 	Set<Game> finishedGames;
 	ArrayList<Game> arr ;
+	 @FXML
+	    private Button back;
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -54,6 +60,16 @@ public class HistoryControl implements Initializable {
 		finishedGames.addAll(arr);
 		setListView();
 	}
+	  @FXML
+	    void BackPressed(ActionEvent event) throws IOException {
+		  ((Stage) back.getScene().getWindow()).close();
+			Stage primaryStage = new Stage();
+			Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
+			Scene scene = new Scene(root,581, 449);
+			primaryStage.setScene(scene);
+			primaryStage.setTitle("Main");
+			primaryStage.show();
+	    }
 
 	public void setListView() {
 		observableList.setAll(finishedGames);

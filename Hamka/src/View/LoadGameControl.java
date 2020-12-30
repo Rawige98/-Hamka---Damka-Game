@@ -14,12 +14,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 public class LoadGameControl implements Initializable{
     @FXML
     private ListView<Game> LoadList;
+    @FXML
+    private Button back;
+
     @FXML
     void LoadBPressed(ActionEvent event) {
     	Game game=LoadList.getSelectionModel().getSelectedItem();
@@ -38,6 +42,16 @@ public class LoadGameControl implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
     }
+    }
+    @FXML
+    void BackPressed(ActionEvent event) throws IOException {
+    	((Stage) back.getScene().getWindow()).close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
+		Scene scene = new Scene(root, 581, 449);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Main");
+		primaryStage.show();
     }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

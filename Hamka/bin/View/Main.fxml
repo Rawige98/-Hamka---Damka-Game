@@ -42,9 +42,9 @@
             <Image url="@../images/cloud.png" />
          </image>
       </ImageView>
-      <VBox layoutX="223.0" layoutY="174.0" prefHeight="202.0" prefWidth="136.0" spacing="15.0">
+      <VBox layoutX="223.0" layoutY="174.0" prefHeight="221.0" prefWidth="153.0" spacing="15.0">
          <children>
-            <Button fx:id="play" mnemonicParsing="false" onAction="#Play" onMouseEntered="#playColor" prefHeight="40.0" prefWidth="139.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Play" textFill="#cd4f06" VBox.vgrow="ALWAYS">
+            <Button fx:id="play" mnemonicParsing="false" onAction="#Play" onMouseEntered="#playColor" prefHeight="44.0" prefWidth="152.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Play" textFill="#cd4f06" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="Berlin Sans FB" size="19.0" />
                </font>
@@ -52,12 +52,12 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button fx:id="loadGame" mnemonicParsing="false" onAction="#LoadB" onMouseEntered="#historyColor" prefHeight="40.0" prefWidth="152.0" style="-fx-background-radius: 30; -fx-border-color: silver; -fx-border-radius: 30; -fx-background-color: silver;" text="Load Game" textFill="#cd4f06">
+            <Button fx:id="loadGame" mnemonicParsing="false" onAction="#LoadB" onMouseEntered="#loadColor" prefHeight="40.0" prefWidth="152.0" style="-fx-background-radius: 30; -fx-border-color: silver; -fx-border-radius: 30; -fx-background-color: silver;" text="Load Game" textFill="#cd4f06">
                <font>
                   <Font name="Berlin Sans FB" size="19.0" />
                </font>
             </Button>
-            <Button fx:id="rules" mnemonicParsing="false" onAction="#Rules" onMouseEntered="#rulesColor" prefHeight="40.0" prefWidth="139.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Game Rules" textFill="#cd4f06">
+            <Button fx:id="rules" mnemonicParsing="false" onAction="#Rules" onMouseEntered="#rulesColor" prefHeight="44.0" prefWidth="156.0" style="-fx-background-radius: 30; -fx-background-color: silver; -fx-border-color: silver; -fx-border-radius: 30;" text="Game Rules" textFill="#cd4f06">
                <font>
                   <Font name="Berlin Sans FB" size="19.0" />
                </font>

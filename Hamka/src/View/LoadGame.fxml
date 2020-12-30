@@ -34,6 +34,11 @@
                <font>
                   <Font name="Aharoni Bold" size="13.0" />
                </font></Button>
+            <Button fx:id="back" layoutX="14.0" layoutY="303.0" mnemonicParsing="false" onAction="#BackPressed" prefHeight="30.0" prefWidth="69.0" style="-fx-background-radius: 100; -fx-background-color: #ffdd6c;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="Aharoni Bold" size="13.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

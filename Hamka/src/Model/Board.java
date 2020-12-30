@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 public class Board {
 	private Tile[][] myBoard;
 
+	private static Tile SkipedTile; 
 	public Board() {
 		setMyBoard(new Tile[Consts.ROWS][Consts.COLS]);
 		initBoard();
@@ -76,7 +77,7 @@ public class Board {
 			if (!myBoard[yStart][xStart].isQueen()) {
 				// if its not a skip
 				if (Math.abs(dx) != 2) {
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					turnOffAllTilesColor();
 					return MoveType.NORMAL;
@@ -84,10 +85,11 @@ public class Board {
 					int xmid = (xStart + xEnd) / 2;
 					int ymid = (yStart + yEnd) / 2;
 					myBoard[ymid][xmid] = new BlackTile(ymid, xmid);
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					p.setScore(100);
 					turnOffAllTilesColor();
+					setSkipedTile(new BlackTile(ymid, xmid));
 					return MoveType.KILL;
 				}
 			}
@@ -96,9 +98,9 @@ public class Board {
 				int i = xStart, j = yStart;
 				boolean isSkip = false;
 				int col = -1, row = -1;
-				int r=0;
+				int r = 0;
 				// check if the road to the target is clear
-				while ((i != xEnd && j != yEnd)&&r!=20) {
+				while ((i != xEnd && j != yEnd) && r != 20) {
 					r++;
 					if (Math.abs(dx) == Math.abs(dy)) {
 						if (dx > 0 && dy > 0) {
@@ -180,13 +182,15 @@ public class Board {
 				}
 				if (isSkip) {
 					myBoard[col][row] = new BlackTile(col, row);
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					p.setScore(100);
 					turnOffAllTilesColor();
+					setSkipedTile(new BlackTile(col, row));
+
 					return MoveType.KILL;
 				} else {
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd,xEnd);
+					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
 					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
 					turnOffAllTilesColor();
 					return MoveType.NORMAL;
@@ -232,7 +236,7 @@ public class Board {
 		}
 		for (Tile t : mySoldiers) {
 			ArrayList<Tile> tt = avilableMovesForTile(t, isP1Turn);
-			if(tt.size() != 0)
+			if (tt.size() != 0)
 				availableMoves.put(t, tt);
 		}
 		return availableMoves;
@@ -266,7 +270,7 @@ public class Board {
 	 * this methods randomly choose tile and if her color is black, then it will be
 	 * changed to yellow
 	 */
-	public void  showYellowTiles() {
+	public void showYellowTiles() {
 //		ArrayList<Tile> yellowTiles = new ArrayList<Tile>(); 
 		int x, y, yellowCount = 0;
 		Random random = new Random();
@@ -279,7 +283,7 @@ public class Board {
 				y = random.nextInt(Consts.COLS);
 				Tile randomTile = myBoard[x][y];
 				if (!randomTile.getColor().equals(Color.WHITE) && randomTile.getColor().equals(Color.BLACK)
-						&& !randomTile.getColor().equals(Color.YELLOW) && randomTile.getValue()==0) {
+						&& !randomTile.getColor().equals(Color.YELLOW) && randomTile.getValue() == 0) {
 					randomTile.setColor(Color.YELLOW);
 //					yellowTiles.add(randomTile);
 					yellowCount++;
@@ -376,7 +380,7 @@ public class Board {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
-				MoveValidation v = new MoveValidation(t.getRows(),i, t.getCols(), j, this, isP1Turn, true);
+				MoveValidation v = new MoveValidation(t.getRows(), i, t.getCols(), j, this, isP1Turn, true);
 				if (v.moveValidation()) {
 					if (isSkip(t.getRows(), t.getCols(), i, j, isP1Turn))
 						mymoves.add(myBoard[j][i]);
@@ -398,8 +402,9 @@ public class Board {
 			if (Math.abs(dx) == 2) {
 				int xmid = (xStart + xEnd) / 2;
 				int ymid = (yStart + yEnd) / 2;
-				if ((myBoard[yStart][xStart] instanceof WhiteSoldier &&!(myBoard[ymid][xmid] instanceof BlackSoldier))
-						|| (myBoard[yStart][xStart] instanceof BlackSoldier && !(myBoard[ymid][xmid] instanceof WhiteSoldier)))
+				if ((myBoard[yStart][xStart] instanceof WhiteSoldier && !(myBoard[ymid][xmid] instanceof BlackSoldier))
+						|| (myBoard[yStart][xStart] instanceof BlackSoldier
+								&& !(myBoard[ymid][xmid] instanceof WhiteSoldier)))
 					return false;
 
 				return true;
@@ -412,8 +417,8 @@ public class Board {
 			int i = xStart, j = yStart;
 			boolean isSkip = false; // check if the road to the target is clear
 			int c = 0;
-			int r=0;
-			while ((i != xEnd && j != yEnd)&&r!=20) {
+			int r = 0;
+			while ((i != xEnd && j != yEnd) && r != 20) {
 				r++;
 				c++;
 				if (Math.abs(dx) == Math.abs(dy)) {
@@ -529,5 +534,13 @@ public class Board {
 			builder.append(newLine);
 		}
 		return builder.toString();
+	}
+
+	public static Tile getSkipedTile() {
+		return SkipedTile;
+	}
+
+	public static void setSkipedTile(Tile skipedTile) {
+		SkipedTile = skipedTile;
 	}
 }
