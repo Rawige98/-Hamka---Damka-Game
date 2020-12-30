@@ -37,7 +37,6 @@ public abstract class Tile implements Cloneable,Serializable{
 		this.rows = rows;
 		this.cols = cols;
 	}
-
 	// -------------------Getters and Setters-----------
 	public int getValue() {
 		return value;
@@ -67,9 +66,9 @@ public abstract class Tile implements Cloneable,Serializable{
 	// ------------------------------------
 
 	//Clone Factory
-	public Tile getClone(Tile t) {
+	public Tile getClone(Tile t,int cols,int rows) {
 		
-		return t.makeCopy();
+		return t.makeCopy( cols, rows);
 	}
 	@Override
 	public int hashCode() {
@@ -109,7 +108,7 @@ public abstract class Tile implements Cloneable,Serializable{
 	 */
 	public abstract boolean upgradeToQueen() ;
 	public abstract boolean isQueen();
-	public abstract Tile makeCopy();
+	public abstract Tile makeCopy(int cols,int rows);
 	public abstract String subClass();
 
 	public Color getColor() {

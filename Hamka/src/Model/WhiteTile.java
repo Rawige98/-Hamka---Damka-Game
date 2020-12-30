@@ -22,10 +22,12 @@ public class WhiteTile extends Tile{
 		return false;
 	}
 	@Override
-	public Tile makeCopy() {
+	public Tile makeCopy(int cols,int rows) {
 		WhiteTile w=null;
 		try {
 			w=(WhiteTile)super.clone();
+			w.setCols(cols);
+			w.setRows(rows);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

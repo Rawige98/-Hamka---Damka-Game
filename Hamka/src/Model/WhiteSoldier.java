@@ -1,7 +1,5 @@
 package Model;
 
-import java.awt.Color;
-
 public class WhiteSoldier extends Tile{
 
 	/**
@@ -14,6 +12,8 @@ public class WhiteSoldier extends Tile{
 	}
 	@Override
 	public boolean upgradeToQueen() {
+		System.out.println("white:"+MoveValidation.toIndex(getRows(),getCols()));
+
 		if( MoveValidation.toIndex(getRows(), getCols()) >= 0 && MoveValidation.toIndex(getRows(), getCols()) < 4)
 		{
 			setValue(11);
@@ -28,10 +28,12 @@ public class WhiteSoldier extends Tile{
 		return false;
 	}
 	@Override
-	public Tile makeCopy() {
+	public Tile makeCopy(int cols,int rows) {
 		WhiteSoldier w=null;
 		try {
 			w=(WhiteSoldier)super.clone();
+			w.setCols(cols);
+			w.setRows(rows);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
