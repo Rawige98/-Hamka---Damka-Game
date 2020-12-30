@@ -27,10 +27,12 @@ public class BlackTile extends Tile{
 	}
 
 	@Override
-	public Tile makeCopy() {
+	public Tile makeCopy(int cols,int rows) {
 		BlackTile w=null;
 		try {
 			w=(BlackTile)super.clone();
+			w.setCols(cols);
+			w.setRows(rows);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

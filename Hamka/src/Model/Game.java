@@ -117,26 +117,26 @@ public class Game {
 
 	}
 
-/*	public boolean validateMoveInput(String moveInput) {
+//	public boolean validateMoveInput(String moveInput) {
+//
+//		// TODO Auto-generated method stub
+//		// format (x,y)
+//		// String regex = "/n(X,Y)/";
+//		// Pattern pattern = Pattern.compile(regex);
+//		// System.out.println(pattern.matcher(moveInput).find());
+//		// return pattern.matcher(moveInput).find();
+//		if (moveInput.length() > 5)
+//			return false;
+//		if (moveInput.charAt(0) != '(' || moveInput.charAt(2) != ',' || moveInput.charAt(4) != ')')
+//			return false;
+//		if (Character.isDigit(moveInput.charAt(1)) && Character.isDigit(moveInput.charAt(3))) {
+//			int x = Integer.parseInt(String.valueOf(moveInput.charAt(1)));
+//			int y = Integer.parseInt(String.valueOf(moveInput.charAt(3)));
+//			return x >= 0 && x < 8 && y >= 0 && y < 8;
+//		}
+//		return false;
+//	}
 
-		// TODO Auto-generated method stub
-		// format (x,y)
-		// String regex = "/n(X,Y)/";
-		// Pattern pattern = Pattern.compile(regex);
-		// System.out.println(pattern.matcher(moveInput).find());
-		// return pattern.matcher(moveInput).find();
-		if (moveInput.length() > 5)
-			return false;
-		if (moveInput.charAt(0) != '(' || moveInput.charAt(2) != ',' || moveInput.charAt(4) != ')')
-			return false;
-		if (Character.isDigit(moveInput.charAt(1)) && Character.isDigit(moveInput.charAt(3))) {
-			int x = Integer.parseInt(String.valueOf(moveInput.charAt(1)));
-			int y = Integer.parseInt(String.valueOf(moveInput.charAt(3)));
-			return x >= 0 && x < 8 && y >= 0 && y < 8;
-		}
-		return false;
-	}
-*/
 	// ------------------------Getters and Setters---------------------
 
 	public int getTime() {
@@ -271,40 +271,40 @@ public class Game {
 	public MoveType move(int xStart, int yStart, int xEnd, int yEnd) {
 		Player p = null;
 		p = isP1Turn ? player1 : player2;
-		HashMap<Tile, ArrayList<Tile>> mp = board.checkAvailableSkips(isP1Turn);
-		Tile start,end;
-		if(board.getMyBoard()[yStart][xStart] instanceof BlackSoldier)
-			start=new BlackSoldier(yStart,xStart);
-		else
-			start=new WhiteSoldier(yEnd,xEnd);
-		if(board.getMyBoard()[yEnd][xEnd] instanceof BlackSoldier)
-			end=new BlackSoldier(yEnd,xEnd);
-		else
-			end=new WhiteSoldier(yEnd,xEnd);
-		boolean isIgnoreSkip = false;
-		boolean isSkip = false;
-		ArrayList<Tile> availableTilesToSkip = mp.get(start);
-		if (availableTilesToSkip == null) {
-			if (!mp.isEmpty())
-				isIgnoreSkip = true;
-		} else {
-			if (!availableTilesToSkip.contains(end)) {
-				isIgnoreSkip = true;
-			} else {
-				isSkip = true;
-			}
-		}
+//		HashMap<Tile, ArrayList<Tile>> mp = board.checkAvailableSkips(isP1Turn);
+//		Tile start,end;
+//		if(board.getMyBoard()[yStart][xStart] instanceof BlackSoldier)
+//			start=new BlackSoldier(yStart,xStart);
+//		else
+//			start=new WhiteSoldier(yEnd,xEnd);
+//		if(board.getMyBoard()[yEnd][xEnd] instanceof BlackSoldier)
+//			end=new BlackSoldier(yEnd,xEnd);
+//		else
+//			end=new WhiteSoldier(yEnd,xEnd);
+//		boolean isIgnoreSkip = false;
+//		boolean isSkip = false;
+//		ArrayList<Tile> availableTilesToSkip = mp.get(start);
+//		if (availableTilesToSkip == null) {
+//			if (!mp.isEmpty())
+//				isIgnoreSkip = true;
+//		} else {
+//			if (!availableTilesToSkip.contains(end)) {
+//				isIgnoreSkip = true;
+//			} else {
+//				isSkip = true;
+//			}
+//		}
 		MoveType MType=board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p);
 		if (MType.equals(MoveType.KILL)||MType.equals(MoveType.NORMAL)) {
 			board.upgradeQueen(xEnd, yEnd);
-//			Tile destinationTile = board.getTile(xEnd, yEnd);
-//			checkDestinatonTile(destinationTile);
+		//	Tile destinationTile = board.getTile(xEnd, yEnd);
+			//checkDestinatonTile(destinationTile);
 //			if (!(isSkip && board.checkAvailableSkips(isP1Turn).containsKey(board.getMyBoard()[xEnd][yEnd])) && !board.getMyBoard()[xEnd][yEnd].getColor().equals(Color.YELLOW) )
 //				isP1Turn = !isP1Turn;
-			notFinished = true;
-			if (isIgnoreSkip) {
-				((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]).setValue(0);
-			}
+//			notFinished = true;
+//			if (isIgnoreSkip) {
+//				((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]).setValue(0);
+//			}
 			return MType;
 		}
 		return MType;

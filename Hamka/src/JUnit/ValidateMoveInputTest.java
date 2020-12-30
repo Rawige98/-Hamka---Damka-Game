@@ -25,7 +25,5 @@ public class ValidateMoveInputTest {
 		assertFalse(game.validateMoveInput(move3));
 		assertTrue(game.validateMoveInput(move4));
 		assertFalse(game.validateMoveInput(move5));
-        
-
-	}
+		}
 }

@@ -15,6 +15,7 @@ public class BlackSoldier extends Tile {
 
 	@Override
 	public boolean upgradeToQueen() {
+		System.out.println("black:"+MoveValidation.toIndex(getRows(),getCols()));
 	if( MoveValidation.toIndex(getRows(), getCols()) >= 29 && MoveValidation.toIndex(getRows(), getCols()) < 33)
 	{
 		setValue(22);
@@ -29,10 +30,12 @@ public class BlackSoldier extends Tile {
 		return false;
 	}
 	@Override
-	public Tile makeCopy() {
+	public Tile makeCopy(int cols,int rows) {
 		BlackSoldier w=null;
 		try {
 			w=(BlackSoldier)super.clone();
+			w.setCols(cols);
+			w.setRows(rows);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
