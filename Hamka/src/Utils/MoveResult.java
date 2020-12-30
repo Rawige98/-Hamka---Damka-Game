@@ -23,4 +23,8 @@ public class MoveResult {
         this.type = type;
         this.piece = piece;
     }
+    
+    public void setType(MoveType type) {
+		this.type = type;
+	}
 }
