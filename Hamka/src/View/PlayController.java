@@ -188,12 +188,7 @@ public class PlayController implements Initializable {
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
 				// showYellowTiles();
-				if (boardView[newX][newY].getFill().equals(Color.YELLOW)) {
-					popQuestion();
-					updateScore(player_1);
-					updateScore(player_2);
-				} else
-					PlayGameController.getInstance().switchTurnNow();
+//				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
 				break;
 
@@ -207,10 +202,7 @@ public class PlayController implements Initializable {
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
 				// showYellowTiles();
-				if (boardView[newX][newY].getFill().equals(Color.YELLOW))
-					popQuestion();
-				else
-					PlayGameController.getInstance().switchTurnNow();
+//				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
 				break;
 			default:
@@ -222,6 +214,20 @@ public class PlayController implements Initializable {
 		return piece;
 	}
 
+	private void checkDestinationTile(TileView tileView) {
+		if (tileView.getFill().equals(Color.YELLOW)) {
+			popQuestion();
+		}else if(tileView.getFill().equals(Color.RED)) {
+			
+		}else if(tileView.getFill().equals(Color.GREEN)) {
+			currentPlayer.updateScore(Consts.POINTS_FOR_GREEN_TILE);
+			updateScore(currentPlayer);
+		}else if(tileView.getFill().equals(Color.BLUE)) {
+			
+		}
+		PlayGameController.getInstance().switchTurnNow();
+	}
+	
 	private MoveResult tryMove(Piece piece, int newX, int newY) {
 
 		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
@@ -251,12 +257,13 @@ public class PlayController implements Initializable {
 
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
-		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
+		int oldX = toBoard(piece.getOldX());
+		int oldY = toBoard(piece.getOldY());
+		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS || oldX == newX || oldY == newY)
 			return new MoveResult(MoveType.NONE);
 
 		MoveType result = MoveType.NONE;
-		int oldX = toBoard(piece.getOldX());
-		int oldY = toBoard(piece.getOldY());
+
 		int x1 = oldX + (newX - oldX) / 2;
 		int y1 = oldY + (newY - oldY) / 2;
 

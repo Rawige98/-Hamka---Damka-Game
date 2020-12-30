@@ -389,9 +389,9 @@ public class Game {
 //		}
 //		System.out.println(getGameState());
 //		System.out.println();
-//		if (suggestedSkips.isEmpty()) {
-//			board.colorAllTiles(suggestedTiles, Color.RED);
-//		}
+		if (suggestedSkips.isEmpty()) {
+			board.colorRandomTile(suggestedTiles, Color.RED);
+		}
 
 		// *********** Blue tile **********
 		int qCount = 0, sCount = 0, queen, soldier;
