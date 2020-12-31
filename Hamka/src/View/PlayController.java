@@ -162,22 +162,43 @@ public class PlayController implements Initializable {
 				Piece piece = null;
 				// changes in (if)
 				if (game.getBoard().getMyBoard()[x][y] instanceof BlackSoldier) {
-					piece = makePiece(PieceType.WHITE, x, y);
+					piece = makePiece(PieceType.WHITE, player_2.getColor(), x, y);
 				}
 				if (game.getBoard().getMyBoard()[x][y] instanceof WhiteSoldier) {
-					piece = makePiece(PieceType.GREY, x, y);
+					piece = makePiece(PieceType.GREY, player_1.getColor(),  x, y);
 				}
 				if (piece != null) {
 					tileView.setPiece(piece);
 					pieceGroup.getChildren().add(piece);
 				}
+				tileView.setOnMousePressed(e -> {
+					if(lastColor.equals(Color.BLUE)) {
+						colorSuggesstedForBlueTile();
+						double mouseX = e.getSceneX();
+						double mouseY = e.getSceneY();
+						int col = toBoard(mouseX);
+						int row = toBoard(mouseY);
+						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[col][row];
+						if(suggestedTileBlueMove().contains(tile)) {
+							Piece newPiece = new Piece((currentPlayer.equals(player1)? PieceType.GREY : PieceType.WHITE), Color.AQUAMARINE, col, row, null);
+							boardView[row][col].setPiece(newPiece);
+						}
+					}
+				});
 			}
 		}
 		return boardPane;
 	}
 
-	private Piece makePiece(PieceType type, int x, int y) {
-		Piece piece = new Piece(type, x, y, "b.jpg");
+	private void colorSuggesstedForBlueTile() {
+		// TODO Auto-generated method stub
+		for(Tile tile : suggestedTileBlueMove()) {
+			boardView[tile.getRows()][tile.getCols()].setFill(Color.BEIGE);
+		}
+	}
+
+	private Piece makePiece(PieceType type, Color color, int x, int y) {
+		Piece piece = new Piece(type, color, x, y, "b.jpg");
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
@@ -369,7 +390,7 @@ public class PlayController implements Initializable {
 		}
 	}
 
-	private void suggestedTileBlueMove() {
+	private ArrayList<Tile> suggestedTileBlueMove() {
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
 		if (currentPlayer.equals(player_1)) {
 			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(true);
@@ -379,7 +400,7 @@ public class PlayController implements Initializable {
 			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(false);
 		}
 		
-		
+		return tiles;
 
 	}
 

@@ -1,11 +1,13 @@
 package Model;
 
+import javafx.scene.paint.Color;
+
 public class Player {
 	private static int Serial = 0;
 	private int id;
 	private String username;
 	private  int score;
-
+	private Color color;
 
 	@Override
 	public String toString() {
@@ -17,6 +19,14 @@ public class Player {
 		this.username = username;
 		id=++Serial;
 		score=0;
+	}
+	
+	public Player(String username, Color color) {
+		super();
+		this.username = username;
+		id=++Serial;
+		score=0;
+		this.color = color;
 	}
 
 	//----------------Getters and Setters------------------
@@ -78,5 +88,12 @@ public class Player {
 		return true;
 	}
 	
+	public Color getColor() {
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
 	//----------------------------------------------
 }

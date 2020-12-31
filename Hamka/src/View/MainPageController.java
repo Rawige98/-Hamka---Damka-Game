@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 public class MainPageController implements Initializable {
@@ -82,6 +84,12 @@ public class MainPageController implements Initializable {
 	private TextField p2;
 	@FXML
 	private Pane newPane;
+	
+	@FXML
+    private ColorPicker p2ColorPicker;
+
+    @FXML
+    private ColorPicker p1ColorPicker;
 
 	@FXML
 	private ImageView menu;
@@ -196,10 +204,14 @@ public class MainPageController implements Initializable {
 		closeWindow();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/NickName.fxml"));
-		Scene scene = new Scene(root, 475, 226);
+		Scene scene = new Scene(root, 648, 226);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("enter nick Name");
+		primaryStage.setTitle("Enter nickname");
 		primaryStage.show();
+//		p1ColorPicker = new ColorPicker();
+//		p2ColorPicker = new ColorPicker();
+//		p1ColorPicker.setValue(Color.GREY);
+//		p2ColorPicker.setValue(Color.WHITE);
 	}
 
 	@FXML
@@ -258,21 +270,12 @@ public class MainPageController implements Initializable {
 		((Stage) closeInst.getScene().getWindow()).close();
 	}
 
-	@FXML
-	void menu(MouseEvent event) {
-		newPane.setVisible(true);
-	}
-
-	@FXML
-	void deletemenu(MouseEvent event) {
-		newPane.setVisible(false);
-	}
 
 	public void Start(ActionEvent event) throws Exception {
 		ArrayList<Player> players = new ArrayList<Player>();
 
-		Player player1 = new Player(p1.getText());
-		Player player2 = new Player(p2.getText());
+		Player player1 = new Player(p1.getText(), p1ColorPicker.getValue());
+		Player player2 = new Player(p2.getText(), p2ColorPicker.getValue());
 		players.add(player1);
 		players.add(player2);
 		MainPageController.player1=player1;
@@ -322,6 +325,12 @@ public class MainPageController implements Initializable {
 		Line l3 = new Line(100, 40, 3, 40);
 		// Line l4 = new Line(50,50, 150, 150);
 
+//		p1ColorPicker = new ColorPicker();
+//		p2ColorPicker = new ColorPicker();
+		
+//		p1ColorPicker.setValue(Color.GREY);
+//		p2ColorPicker.setValue(Color.WHITE);
+		
 		PathTransition transition = new PathTransition();
 		transition.setNode(cloud);
 		transition.setDuration(Duration.seconds(10));
