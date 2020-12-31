@@ -217,7 +217,7 @@
             <Separator layoutX="54.0" layoutY="293.0" prefHeight="0.0" prefWidth="256.0" />
             <ImageView fitHeight="75.0" fitWidth="140.0" layoutX="431.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/giphy.gif" />
+                  <Image url="@../images/giphy1.gif" />
                </image>
             </ImageView>
             <ImageView fitHeight="89.0" fitWidth="75.0" layoutX="158.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
