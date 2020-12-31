@@ -274,12 +274,12 @@ public class Game {
 		MoveType MType = board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p);
 		if (MType.equals(MoveType.KILL) || MType.equals(MoveType.NORMAL)) {
 			board.upgradeQueen(xEnd, yEnd);
-			if(MType.equals(MoveType.NORMAL)&&!mp.isEmpty()) {
-				Tile t = ((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]);
-				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());	
-				ownKill=true;
-				killedSoldier=t;
-			}
+		//from here	//if(MType.equals(MoveType.NORMAL)&&!mp.isEmpty()) {
+			//	Tile t = ((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]);
+			//	board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());	
+			//	ownKill=true;
+		    //		killedSoldier=t;
+	//to here	//	}
 			// Tile destinationTile = board.getTile(xEnd, yEnd);
 			// checkDestinatonTile(destinationTile);
 //			if (!(isSkip && board.checkAvailableSkips(isP1Turn).containsKey(board.getMyBoard()[xEnd][yEnd]))
@@ -378,6 +378,11 @@ public class Game {
 					qCount++;
 			}
 		}
+		
+//		if(qCount==1)
+//			board.colorRandomTile(suggestedTiles, Color.BLUE);
+
+		
 
 		if (sCount == 2 && qCount == 1)
 			board.colorRandomTile(suggestedTiles, Color.BLUE);
@@ -424,65 +429,145 @@ public class Game {
 		int col_2 = tile.getCols() - 2;
 
 		if (isBlack) {
-			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 1
-					|| board.getTile(row_2, col_2).getValue() == 11))
+			if(MoveValidation.isValidPoint(row2, col2)&&board.getTile(row2, col2).getValue() != 1 &&
+					board.getTile(row2, col2).getValue() != 11)
+			{
+				if(MoveValidation.isValidPoint(row1, col1)&&board.getTile(row1, col1).getValue() != 1 &&
+						board.getTile(row1, col1).getValue() !=11)
+				{
+					if(MoveValidation.isValidPoint(row_2, col_2)&&board.getTile(row_2, col_2).getValue() != 1 &&
+							board.getTile(row_2, col_2).getValue() != 11)
+					{
+						if(MoveValidation.isValidPoint(row_1, col_1)&&board.getTile(row_1, col_1).getValue() != 1 &&
+								board.getTile(row_1, col_1).getValue() != 11)
+						{
+							if(MoveValidation.isValidPoint(row_2, col2)&&board.getTile(row_2, col2).getValue() != 1 &&
+									board.getTile(row_2, col2).getValue() != 11)
+							{
+								if(MoveValidation.isValidPoint(row_1, col1)&&board.getTile(row_1, col1).getValue() != 1 &&
+										board.getTile(row_1, col1).getValue() != 11)
+								{
+									if(MoveValidation.isValidPoint(row2, col_2)&&board.getTile(row2, col_2).getValue() != 1 &&
+											board.getTile(row2, col_2).getValue() != 11)
+									{
+										if(MoveValidation.isValidPoint(row1, col_1)&&board.getTile(row1, col_1).getValue() != 1 &&
+												board.getTile(row1, col_1).getValue() != 11)
+										{
+											return true;
+										}
+									}
+									
+								}
+								
+							}
+							
+						}
+					}
+				}
+			}
+			else
+			{
 				return false;
-			else if (MoveValidation.isValidPoint(row_2, col2) && (board.getTile(row_2, col2).getValue() == 1
-					|| board.getTile(row_2, col2).getValue() == 11))
-				return false;
-			else if (MoveValidation.isValidPoint(row2, col_2) && (board.getTile(row2, col_2).getValue() == 1
-					|| board.getTile(row2, col_2).getValue() == 11))
-				return false;
-			else if (MoveValidation.isValidPoint(row2, col2) && (board.getTile(row2, col2).getValue() == 1
-					|| board.getTile(row2, col2).getValue() == 11))
-				return false;
-
-			else if (MoveValidation.isValidPoint(row_1, col_1) && (board.getTile(row_1, col_1).getValue() == 1
-					|| board.getTile(row_1, col_1).getValue() == 11))
-				return false;
-			else if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 1
-					|| board.getTile(row_1, col1).getValue() == 11))
-				return false;
-			else if (MoveValidation.isValidPoint(row1, col_1) && (board.getTile(row1, col_1).getValue() == 1
-					|| board.getTile(row1, col_1).getValue() == 11))
-				return false;
-			else if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 1
-					|| board.getTile(row1, col1).getValue() == 11))
-				return false;
+			}
+//			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 1
+//					|| board.getTile(row_2, col_2).getValue() == 11))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row_2, col2) && (board.getTile(row_2, col2).getValue() == 1
+//					|| board.getTile(row_2, col2).getValue() == 11))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row2, col_2) && (board.getTile(row2, col_2).getValue() == 1
+//					|| board.getTile(row2, col_2).getValue() == 11))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row2, col2) && (board.getTile(row2, col2).getValue() == 1
+//					|| board.getTile(row2, col2).getValue() == 11))
+//				return false;
+//
+//			 if (MoveValidation.isValidPoint(row_1, col_1) && (board.getTile(row_1, col_1).getValue() == 1
+//					|| board.getTile(row_1, col_1).getValue() == 11))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 1
+//					|| board.getTile(row_1, col1).getValue() == 11))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row1, col_1) && (board.getTile(row1, col_1).getValue() == 1
+//					|| board.getTile(row1, col_1).getValue() == 11))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 1
+//					|| board.getTile(row1, col1).getValue() == 11))
+//				return false;
 			
-			else 
-				return true;
+			 
+//				return true;
 
 		}
 
 		 if (!isBlack) {
-			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 2
-					|| board.getTile(row_2, col_2).getValue() == 22))
-				return false;
-			else if (MoveValidation.isValidPoint(row_2, col2) &&( board.getTile(row_2, col2).getValue() == 2
-					|| board.getTile(row_2, col2).getValue() == 22))
-				return false;
-			else if (MoveValidation.isValidPoint(row2, col_2) &&( board.getTile(row2, col_2).getValue() == 2
-					|| board.getTile(row2, col_2).getValue() == 22))
-				return false;
-			else	if (MoveValidation.isValidPoint(row2, col2) &&( board.getTile(row2, col2).getValue() == 2
-					|| board.getTile(row2, col2).getValue() == 22))
-				return false;
+				if(MoveValidation.isValidPoint(row2, col2)&&board.getTile(row2, col2).getValue() != 2 &&
+						board.getTile(row2, col2).getValue() != 22)
+				{
+					if(MoveValidation.isValidPoint(row1, col1)&&board.getTile(row1, col1).getValue() != 2 &&
+							board.getTile(row1, col1).getValue() !=22)
+					{
+						if(MoveValidation.isValidPoint(row_2, col_2)&&board.getTile(row_2, col_2).getValue() != 2 &&
+								board.getTile(row_2, col_2).getValue() != 22)
+						{
+							if(MoveValidation.isValidPoint(row_1, col_1)&&board.getTile(row_1, col_1).getValue() != 2 &&
+									board.getTile(row_1, col_1).getValue() != 22)
+							{
+								if(MoveValidation.isValidPoint(row_2, col2)&&board.getTile(row_2, col2).getValue() != 2 &&
+										board.getTile(row_2, col2).getValue() != 22)
+								{
+									if(MoveValidation.isValidPoint(row_1, col1)&&board.getTile(row_1, col1).getValue() != 2 &&
+											board.getTile(row_1, col1).getValue() != 22)
+									{
+										if(MoveValidation.isValidPoint(row2, col_2)&&board.getTile(row2, col_2).getValue() != 2 &&
+												board.getTile(row2, col_2).getValue() != 22)
+										{
+											if(MoveValidation.isValidPoint(row1, col_1)&&board.getTile(row1, col_1).getValue() != 2 &&
+													board.getTile(row1, col_1).getValue() != 22)
+											{
+												return true;
+											}
+										}
+										
+									}
+									
+								}
+								
+							}
+						}
+					}
+				}
+				else
+				{
+					return false;
+				}
+//			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 2
+//					|| board.getTile(row_2, col_2).getValue() == 22))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row_2, col2) &&( board.getTile(row_2, col2).getValue() == 2
+//					|| board.getTile(row_2, col2).getValue() == 22))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row2, col_2) &&( board.getTile(row2, col_2).getValue() == 2
+//					|| board.getTile(row2, col_2).getValue() == 22))
+//				return false;
+//				if (MoveValidation.isValidPoint(row2, col2) &&( board.getTile(row2, col2).getValue() == 2
+//					|| board.getTile(row2, col2).getValue() == 22))
+//				return false;
+//
+//			 if (MoveValidation.isValidPoint(row_1, col_1) &&( board.getTile(row_1, col_1).getValue() == 2
+//					|| board.getTile(row_1, col_1).getValue() == 22))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 2
+//					|| board.getTile(row_1, col1).getValue() == 22))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row1, col_1) &&( board.getTile(row1, col_1).getValue() == 2
+//					|| board.getTile(row1, col_1).getValue() == 22))
+//				return false;
+//			 if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 2
+//					|| board.getTile(row1, col1).getValue() == 22))
+//				return false;
 
-			else if (MoveValidation.isValidPoint(row_1, col_1) &&( board.getTile(row_1, col_1).getValue() == 2
-					|| board.getTile(row_1, col_1).getValue() == 22))
-				return false;
-			else if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 2
-					|| board.getTile(row_1, col1).getValue() == 22))
-				return false;
-			else if (MoveValidation.isValidPoint(row1, col_1) &&( board.getTile(row1, col_1).getValue() == 2
-					|| board.getTile(row1, col_1).getValue() == 22))
-				return false;
-			else if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 2
-					|| board.getTile(row1, col1).getValue() == 22))
-				return false;
-
-			return true;
+//			return true;
 		}
 
 		return false;
