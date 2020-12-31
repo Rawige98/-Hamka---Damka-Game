@@ -318,6 +318,10 @@ public class PlayController implements Initializable {
 			y1 = oldY + (newY - oldY) / 2;
 		}
 
+		if (PlayGameController.getInstance().isQueen(newX, newX)) {
+
+		}
+
 		updateScore(player_1);
 		updateScore(player_2);
 		return new MoveResult(result, boardView[x1][y1].getPiece());
@@ -335,6 +339,20 @@ public class PlayController implements Initializable {
 				boardView[y][x].setFill(color);
 			}
 		}
+	}
+
+	private void suggestedTileBlueMove() {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (currentPlayer.equals(player_1)) {
+			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(true);
+		}
+
+		if (currentPlayer.equals(player_2)) {
+			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(false);
+		}
+		
+		
+
 	}
 
 	public void popQuestion() {
