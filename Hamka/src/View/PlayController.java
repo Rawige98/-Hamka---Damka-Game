@@ -190,10 +190,7 @@ public class PlayController implements Initializable {
 				lastTile = boardView[x0][y0];
 			}
 			if (lastColor.equals(Color.RED)) {
-				System.out.println(piece);
-				System.out.println(lastTile.getPiece());
 				Piece lastPiece = lastTile.getPiece();
-
 				if (!lastPiece.equals(piece)) {
 					System.out.println("You must move the same soldier");
 					moveResult.setType(MoveType.NONE);
@@ -213,6 +210,7 @@ public class PlayController implements Initializable {
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
+				checkQueen(piece, newX, newY);
 				break;
 
 			case KILL:
@@ -226,6 +224,7 @@ public class PlayController implements Initializable {
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
+				checkQueen(piece, newX, newY);
 				break;
 			default:
 				break;
@@ -234,6 +233,12 @@ public class PlayController implements Initializable {
 		});
 
 		return piece;
+	}
+
+	private void checkQueen(Piece piece, int x, int y) {
+		// TODO Auto-generated method stub
+		if(PlayGameController.getInstance().checkIfQueen(x,y))
+			piece.showCrown();
 	}
 
 	private void checkDestinationTile(TileView tileView) {

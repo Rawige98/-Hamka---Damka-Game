@@ -157,4 +157,8 @@ public class PlayGameController {
 		Tile tile = game.getBoard().getMyBoard()[x][y];
 		return suggestedMoves.keySet().contains(tile);
 	}
+	
+	public boolean checkIfQueen(int x, int y) {
+		return game.getBoard().getMyBoard()[x][y].isQueen();
+	}
 }
