@@ -162,10 +162,10 @@ public class PlayController implements Initializable {
 				Piece piece = null;
 				// changes in (if)
 				if (game.getBoard().getMyBoard()[x][y] instanceof BlackSoldier) {
-					piece = makePiece(PieceType.WHITE, x, y);
+					piece = makePiece(PieceType.WHITE, player_2.getColor(), x, y);
 				}
 				if (game.getBoard().getMyBoard()[x][y] instanceof WhiteSoldier) {
-					piece = makePiece(PieceType.GREY, x, y);
+					piece = makePiece(PieceType.GREY, player_1.getColor(),  x, y);
 				}
 				if (piece != null) {
 					tileView.setPiece(piece);
@@ -176,8 +176,8 @@ public class PlayController implements Initializable {
 		return boardPane;
 	}
 
-	private Piece makePiece(PieceType type, int x, int y) {
-		Piece piece = new Piece(type, x, y, "b.jpg");
+	private Piece makePiece(PieceType type, Color color, int x, int y) {
+		Piece piece = new Piece(type, color, x, y, "b.jpg");
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());

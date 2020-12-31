@@ -45,7 +45,7 @@ public class JsonParser {
 //				.registerSubtype(WhiteTile.class, WhiteTile.class.getName())
 //				.registerSubtype(WhiteSoldier.class, WhiteSoldier.class.getName());
 //		builder.registerTypeAdapterFactory(adapter);
-		builder.registerTypeAdapter(Tile[][].class, new InterfaceAdapter<Tile[][]>());
+//		builder.registerTypeAdapter(Tile[][].class, new InterfaceAdapter<Tile[][]>());
 		gson = builder.setExclusionStrategies(new ExclusionStrategy() {
 			@Override
 			public boolean shouldSkipField(FieldAttributes f) {
