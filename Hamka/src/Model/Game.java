@@ -30,6 +30,8 @@ public class Game {
 	public static boolean notFinished = false;
 	private int Time = 0;
 	Scanner runGameScanner;
+	private static boolean ownKill=false;
+	private static Tile killedSoldier;
 
 	public Game(Player player1, Player player2) {
 		super();
@@ -274,8 +276,9 @@ public class Game {
 			board.upgradeQueen(xEnd, yEnd);
 			if(MType.equals(MoveType.NORMAL)&&!mp.isEmpty()) {
 				Tile t = ((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]);
-				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());
-				//updateOnBoard
+				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());	
+				ownKill=true;
+				killedSoldier=t;
 			}
 			// Tile destinationTile = board.getTile(xEnd, yEnd);
 			// checkDestinatonTile(destinationTile);
@@ -511,5 +514,21 @@ public class Game {
 	public String briefToString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
 				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
+	}
+
+	public static boolean isOwnKill() {
+		return ownKill;
+	}
+
+	public static void setOwnKill(boolean ownKill) {
+		Game.ownKill = ownKill;
+	}
+
+	public static Tile getKilledSoldier() {
+		return killedSoldier;
+	}
+
+	public static void setKilledSoldier(Tile killedSoldier) {
+		Game.killedSoldier = killedSoldier;
 	}
 }

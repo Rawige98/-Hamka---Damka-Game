@@ -361,7 +361,6 @@ public class PlayController implements Initializable {
 			x1 = Board.getSkipedTile().getCols();
 			y1 = Board.getSkipedTile().getRows();
 		} else {
-			
 			x1 = oldX + (newX - oldX) / 2;
 			y1 = oldY + (newY - oldY) / 2;
 		}
@@ -369,13 +368,17 @@ public class PlayController implements Initializable {
 		if (PlayGameController.getInstance().isQueen(newX, newX)) {
 
 		}
-
+		if(Game.isOwnKill()) {
+			Game.setOwnKill(false);
+			x1=Game.getKilledSoldier().getCols();
+			y1=Game.getKilledSoldier().getRows();
+			result=MoveType.KILL;
+		}
 		updateScore(player_1);
 		updateScore(player_2);
 		System.out.println(game.getGameState());
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
-
 	private void colorTiles() {
 		PlayGameController.getInstance().checkTilesToBeColored();
 		refreshBoardTilesColors();
