@@ -34,6 +34,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -95,6 +96,11 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private RadioButton ans3;
+    @FXML
+    private ImageView p1Turn;
+
+    @FXML
+    private ImageView p2Turn;
 
 	@FXML
 	private RadioButton ans4;
@@ -485,6 +491,8 @@ public class PlayController implements Initializable {
 		player_2 = PlayGameController.getInstance().getPlayer2();
 		currentPlayer = player_1;
 		game = PlayGameController.getInstance().getGame();
+		player1image.setFill(player_1.getColor());
+		player2image.setFill(player_2.getColor());
 
 		createBoardView();
 
@@ -547,6 +555,8 @@ public class PlayController implements Initializable {
 			while (Game.getIsP1Turn() && Game.notFinished) {
 				player1.setTextFill(Color.RED);
 				player2.setTextFill(Color.BLACK);
+				p2Turn.setVisible(false);
+				p1Turn.setVisible(true);
 
 				second++;
 				if (second >= 60) {
@@ -589,6 +599,8 @@ public class PlayController implements Initializable {
 			while (!Game.getIsP1Turn() && Game.notFinished) {
 				player2.setTextFill(Color.RED);
 				player1.setTextFill(Color.BLACK);
+				p1Turn.setVisible(false);
+				p2Turn.setVisible(true);
 
 				second++;
 				if (second >= 60) {
