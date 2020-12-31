@@ -187,7 +187,6 @@ public class Board {
 					p.setScore(100);
 					turnOffAllTilesColor();
 					setSkipedTile(new BlackTile(col, row));
-
 					return MoveType.KILL;
 				} else {
 					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);

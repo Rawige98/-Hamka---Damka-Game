@@ -12,7 +12,9 @@ import org.hamcrest.core.IsSame;
 
 import Utils.Consts;
 import Utils.GameStatus;
+import Utils.MoveResult;
 import Utils.MoveType;
+import View.PlayController;
 import javafx.scene.paint.Color;
 
 public class Game {
@@ -207,9 +209,11 @@ public class Game {
 		if (status.equals(GameStatus.QUIT)) {
 			winner = isP1Turn ? player2 : player1;
 			notFinished = false;
+			SysData.getInstance().addFinishedGame(this);
 			return true;
 		} else if (status.equals(GameStatus.PAUSE)) {
 			notFinished = false;
+			SysData.getInstance().addPausedGame(this);
 			return true;
 		} else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()) {
 			if (player1.getScore() > player2.getScore())
@@ -217,6 +221,7 @@ public class Game {
 			else
 				winner = player2;
 			notFinished = false;
+			SysData.getInstance().addFinishedGame(this);
 			return true;
 		} else
 			return false;
@@ -241,21 +246,21 @@ public class Game {
 	public MoveType move(int xStart, int yStart, int xEnd, int yEnd) {
 		Player p = null;
 		p = isP1Turn ? player1 : player2;
-//		HashMap<Tile, ArrayList<Tile>> mp = board.checkAvailableSkips(isP1Turn);
-//		Tile start,end;
-//		if(board.getMyBoard()[yStart][xStart] instanceof BlackSoldier)
-//			start=new BlackSoldier(yStart,xStart);
+		HashMap<Tile, ArrayList<Tile>> mp = board.checkAvailableSkips(isP1Turn);
+//		Tile start, end;
+//		if (board.getMyBoard()[yStart][xStart] instanceof BlackSoldier)
+//			start = new BlackSoldier(yStart, xStart);
 //		else
-//			start=new WhiteSoldier(yEnd,xEnd);
-//		if(board.getMyBoard()[yEnd][xEnd] instanceof BlackSoldier)
-//			end=new BlackSoldier(yEnd,xEnd);
+//			start = new WhiteSoldier(yEnd, xEnd);
+//		if (board.getMyBoard()[yEnd][xEnd] instanceof BlackSoldier)
+//			end = new BlackSoldier(yEnd, xEnd);
 //		else
-//			end=new WhiteSoldier(yEnd,xEnd);
+//			end = new WhiteSoldier(yEnd, xEnd);
 //		boolean isIgnoreSkip = false;
 //		boolean isSkip = false;
 //		ArrayList<Tile> availableTilesToSkip = mp.get(start);
 //		if (availableTilesToSkip == null) {
-//			if (!mp.isEmpty())
+//			if (mp.size() != 0)
 //				isIgnoreSkip = true;
 //		} else {
 //			if (!availableTilesToSkip.contains(end)) {
@@ -267,13 +272,20 @@ public class Game {
 		MoveType MType = board.move(xStart, yStart, xEnd, yEnd, isP1Turn, p);
 		if (MType.equals(MoveType.KILL) || MType.equals(MoveType.NORMAL)) {
 			board.upgradeQueen(xEnd, yEnd);
+			if(MType.equals(MoveType.NORMAL)&&!mp.isEmpty()) {
+				Tile t = ((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]);
+				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());
+				//updateOnBoard
+			}
 			// Tile destinationTile = board.getTile(xEnd, yEnd);
 			// checkDestinatonTile(destinationTile);
-//			if (!(isSkip && board.checkAvailableSkips(isP1Turn).containsKey(board.getMyBoard()[xEnd][yEnd])) && !board.getMyBoard()[xEnd][yEnd].getColor().equals(Color.YELLOW) )
+//			if (!(isSkip && board.checkAvailableSkips(isP1Turn).containsKey(board.getMyBoard()[xEnd][yEnd]))
+//					&& !board.getMyBoard()[xEnd][yEnd].getColor().equals(Color.YELLOW)) 
 //				isP1Turn = !isP1Turn;
 //			notFinished = true;
 //			if (isIgnoreSkip) {
-//				((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]).setValue(0);
+//				Tile t = ((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]);
+//				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());
 //			}
 			return MType;
 		}
