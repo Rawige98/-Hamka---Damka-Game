@@ -67,6 +67,13 @@ public class PlayGameController {
 	//		return (game.getBoard().showYellowTiles());
 	//	}
 
+	
+	
+	public boolean isQueen(int x, int y)
+	{
+		return(game.getBoard().getTile(y, x).isQueen());
+	}
+	
 	public boolean isYellowTile(int x, int y) {
 		if (game.getBoard().getTile(y, x).getColor().equals(Color.YELLOW)) {
 			return true;
@@ -74,6 +81,14 @@ public class PlayGameController {
 
 		return false;
 	}
+	
+	
+	public ArrayList<Tile> blueMoveSuggestedTiles(boolean isBlack)
+	{
+		return game.getBlueSuggtedTiles(isBlack);
+	}
+	
+	
 	/*
 	 * public void startGame(String username1, String username2) {
 	 * 
@@ -141,5 +156,9 @@ public class PlayGameController {
 		HashMap<Tile, ArrayList<Tile>> suggestedMoves= game.getAvailableMoves();
 		Tile tile = game.getBoard().getMyBoard()[x][y];
 		return suggestedMoves.keySet().contains(tile);
+	}
+	
+	public boolean checkIfQueen(int x, int y) {
+		return game.getBoard().getMyBoard()[x][y].isQueen();
 	}
 }

@@ -1,5 +1,6 @@
 package View;
 
+import java.beans.Visibility;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -97,6 +98,11 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private RadioButton ans4;
+	@FXML
+	private Circle w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12;
+	@FXML
+	private Circle b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12;
+
 	PopQ p = new PopQ();
 	int rightA;
 
@@ -156,10 +162,10 @@ public class PlayController implements Initializable {
 				Piece piece = null;
 				// changes in (if)
 				if (game.getBoard().getMyBoard()[x][y] instanceof BlackSoldier) {
-					piece = makePiece(PieceType.RED, x, y);
+					piece = makePiece(PieceType.WHITE, x, y);
 				}
 				if (game.getBoard().getMyBoard()[x][y] instanceof WhiteSoldier) {
-					piece = makePiece(PieceType.BLUE, x, y);
+					piece = makePiece(PieceType.GREY, x, y);
 				}
 				if (piece != null) {
 					tileView.setPiece(piece);
@@ -184,10 +190,7 @@ public class PlayController implements Initializable {
 				lastTile = boardView[x0][y0];
 			}
 			if (lastColor.equals(Color.RED)) {
-				System.out.println(piece);
-				System.out.println(lastTile.getPiece());
 				Piece lastPiece = lastTile.getPiece();
-
 				if (!lastPiece.equals(piece)) {
 					System.out.println("You must move the same soldier");
 					moveResult.setType(MoveType.NONE);
@@ -207,19 +210,21 @@ public class PlayController implements Initializable {
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
+				checkQueen(piece, newX, newY);
 				break;
 
 			case KILL:
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
-
+//				
 				Piece otherPiece = moveResult.getPiece();
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
+				checkQueen(piece, newX, newY);
 				break;
 			default:
 				break;
@@ -228,6 +233,12 @@ public class PlayController implements Initializable {
 		});
 
 		return piece;
+	}
+
+	private void checkQueen(Piece piece, int x, int y) {
+		// TODO Auto-generated method stub
+		if(PlayGameController.getInstance().checkIfQueen(x,y))
+			piece.showCrown();
 	}
 
 	private void checkDestinationTile(TileView tileView) {
@@ -257,6 +268,21 @@ public class PlayController implements Initializable {
 			lastColor = Color.BLACK;
 		}
 		if (!samePlayerTurn) {
+			if (currentPlayer.equals(player_1)) {
+				if (PlayerTimer1.getMints() < 1)
+					player_1.setScore(60 - PlayerTimer1.getSecond());
+				else
+					player_1.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+			} else {
+				if (PlayerTimer1.getMints() < 1)
+					player_2.setScore(60 - PlayerTimer1.getSecond());
+				else
+					player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+
+			}
+
+			updateScore(player_1);
+			updateScore(player_2);
 			PlayGameController.getInstance().switchTurnNow();
 			lastColor = Color.BLACK;
 		}
@@ -300,11 +326,11 @@ public class PlayController implements Initializable {
 		MoveType result = MoveType.NONE;
 
 		if (currentPlayer.equals(player_1)) {
-			if (piece.getPieceType().equals(PieceType.BLUE)) {
+			if (piece.getPieceType().equals(PieceType.GREY)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
 			}
 		} else {
-			if (piece.getPieceType().equals(PieceType.RED)) {
+			if (piece.getPieceType().equals(PieceType.WHITE)) {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
 			}
 		}
@@ -317,6 +343,10 @@ public class PlayController implements Initializable {
 			
 			x1 = oldX + (newX - oldX) / 2;
 			y1 = oldY + (newY - oldY) / 2;
+		}
+
+		if (PlayGameController.getInstance().isQueen(newX, newX)) {
+
 		}
 
 		updateScore(player_1);
@@ -339,22 +369,27 @@ public class PlayController implements Initializable {
 		}
 	}
 
+	private void suggestedTileBlueMove() {
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		if (currentPlayer.equals(player_1)) {
+			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(true);
+		}
+
+		if (currentPlayer.equals(player_2)) {
+			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(false);
+		}
+		
+		
+
+	}
+
 	public void popQuestion() {
-		// Stage primaryStage = new Stage();
-		// Parent root =
-		// FXMLLoader.load(getClass().getResource("/View/PopQuestion.fxml"));
-		// Scene scene = new Scene(root, 473, 310);
-		// primaryStage.initStyle(StageStyle.TRANSPARENT);
-		// scene.setFill(Color.TRANSPARENT);
-		// primaryStage.setScene(scene);
-		// primaryStage.setTitle("questions");
-		// primaryStage.show();
+
 		ans1.setSelected(false);
 		ans2.setSelected(false);
 		ans3.setSelected(false);
 		ans4.setSelected(false);
 		boardPane.setDisable(true);
-//		boardPane.setStyle("-fx-background-color: rgba(0, 100, 100, 0.5); -fx-background-radius: 10;");
 		questionPane.setVisible(true);
 		q = p.popQuestion();
 		ans1.setVisible(true);
@@ -430,6 +465,7 @@ public class PlayController implements Initializable {
 		createBoardView();
 
 		colorTiles();
+
 	}
 
 	public class TimerForPlayer1 implements Runnable {
@@ -519,6 +555,11 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 			}
+//			if (PlayerTimer1.getMints() < 1)
+//				player_1.setScore(60 - PlayerTimer1.getSecond());
+//			else
+//				player_1.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+			// updateScore(player_1);
 			reset();
 
 			while (!Game.getIsP1Turn() && Game.notFinished) {
@@ -550,6 +591,10 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 			}
+//			if (PlayerTimer1.getMints() < 1)
+//				player_2.setScore(60 - PlayerTimer1.getSecond());
+//			else
+//				player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
 			if (Game.notFinished) {
 				run();
 			}
@@ -659,6 +704,18 @@ public class PlayController implements Initializable {
 				currentPlayer.updateScore(-250);
 
 			}
+		}
+		if (currentPlayer.equals(player_1)) {
+			if (PlayerTimer1.getMints() < 1)
+				player_1.setScore(60 - PlayerTimer1.getSecond());
+			else
+				player_1.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+		} else {
+			if (PlayerTimer1.getMints() < 1)
+				player_2.setScore(60 - PlayerTimer1.getSecond());
+			else
+				player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+
 		}
 		updateScore(player_1);
 		updateScore(player_2);

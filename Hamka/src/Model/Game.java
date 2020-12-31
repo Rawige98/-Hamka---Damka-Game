@@ -384,6 +384,109 @@ public class Game {
 
 	}
 
+	public ArrayList<Tile> getBlueSuggtedTiles(boolean isBlack) {
+
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+
+		for (int i = 0; i < Consts.ROWS; i++) {
+			for (int j = 0; j < Consts.COLS; j++) {
+				Tile tile = board.getMyBoard()[i][j];
+				if (isBlack) {
+					if (tile.getValue() == 0 && checkMove(tile, isBlack)) {
+						tiles.add(tile);
+					}
+				}
+
+				else if (!isBlack) {
+					if (tile.getValue() == 0 && checkMove(tile, !isBlack)) {
+						tiles.add(tile);
+					}
+				}
+			}
+		}
+
+		return tiles;
+	}
+
+	public boolean checkMove(Tile tile, boolean isBlack) {
+
+		int row1 = tile.getRows() + 1;
+		int row_1 = tile.getRows() - 1;
+		int row2 = tile.getRows() + 2;
+		int row_2 = tile.getRows() - 2;
+
+		int col1 = tile.getCols() + 1;
+		int col_1 = tile.getCols() - 1;
+		int col2 = tile.getCols() + 2;
+		int col_2 = tile.getCols() - 2;
+
+		if (isBlack) {
+			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 1
+					|| board.getTile(row_2, col_2).getValue() == 11))
+				return false;
+			else if (MoveValidation.isValidPoint(row_2, col2) && (board.getTile(row_2, col2).getValue() == 1
+					|| board.getTile(row_2, col2).getValue() == 11))
+				return false;
+			else if (MoveValidation.isValidPoint(row2, col_2) && (board.getTile(row2, col_2).getValue() == 1
+					|| board.getTile(row2, col_2).getValue() == 11))
+				return false;
+			else if (MoveValidation.isValidPoint(row2, col2) && (board.getTile(row2, col2).getValue() == 1
+					|| board.getTile(row2, col2).getValue() == 11))
+				return false;
+
+			else if (MoveValidation.isValidPoint(row_1, col_1) && (board.getTile(row_1, col_1).getValue() == 1
+					|| board.getTile(row_1, col_1).getValue() == 11))
+				return false;
+			else if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 1
+					|| board.getTile(row_1, col1).getValue() == 11))
+				return false;
+			else if (MoveValidation.isValidPoint(row1, col_1) && (board.getTile(row1, col_1).getValue() == 1
+					|| board.getTile(row1, col_1).getValue() == 11))
+				return false;
+			else if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 1
+					|| board.getTile(row1, col1).getValue() == 11))
+				return false;
+			
+			else 
+				return true;
+
+		}
+
+		 if (!isBlack) {
+			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 2
+					|| board.getTile(row_2, col_2).getValue() == 22))
+				return false;
+			else if (MoveValidation.isValidPoint(row_2, col2) &&( board.getTile(row_2, col2).getValue() == 2
+					|| board.getTile(row_2, col2).getValue() == 22))
+				return false;
+			else if (MoveValidation.isValidPoint(row2, col_2) &&( board.getTile(row2, col_2).getValue() == 2
+					|| board.getTile(row2, col_2).getValue() == 22))
+				return false;
+			else	if (MoveValidation.isValidPoint(row2, col2) &&( board.getTile(row2, col2).getValue() == 2
+					|| board.getTile(row2, col2).getValue() == 22))
+				return false;
+
+			else if (MoveValidation.isValidPoint(row_1, col_1) &&( board.getTile(row_1, col_1).getValue() == 2
+					|| board.getTile(row_1, col_1).getValue() == 22))
+				return false;
+			else if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 2
+					|| board.getTile(row_1, col1).getValue() == 22))
+				return false;
+			else if (MoveValidation.isValidPoint(row1, col_1) &&( board.getTile(row1, col_1).getValue() == 2
+					|| board.getTile(row1, col_1).getValue() == 22))
+				return false;
+			else if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 2
+					|| board.getTile(row1, col1).getValue() == 22))
+				return false;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	
+
 	public ArrayList<Tile> getSuggestedTilesArray() {
 		// TODO Auto-generated method stub
 		ArrayList<Tile> tiles = new ArrayList<>();
