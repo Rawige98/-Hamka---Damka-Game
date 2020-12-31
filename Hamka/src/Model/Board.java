@@ -241,6 +241,10 @@ public class Board {
 		}
 		return availableMoves;
 	}
+	
+	
+	
+	
 
 	/**
 	 * in this method we find the available moves for a specific soldier
