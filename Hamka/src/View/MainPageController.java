@@ -270,15 +270,6 @@ public class MainPageController implements Initializable {
 		((Stage) closeInst.getScene().getWindow()).close();
 	}
 
-	@FXML
-	void menu(MouseEvent event) {
-		newPane.setVisible(true);
-	}
-
-	@FXML
-	void deletemenu(MouseEvent event) {
-		newPane.setVisible(false);
-	}
 
 	public void Start(ActionEvent event) throws Exception {
 		ArrayList<Player> players = new ArrayList<Player>();
