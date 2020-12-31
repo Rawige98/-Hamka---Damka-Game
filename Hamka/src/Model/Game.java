@@ -275,6 +275,12 @@ public class Game {
 		if (MType.equals(MoveType.KILL) || MType.equals(MoveType.NORMAL)) {
 			board.upgradeQueen(xEnd, yEnd);
 			if(MType.equals(MoveType.NORMAL)&&!mp.isEmpty()) {
+				for(Tile keyT:mp.keySet()) {
+					if(keyT.equals(board.getMyBoard()[yStart][xStart])) {
+						keyT.setCols(yEnd);
+						keyT.setRows(xEnd);
+					}					
+				}
 				Tile t = ((Tile) mp.keySet().toArray()[new Random().nextInt(mp.size())]);
 				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());	
 				ownKill=true;
