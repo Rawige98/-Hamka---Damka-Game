@@ -91,8 +91,7 @@ public class MainPageController implements Initializable {
     @FXML
     private ColorPicker p1ColorPicker;
 
-	@FXML
-	private ImageView menu;
+	
 
 	public static boolean isSoundOn = true;
 
