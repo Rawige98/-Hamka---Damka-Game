@@ -1,7 +1,5 @@
 package View;
 
-import java.beans.Visibility;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -26,7 +24,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -36,13 +33,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class PlayController implements Initializable {
 
@@ -259,14 +254,21 @@ public class PlayController implements Initializable {
 				checkQueen(piece, newX, newY);
 				break;
 
+
 			case KILL:
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
-				boardView[newX][newY].setPiece(piece);	
-//				
+				boardView[newX][newY].setPiece(piece);
 				Piece otherPiece = moveResult.getPiece();
+				if(!Game.isOwnKill()) {
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
+				}
+				else {
+					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())].setPiece(null);
+					pieceGroup.getChildren().remove(boardView[Game.getKilledSoldier().getCols()][Game.getKilledSoldier().getRows()].getPiece());
+					Game.setOwnKill(false);
+				}
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
@@ -336,6 +338,7 @@ public class PlayController implements Initializable {
 		}
 	}
 
+
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 		int oldX = toBoard(piece.getOldX());
@@ -364,16 +367,11 @@ public class PlayController implements Initializable {
 			x1 = oldX + (newX - oldX) / 2;
 			y1 = oldY + (newY - oldY) / 2;
 		}
-
-		if (PlayGameController.getInstance().isQueen(newX, newX)) {
-
+		if(Game.isOwnKill()) {
+			x1=Game.getKilledSoldier().getCols();
+			y1=Game.getKilledSoldier().getRows();
+			result=MoveType.KILL;
 		}
-		// if(Game.isOwnKill()) {
-		// Game.setOwnKill(false);
-		// x1=Game.getKilledSoldier().getCols();
-		// y1=Game.getKilledSoldier().getRows();
-		// result=MoveType.KILL;
-		// }
 		updateScore(player_1);
 		updateScore(player_2);
 		System.out.println(game.getGameState());
