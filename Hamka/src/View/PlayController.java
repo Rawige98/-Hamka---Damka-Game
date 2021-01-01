@@ -1,7 +1,5 @@
 package View;
 
-import java.beans.Visibility;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -26,7 +24,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -36,13 +33,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class PlayController implements Initializable {
 
@@ -244,10 +239,16 @@ public class PlayController implements Initializable {
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
-//				
 				Piece otherPiece = moveResult.getPiece();
+				if(!Game.isOwnKill()) {
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 				pieceGroup.getChildren().remove(otherPiece);
+				}
+				else {
+					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())].setPiece(null);
+					pieceGroup.getChildren().remove(boardView[Game.getKilledSoldier().getCols()][Game.getKilledSoldier().getRows()].getPiece());
+					Game.setOwnKill(false);
+				}
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
@@ -315,32 +316,6 @@ public class PlayController implements Initializable {
 		}
 	}
 
-	private MoveResult tryMove(Piece piece, int newX, int newY) {
-
-		if (newX < 0 || newY < 0 || newX >= Consts.ROWS || newY >= Consts.COLS)
-			return new MoveResult(MoveType.NONE);
-
-		if (boardView[newX][newY].hasPiece() || (newX + newY) % 2 == 0) {
-			return new MoveResult(MoveType.NONE);
-		}
-
-		int x0 = toBoard(piece.getOldX());
-		int y0 = toBoard(piece.getOldY());
-
-		if (Math.abs(newX - x0) == 1 && newY - y0 == piece.getPieceType().moveDir) {
-			return new MoveResult(MoveType.NORMAL);
-		} else if (Math.abs(newX - x0) == 2 && newY - y0 == piece.getPieceType().moveDir * 2) {
-
-			int x1 = x0 + (newX - x0) / 2;
-			int y1 = y0 + (newY - y0) / 2;
-
-			if (boardView[x1][y1].hasPiece() && boardView[x1][y1].getPiece().getPieceType() != piece.getPieceType()) {
-				return new MoveResult(MoveType.KILL, boardView[x1][y1].getPiece());
-			}
-		}
-
-		return new MoveResult(MoveType.NONE);
-	}
 
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
@@ -370,12 +345,7 @@ public class PlayController implements Initializable {
 			x1 = oldX + (newX - oldX) / 2;
 			y1 = oldY + (newY - oldY) / 2;
 		}
-
-		if (PlayGameController.getInstance().isQueen(newX, newX)) {
-
-		}
 		if(Game.isOwnKill()) {
-			Game.setOwnKill(false);
 			x1=Game.getKilledSoldier().getCols();
 			y1=Game.getKilledSoldier().getRows();
 			result=MoveType.KILL;
