@@ -186,15 +186,16 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseX);
 						int row = toBoard(mouseY);
 						System.out.println("here is " + col + " and " + row);
-						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-								- 1];
+						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1]
+								[col- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
 									Color.AQUAMARINE, row - 1, col - 1);
-							TileView newTileView = boardView[col - 1][row - 1];
+							TileView newTileView = boardView[row - 1][col - 1];
 							newTileView.setPiece(newPiece);
+							newPiece.toFront();
 							pieceGroup.getChildren().add(newPiece);
 
 						}
@@ -207,10 +208,13 @@ public class PlayController implements Initializable {
 
 	private void colorSuggesstedForBlueTile() {
 		for (Tile tile : suggestedTileBlueMove()) {
-			System.out.println("row" + tile.getCols() + " col" + tile.getRows());
+			System.out.println("suggested row " + tile.getCols() + " & col" + tile.getRows());
 
 			if (!boardView[tile.getCols()][tile.getRows()].getFill().equals(Color.WHITE)) {
-				boardView[tile.getCols()][tile.getRows()].setFill(Color.BEIGE);
+				boardView[tile.getCols()][tile.getRows()].setStroke(Color.BLUE);
+				boardView[tile.getCols()][tile.getRows()].setStrokeWidth(5);
+				boardView[tile.getCols()][tile.getRows()].toFront();
+				
 			}
 		}
 	}
@@ -247,6 +251,9 @@ public class PlayController implements Initializable {
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
 				// showYellowTiles();
+				System.out.println("test"+newX+","+ newY);
+
+				//check indexes
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
 				checkQueen(piece, newX, newY);
@@ -255,7 +262,7 @@ public class PlayController implements Initializable {
 			case KILL:
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
-				boardView[newX][newY].setPiece(piece);
+				boardView[newX][newY].setPiece(piece);	
 //				
 				Piece otherPiece = moveResult.getPiece();
 				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
@@ -396,6 +403,8 @@ public class PlayController implements Initializable {
 		if (currentPlayer.equals(player_2)) {
 			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(false);
 		}
+		
+		System.out.println("suggested tiles:"+tiles);
 
 		return tiles;
 

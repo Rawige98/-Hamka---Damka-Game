@@ -279,7 +279,6 @@ public class MainPageController implements Initializable {
 		players.add(player2);
 		MainPageController.player1=player1;
 		MainPageController.player2=player2;
-		PlayGameController.getInstance().startGame(player1,player2);
 		Player firstPlayer = players.get(new Random().nextInt(players.size()));
 		Player secondPlayer;
 		if (firstPlayer.equals(player1)) {
@@ -289,6 +288,7 @@ public class MainPageController implements Initializable {
 		}
 		player1 = firstPlayer;
 		player2 = secondPlayer;
+		PlayGameController.getInstance().startGame(player1,player2);
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
