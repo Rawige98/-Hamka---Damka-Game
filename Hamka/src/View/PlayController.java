@@ -1,5 +1,6 @@
 package View;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -27,10 +28,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -96,6 +99,14 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private ImageView p2Turn;
+    @FXML
+    private ImageView hard;
+
+    @FXML
+    private ImageView medium;
+
+    @FXML
+    private ImageView easy;
 
 	@FXML
 	private RadioButton ans4;
@@ -128,6 +139,7 @@ public class PlayController implements Initializable {
 	private boolean flag;
 
 	// private TimerForPlayer2 PlayerTimer2;
+
 	@FXML
 	void closeWindow(ActionEvent event) {
 
@@ -306,7 +318,7 @@ public class PlayController implements Initializable {
 			piece.showCrown();
 	}
 
-	private void checkDestinationTile(TileView tileView) {
+	private void checkDestinationTile(TileView tileView)  {
 		lastTile = tileView;
 		if (tileView.getFill().equals(Color.YELLOW)) {
 			popQuestion();
@@ -352,7 +364,26 @@ public class PlayController implements Initializable {
 
 			updateScore(player_1);
 			updateScore(player_2);
-			PlayGameController.getInstance().switchTurnNow();
+			if(!PlayGameController.getInstance().switchTurnNow())
+			{
+				((Stage) player1.getScene().getWindow()).close();
+					Stage primaryStage = new Stage();
+					Parent root;
+					try {
+						root = FXMLLoader.load(getClass().getResource("/View/Winner.fxml"));
+						Scene scene = new Scene(root, 439, 256);
+						primaryStage.setScene(scene);
+						primaryStage.setTitle("winner");
+						primaryStage.show();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				
+				
+			}
+			//PlayGameController.getInstance().switchTurnNow();
 			lastColor = Color.BLACK;
 		}
 	}
@@ -452,6 +483,24 @@ public class PlayController implements Initializable {
 			ans4.setText(q.getAnswers().get(3));
 
 		}
+		if(q.getDifficulty().equals(Difficulty.EASY))
+		{
+			easy.setVisible(true);
+			medium.setVisible(false);
+			 hard.setVisible(false);
+		}
+		else if(q.getDifficulty().equals(Difficulty.MEDIUM)) {
+			
+			medium.setVisible(true);
+			 hard.setVisible(false);
+			 easy.setVisible(false);
+		}
+		else
+		{
+		 hard.setVisible(true);
+		 medium.setVisible(false);
+		 easy.setVisible(false);
+		}
 
 	}
 
@@ -471,9 +520,16 @@ public class PlayController implements Initializable {
 	public ArrayList<Tile> getSuggestedTilesArray() {
 		return PlayGameController.getInstance().getSuggestedTilesArrayForPlayer();
 	}
+	
+
+	
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		hard.setVisible(false);
+		 medium.setVisible(false);
+		 easy.setVisible(false);
 		questionPane.setVisible(false);
 		Game.notFinished = true;
 		Game.setP1Turn(true);
@@ -755,23 +811,36 @@ public class PlayController implements Initializable {
 
 			}
 		}
-		if (currentPlayer.equals(player_1)) {
-			if (PlayerTimer1.getMints() < 1)
-				player_1.setScore(60 - PlayerTimer1.getSecond());
-			else
-				player_1.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
-		} else {
-			if (PlayerTimer1.getMints() < 1)
-				player_2.setScore(60 - PlayerTimer1.getSecond());
-			else
-				player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
-
+		if(!ans1.isSelected()&&!ans2.isSelected()&&!ans3.isSelected()&&!ans4.isSelected())
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("No answer");
+			alert.setContentText("You must choose an answer!");
+			alert.show();
+			return;
 		}
-		updateScore(player_1);
-		updateScore(player_2);
-		PlayGameController.getInstance().switchTurnNow();
-		questionPane.setVisible(false);
-		boardPane.setDisable(false);
+		else
+		{
+			if (currentPlayer.equals(player_1)) {
+				if (PlayerTimer1.getMints() < 1)
+					player_1.setScore(60 - PlayerTimer1.getSecond());
+				else
+					player_1.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+			} else {
+				if (PlayerTimer1.getMints() < 1)
+					player_2.setScore(60 - PlayerTimer1.getSecond());
+				else
+					player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+
+			}
+			updateScore(player_1);
+			updateScore(player_2);
+			PlayGameController.getInstance().switchTurnNow();
+			questionPane.setVisible(false);
+			boardPane.setDisable(false);
+			
+		}
+	
 	}
 
 }
