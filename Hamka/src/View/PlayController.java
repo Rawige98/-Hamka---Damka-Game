@@ -181,8 +181,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						System.out.println("here is " + col + " and " + row);
-						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-								- 1];
+						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 
 							Piece newPiece = makePiece(
@@ -266,7 +265,8 @@ public class PlayController implements Initializable {
 
 				// check indexes
 				checkDestinationTile(boardView[newX][newY]);
-				colorTiles();
+				if(!lastColor.equals(Color.BLUE))
+					colorTiles();
 				checkQueen(piece, newX, newY);
 				break;
 
@@ -287,7 +287,8 @@ public class PlayController implements Initializable {
 				}
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
-				colorTiles();
+				if(!lastColor.equals(Color.BLUE))
+					colorTiles();
 				checkQueen(piece, newX, newY);
 				break;
 			default:
@@ -325,10 +326,12 @@ public class PlayController implements Initializable {
 			samePlayerTurn = false;
 			lastColor = Color.GREEN;
 		} else if (tileView.getFill().equals(Color.BLUE)) {
-			System.out.println("********** BLUE ***********");
-			colorSuggesstedForBlueTile();
-			lastColor = Color.BLUE;
-			samePlayerTurn = true;
+			if(!suggestedTileBlueMove().isEmpty()) {
+				System.out.println("********** BLUE ***********");
+				colorSuggesstedForBlueTile();
+				lastColor = Color.BLUE;
+				samePlayerTurn = true;
+			}
 		} else {
 			samePlayerTurn = false;
 			lastColor = Color.BLACK;

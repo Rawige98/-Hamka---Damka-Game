@@ -17,8 +17,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -272,9 +275,33 @@ public class MainPageController implements Initializable {
 
 	public void Start(ActionEvent event) throws Exception {
 		ArrayList<Player> players = new ArrayList<Player>();
-
-		Player player1 = new Player(p1.getText(), p1ColorPicker.getValue());
-		Player player2 = new Player(p2.getText(), p2ColorPicker.getValue());
+		String nickname1, nickname2;
+		Color color1 = p1ColorPicker.getValue() , color2 = p2ColorPicker.getValue();
+		nickname1 = p1.getText();
+		nickname2 = p2.getText();
+		if(nickname1.equals("") || nickname1.equals("")) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Missing nickname");
+			alert.setContentText("You must enter a nickname!");
+			alert.show();
+			return;
+		}
+		if(nickname1.equals(nickname2)) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Same nickname");
+			alert.setContentText("You can't enter the same nickname!");
+			alert.show();
+			return;
+		}
+		if(color1.equals(color2)) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Same colors");
+			alert.setContentText("You can't choose the same colors");
+			alert.show();
+			return;
+		}
+		Player player1 = new Player(nickname1, color1 );
+		Player player2 = new Player(nickname2, color2 );
 		players.add(player1);
 		players.add(player2);
 		MainPageController.player1=player1;
