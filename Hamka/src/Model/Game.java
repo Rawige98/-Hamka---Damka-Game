@@ -351,11 +351,11 @@ public class Game {
 			}
 		}
 
-		if (qCount == 1)
-			board.colorRandomTile(suggestedTiles, Color.BLUE);
+		//if (qCount == 1)
+		//	board.colorRandomTile(suggestedTiles, Color.BLUE);
 
-//		if (sCount == 2 && qCount == 1)
-//			board.colorRandomTile(suggestedTiles, Color.BLUE);
+		if (sCount == 2 && qCount == 1)
+		board.colorRandomTile(suggestedTiles, Color.BLUE);
 
 		// *********** Yellow tiles ****************
 		board.showYellowTiles();
