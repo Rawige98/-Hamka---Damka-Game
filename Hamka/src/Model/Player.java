@@ -19,6 +19,7 @@ public class Player {
 		this.username = username;
 		id=++Serial;
 		score=0;
+		color=Color.WHITE;
 	}
 	
 	public Player(String username, Color color) {

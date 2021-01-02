@@ -1,7 +1,10 @@
 package View;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import Controller.PlayGameController;
@@ -16,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class LoadGameControl implements Initializable{
@@ -43,6 +47,20 @@ public class LoadGameControl implements Initializable{
 			e.printStackTrace();
     }
     }
+	@FXML
+	void uploadURL(ActionEvent event) {
+		Button sellectedBtn = (Button) event.getSource();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Resource File");
+		File file = fileChooser.showOpenDialog(sellectedBtn.getScene().getWindow());
+		String fileName=null;
+		if(file!=null) {
+		 fileName=file.getAbsolutePath();
+		SysData.getInstance().LoadState(fileName);
+		LoadList.getItems().clear();
+		LoadList.getItems().addAll(SysData.getInstance().getPausedGames());
+		}
+	}
     @FXML
     void BackPressed(ActionEvent event) throws IOException {
     	((Stage) back.getScene().getWindow()).close();
