@@ -89,6 +89,13 @@ public class PlayGameController {
 	}
 	
 	
+	
+	
+	public void getBackSoldierToLife(int x, int y)
+	{
+		game.addSoldier(x,y);
+	}
+	
 	/*
 	 * public void startGame(String username1, String username2) {
 	 * 

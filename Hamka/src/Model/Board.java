@@ -394,7 +394,7 @@ public class Board {
 	}
 
 	public Tile getTile(int x, int y) {
-		return myBoard[x][y];
+		return myBoard[y][x];
 	}
 
 	public boolean isSkip(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
