@@ -175,11 +175,11 @@ public class PlayController implements Initializable {
 				}
 				tileView.setOnMousePressed(e -> {
 					if (lastColor.equals(Color.BLUE)) {
-						 colorSuggesstedForBlueTile();
+						// colorSuggesstedForBlueTile();
 						double mouseX = e.getSceneX();
 						double mouseY = e.getSceneY();
-						int col = toBoard(mouseX);
-						int row = toBoard(mouseY);
+						int col = toBoard(mouseY);
+						int row = toBoard(mouseX);
 						System.out.println("here is " + col + " and " + row);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1]
 								[col- 1];
@@ -187,11 +187,16 @@ public class PlayController implements Initializable {
 
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
-									Color.AQUAMARINE, row - 1, col - 1);
+									currentPlayer.getColor(), row - 1, col - 1);
+							
 							TileView newTileView = boardView[row - 1][col - 1];
 							newTileView.setPiece(newPiece);
 							newPiece.toFront();
 							pieceGroup.getChildren().add(newPiece);
+							refreshBoardTilesColors();
+							removeBlueStroke();
+							PlayGameController.getInstance().switchTurnNow();
+							//lastColor=Color.BLACK;
 
 						}
 					}
@@ -201,7 +206,26 @@ public class PlayController implements Initializable {
 		return boardPane;
 	}
 
+	
+	
+	
+	
+	private void removeBlueStroke()
+	{
+		for (Tile tile : suggestedTileBlueMove()) {
+
+			if (!boardView[tile.getCols()][tile.getRows()].getFill().equals(Color.WHITE)) {
+				boardView[tile.getCols()][tile.getRows()].setStroke(null);
+				boardView[tile.getCols()][tile.getRows()].setStrokeWidth(5);
+				boardView[tile.getCols()][tile.getRows()].toFront();
+				
+			}
+		}
+	}
+	
+	
 	private void colorSuggesstedForBlueTile() {
+	
 		for (Tile tile : suggestedTileBlueMove()) {
 			System.out.println("suggested row " + tile.getCols() + " & col" + tile.getRows());
 
@@ -388,6 +412,7 @@ public class PlayController implements Initializable {
 			for (int y = 0; y < Consts.COLS; y++) {
 				Color color = game.getBoard().getMyBoard()[y][x].getColor();
 				boardView[y][x].setFill(color);
+				//boardView[y][x].setStroke(null);
 			}
 		}
 	}
