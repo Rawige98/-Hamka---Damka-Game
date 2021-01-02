@@ -91,11 +91,11 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private RadioButton ans3;
-    @FXML
-    private ImageView p1Turn;
+	@FXML
+	private ImageView p1Turn;
 
-    @FXML
-    private ImageView p2Turn;
+	@FXML
+	private ImageView p2Turn;
 
 	@FXML
 	private RadioButton ans4;
@@ -181,22 +181,23 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						System.out.println("here is " + col + " and " + row);
-						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1]
-								[col- 1];
+						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
+								- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
 									currentPlayer.getColor(), row - 1, col - 1);
-							
+
+							PlayGameController.getInstance().getBackSoldierToLife(row - 1, col - 1);
 							TileView newTileView = boardView[row - 1][col - 1];
 							newTileView.setPiece(newPiece);
 							newPiece.toFront();
 							pieceGroup.getChildren().add(newPiece);
-							refreshBoardTilesColors();
 							removeBlueStroke();
+							refreshBoardTilesColors();
 							PlayGameController.getInstance().switchTurnNow();
-							//lastColor=Color.BLACK;
+							// lastColor=Color.BLACK;
 
 						}
 					}
@@ -206,26 +207,17 @@ public class PlayController implements Initializable {
 		return boardPane;
 	}
 
-	
-	
-	
-	
-	private void removeBlueStroke()
-	{
-		for (Tile tile : suggestedTileBlueMove()) {
+	private void removeBlueStroke() {
+		for (int y = 0; y < Consts.ROWS; y++) {
+			for (int x = 0; x < Consts.COLS; x++) {
 
-			if (!boardView[tile.getCols()][tile.getRows()].getFill().equals(Color.WHITE)) {
-				boardView[tile.getCols()][tile.getRows()].setStroke(null);
-				boardView[tile.getCols()][tile.getRows()].setStrokeWidth(5);
-				boardView[tile.getCols()][tile.getRows()].toFront();
-				
+				boardView[x][y].setStroke(null);
 			}
 		}
 	}
-	
-	
+
 	private void colorSuggesstedForBlueTile() {
-	
+
 		for (Tile tile : suggestedTileBlueMove()) {
 			System.out.println("suggested row " + tile.getCols() + " & col" + tile.getRows());
 
@@ -233,7 +225,7 @@ public class PlayController implements Initializable {
 				boardView[tile.getCols()][tile.getRows()].setStroke(Color.BLUE);
 				boardView[tile.getCols()][tile.getRows()].setStrokeWidth(5);
 				boardView[tile.getCols()][tile.getRows()].toFront();
-				
+
 			}
 		}
 	}
@@ -270,27 +262,27 @@ public class PlayController implements Initializable {
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
 				// showYellowTiles();
-				System.out.println("test"+newX+","+ newY);
+				System.out.println("test" + newX + "," + newY);
 
-				//check indexes
+				// check indexes
 				checkDestinationTile(boardView[newX][newY]);
 				colorTiles();
 				checkQueen(piece, newX, newY);
 				break;
-
 
 			case KILL:
 				piece.move(newX, newY);
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
 				Piece otherPiece = moveResult.getPiece();
-				if(!Game.isOwnKill()) {
-				boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
-				pieceGroup.getChildren().remove(otherPiece);
-				}
-				else {
-					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())].setPiece(null);
-					pieceGroup.getChildren().remove(boardView[Game.getKilledSoldier().getCols()][Game.getKilledSoldier().getRows()].getPiece());
+				if (!Game.isOwnKill()) {
+					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
+					pieceGroup.getChildren().remove(otherPiece);
+				} else {
+					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
+							.setPiece(null);
+					pieceGroup.getChildren().remove(
+							boardView[Game.getKilledSoldier().getCols()][Game.getKilledSoldier().getRows()].getPiece());
 					Game.setOwnKill(false);
 				}
 				// showYellowTiles();
@@ -362,7 +354,6 @@ public class PlayController implements Initializable {
 		}
 	}
 
-
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 		int oldX = toBoard(piece.getOldX());
@@ -391,10 +382,10 @@ public class PlayController implements Initializable {
 			x1 = oldX + (newX - oldX) / 2;
 			y1 = oldY + (newY - oldY) / 2;
 		}
-		if(Game.isOwnKill()) {
-			x1=Game.getKilledSoldier().getCols();
-			y1=Game.getKilledSoldier().getRows();
-			result=MoveType.KILL;
+		if (Game.isOwnKill()) {
+			x1 = Game.getKilledSoldier().getCols();
+			y1 = Game.getKilledSoldier().getRows();
+			result = MoveType.KILL;
 		}
 		updateScore(player_1);
 		updateScore(player_2);
@@ -412,7 +403,7 @@ public class PlayController implements Initializable {
 			for (int y = 0; y < Consts.COLS; y++) {
 				Color color = game.getBoard().getMyBoard()[y][x].getColor();
 				boardView[y][x].setFill(color);
-				//boardView[y][x].setStroke(null);
+				// boardView[y][x].setStroke(null);
 			}
 		}
 	}
@@ -426,8 +417,8 @@ public class PlayController implements Initializable {
 		if (currentPlayer.equals(player_2)) {
 			tiles = PlayGameController.getInstance().blueMoveSuggestedTiles(false);
 		}
-		
-		System.out.println("suggested tiles:"+tiles);
+
+		System.out.println("suggested tiles:" + tiles);
 
 		return tiles;
 
