@@ -1,7 +1,10 @@
 package Model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -384,7 +387,6 @@ public class SysData {
 				return true;
 			} else
 				return false;
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			resetPathToDefault();
@@ -477,6 +479,8 @@ public class SysData {
 			// convert Games's JSON file to array.
 			JSONArray gamesArray = (JSONArray) jo.get("games");
 			// iterate over the values (Games).
+			if(gamesArray==null)
+				return false;
 			Iterator<JSONObject> gameIterator = gamesArray.iterator();
 			// get the Games data.
 			while (gameIterator.hasNext()) {
@@ -604,5 +608,54 @@ public class SysData {
 			e1.printStackTrace();
 		}
 		resetPathToDefault();
+	}
+
+	public boolean LoadState(String ss) {
+		// We need to provide file path as the parameter:
+		// double backquote is to avoid compiler interpret words
+		// like \test as \t (ie. as a escape sequence)
+		File file = new File(ss);
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(file));
+			String st = null;
+			if ((st = br.readLine()) == null) {
+				br.close();
+				return false;
+			}
+			String state[] = st.split(",");
+			int k = 0;
+			Tile[][] myBoard=new Tile[Consts.COLS][Consts.ROWS];
+			TileFactory factory=new TileFactory();
+			for (int i = 0; i < Consts.COLS; i++) {
+				for (int j = 0; j < Consts.ROWS; j++) {
+					if(!MoveValidation.isValidPoint(i, j)) {
+						myBoard[j][i]=new WhiteTile(j, i);
+					}else {
+						myBoard[j][i]=factory.getSubTile(j, i, Integer.valueOf(state[k++]));
+					}
+				}
+			}
+			boolean isP1;
+			if(state[k].equals("W")) {
+				isP1=true;
+			}else {
+				isP1=false;
+			}
+			Game gameState=new Game(new Player("P1"),new Player("P2"));
+			gameState.getBoard().setMyBoard(myBoard);
+			Game.setP1Turn(isP1);
+			pausedGames.add(gameState);
+			br.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+
 	}
 }

@@ -22,10 +22,10 @@
                   <Font name="Aharoni Bold" size="24.0" />
                </font>
             </Label>
-            <ListView fx:id="LoadList" layoutX="2.0" layoutY="64.0" prefHeight="219.0" prefWidth="532.0" styleClass="list-cell" stylesheets="@../../list2.css" />
-            <Button layoutX="423.0" layoutY="295.0" mnemonicParsing="false" onAction="#LoadBPressed" prefHeight="46.0" prefWidth="87.0" style="-fx-background-radius: 100; -fx-background-color: #ffdd6c;" text="Load" textFill="WHITE">
+            <ListView fx:id="LoadList" layoutX="2.0" layoutY="64.0" onMouseClicked="#cellSelected" prefHeight="219.0" prefWidth="532.0" styleClass="list-cell" stylesheets="@../../list2.css" />
+            <Button layoutX="376.0" layoutY="274.0" mnemonicParsing="false" onAction="#LoadBPressed" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 100; -fx-background-color: #ffdd6c;" text="Load" textFill="WHITE">
                <graphic>
-                  <ImageView fitHeight="41.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="21.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/icons8-game-controller-64.png" />
                      </image>
@@ -35,6 +35,18 @@
                   <Font name="Aharoni Bold" size="13.0" />
                </font></Button>
             <Button fx:id="back" layoutX="14.0" layoutY="303.0" mnemonicParsing="false" onAction="#BackPressed" prefHeight="30.0" prefWidth="69.0" style="-fx-background-radius: 100; -fx-background-color: #ffdd6c;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="Aharoni Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button layoutX="374.0" layoutY="318.0" mnemonicParsing="false" onAction="#uploadURL" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 100; -fx-background-color: #ffdd6c;" text="Upload Game" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons8-upload-26.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                <font>
                   <Font name="Aharoni Bold" size="13.0" />
                </font>
