@@ -150,11 +150,12 @@ public class PlayController implements Initializable {
 		tp1.stop();
 		((Stage) player1.getScene().getWindow()).close();
 	}
+
 	@FXML
 	void PauseGame(ActionEvent event) {
-		SysData.getInstance().addPausedGame(game);
-		SysData.getInstance().saveGame(DataType.PAUSED_GAMES,game);
+		SysData.getInstance().saveGame(DataType.PAUSED_GAMES, game);
 	}
+
 	@FXML
 	public void back(ActionEvent event) throws Exception {
 		Game.notFinished = false;
@@ -168,6 +169,7 @@ public class PlayController implements Initializable {
 		primaryStage.setTitle("Hamka game");
 		primaryStage.show();
 	}
+
 	public Pane createBoardView() {
 		// boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
@@ -205,8 +207,8 @@ public class PlayController implements Initializable {
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
 									currentPlayer.getColor(), row - 1, col - 1);
 
-							checkQueen(newPiece, row-1, col-1);
-						
+							checkQueen(newPiece, row - 1, col - 1);
+
 							PlayGameController.getInstance().getBackSoldierToLife(row - 1, col - 1);
 							TileView newTileView = boardView[row - 1][col - 1];
 							newTileView.setPiece(newPiece);
@@ -375,7 +377,7 @@ public class PlayController implements Initializable {
 		} else {
 			samePlayerTurn = false;
 			lastColor = Color.BLACK;
-			//PlayGameController.getInstance().switchTurnNow();
+			 PlayGameController.getInstance().switchTurnNow();
 		}
 		if (!samePlayerTurn) {
 			if (currentPlayer.equals(player_1)) {
@@ -408,11 +410,7 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 				return;
-			}
-			else{
-			 PlayGameController.getInstance().switchTurnNow();
-			// lastColor = Color.BLACK;
-			 }
+			} 
 		}
 	}
 

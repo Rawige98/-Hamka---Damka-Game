@@ -151,11 +151,9 @@ public class Game {
 		if (status.equals(GameStatus.QUIT)) {
 			winner = isP1Turn ? player2 : player1;
 			notFinished = false;
-			SysData.getInstance().addFinishedGame(this);
 			return true;
 		} else if (status.equals(GameStatus.PAUSE)) {
 			notFinished = false;
-			SysData.getInstance().addPausedGame(this);
 			return true;
 		} else if (status.equals(GameStatus.FINISH) /* && board.checkAvailableMoves(!isP1Turn).isEmpty() */) {
 			if (player1.getScore() > player2.getScore())
@@ -164,7 +162,6 @@ public class Game {
 			else
 				winner = player2;
 			notFinished = false;
-			SysData.getInstance().addFinishedGame(this);
 			return true;
 		} else
 			return false;
@@ -397,7 +394,6 @@ public class Game {
 	public HashMap<Tile, ArrayList<Tile>> getAvailableMoves() {
 		return board.checkAvailableMoves(isP1Turn);
 	}
-
 	@Override
 	public String toString() {
 		return "Player 1 :" + player1.getUsername() + " Player 2 :" + player2.getUsername()
@@ -438,4 +434,27 @@ public class Game {
 		}
 		board.setMyBoard(m);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Game other = (Game) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
 }

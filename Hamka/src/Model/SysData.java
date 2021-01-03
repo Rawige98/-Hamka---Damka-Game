@@ -537,7 +537,9 @@ public class SysData {
 	// ***********************************************SaveGames****************************************************************************
 	@SuppressWarnings({ "unchecked", "resource" })
 	public void saveGame(DataType d,Game game1) {   
-		games.add(game1);
+		if(!games.contains(game1)) {
+			games.add(game1);
+		}
 		String externalPath = null;
 		if (d.equals(DataType.FINISHED_GAMES)) {
 			externalPath = gameJsonPath;
@@ -576,6 +578,9 @@ public class SysData {
 				JSONObject ja = new JSONObject();
 				// get all answers
 				JSONArray Board = new JSONArray();
+				for(Game g:gamesToPars) {
+					g.setId(gamesToPars.indexOf(g)+1);
+				}
 				for (int i = 0; i < Consts.COLS; i++) {
 					JSONArray row = new JSONArray();
 					for (int j = 0; j < Consts.ROWS; j++) {
