@@ -81,6 +81,7 @@ public class PlayGameController {
 
 	
 	public boolean isLastMove() {
+		System.out.println(game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()));
 		if(game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()).isEmpty())
 		{
 			game.finishGame(GameStatus.FINISH);

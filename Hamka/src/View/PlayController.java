@@ -384,6 +384,7 @@ public class PlayController implements Initializable {
 			updateScore(player_2);
 			if(PlayGameController.getInstance().isLastMove())
 			{
+				System.out.println("LAAAAAAAAASTTTT MOVEEE");
 				((Stage) player1.getScene().getWindow()).close();
 					Stage primaryStage = new Stage();
 					Parent root;

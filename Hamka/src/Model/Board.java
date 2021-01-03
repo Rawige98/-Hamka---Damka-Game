@@ -307,6 +307,9 @@ public class Board {
 
 	public void colorRandomTile(ArrayList<Tile> tiles, Color color) {
 		Random random = new Random();
+		if (tiles.size() == 0) {
+			return;
+		}
 		int index = random.nextInt(tiles.size());
 		tiles.get(index).setColor(color);
 	}
