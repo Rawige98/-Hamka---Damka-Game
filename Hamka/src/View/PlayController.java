@@ -289,6 +289,7 @@ public class PlayController implements Initializable {
 				if (!Game.isOwnKill()) {
 					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 					pieceGroup.getChildren().remove(otherPiece);
+					checkAnotherKill(newX, newY);
 				} else {
 					System.out.println("Killed Game "+Game.getKilledSoldier().getCols()+" Row "+Game.getKilledSoldier().getRows());
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
@@ -297,10 +298,10 @@ public class PlayController implements Initializable {
 							boardView[Game.getKilledSoldier().getCols()][Game.getKilledSoldier().getRows()].getPiece());
 					Game.setOwnKill(false);
 				}
+
 				if(!lastColor.equals(Color.BLUE))
 					colorTiles();
 				checkQueen(piece, newX, newY);
-//				checkAnotherKill(newX, newY);
 				break;
 			default:
 				break;
@@ -313,18 +314,14 @@ public class PlayController implements Initializable {
 
 	private void checkAnotherKill(int newX, int newY) {
 		// TODO Auto-generated method stub
-		if(!lastColor.equals(Color.RED) && !lastColor.equals(Color.YELLOW))
-			PlayGameController.getInstance().switchTurnNow();
-		if(!Game.isOwnKill() && PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
-////			Alert alert = new Alert(AlertType.NONE);
-////			alert.setTitle("Another kill move");
-////			alert.setContentText("You have another kill, go for it !");
-////			alert.show();
-			System.out.println("!!!!!!!! STAY !!!!!!!!!!!!!!!!");
+		PlayGameController.getInstance().switchTurnNow();
+		if(PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
+			System.out.println("++++++++++++++ HAVE MORE KILL ++++++++++++++++ " + " FOR PLAYER1("+Game.getIsP1Turn()+")" );
 			samePlayerTurn = true;
-//			PlayGameController.getInstance().switchTurnNow();
+			lastColor = Color.RED;
+
 		}else {
-			samePlayerTurn = false;
+			System.out.println("-------------- NO MORE KILL ---------------- " + " FOR PLAYER1("+Game.getIsP1Turn()+")");
 			PlayGameController.getInstance().switchTurnNow();
 		}
 	}
@@ -337,13 +334,14 @@ public class PlayController implements Initializable {
 
 	private void checkDestinationTile(TileView tileView)  {
 		lastTile = tileView;
+//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[tileView.getX_value()][tileView.getY_value()].longString());
 		if (tileView.getFill().equals(Color.YELLOW)) {
 			popQuestion();
 			samePlayerTurn = true;
 			lastColor = Color.YELLOW;
 		} else if (tileView.getFill().equals(Color.RED)) {
 			if (PlayGameController.getInstance().checkMovesAvailability(tileView.getX_value(), tileView.getY_value())) {
-				System.out.println("HAVE MORE RED");
+				samePlayerTurn =true;
 				lastColor = Color.RED;
 			} else {
 				samePlayerTurn = false;
@@ -355,6 +353,8 @@ public class PlayController implements Initializable {
 			updateScore(currentPlayer);
 			samePlayerTurn = false;
 			lastColor = Color.GREEN;
+			PlayGameController.getInstance().switchTurnNow();
+
 		} else if (tileView.getFill().equals(Color.BLUE)) {
 			if(!suggestedTileBlueMove().isEmpty()) {
 				colorSuggesstedForBlueTile();
@@ -384,7 +384,6 @@ public class PlayController implements Initializable {
 			updateScore(player_2);
 			if(PlayGameController.getInstance().isLastMove())
 			{
-				System.out.println("LAAAAAAAAASTTTT MOVEEE");
 				((Stage) player1.getScene().getWindow()).close();
 					Stage primaryStage = new Stage();
 					Parent root;
@@ -442,7 +441,7 @@ public class PlayController implements Initializable {
 		}
 		updateScore(player_1);
 		updateScore(player_2);
-		System.out.println(game.getGameState());
+//		System.out.println(game.getGameState());
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 
@@ -456,9 +455,13 @@ public class PlayController implements Initializable {
 			for (int y = 0; y < Consts.COLS; y++) {
 				Color color = game.getBoard().getMyBoard()[y][x].getColor();
 				boardView[y][x].setFill(color);
+//				if(game.getBoard().getMyBoard()[y][x].getValue() == 0 && boardView[x][y].getPiece() != null) {
+//					boardView[y][x].setPiece(null);
+//					pieceGroup.getChildren().remove(boardView[y][x].getPiece());
+//				}
 				// boardView[y][x].setStroke(null);
 //				if(game.getBoard().getMyBoard()[y][x].getValue() == 0) {
-//					boardView[y][x].setPiece(null);
+//					boardView[x][y].setPiece(null);
 //				}
 			}
 		}
@@ -861,7 +864,7 @@ public class PlayController implements Initializable {
 			PlayGameController.getInstance().switchTurnNow();
 			questionPane.setVisible(false);
 			boardPane.setDisable(false);
-			
+			colorTiles();
 		}
 	
 	}

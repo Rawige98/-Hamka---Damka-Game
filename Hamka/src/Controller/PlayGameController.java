@@ -81,7 +81,6 @@ public class PlayGameController {
 
 	
 	public boolean isLastMove() {
-		System.out.println(game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()));
 		if(game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()).isEmpty())
 		{
 			game.finishGame(GameStatus.FINISH);
@@ -194,7 +193,7 @@ public class PlayGameController {
 	}
 	
 	public boolean haveAnotherKill(int x, int y) {
-		Tile currTile = game.getBoard().getTile(x, y);
+		Tile currTile = game.getBoard().getTile(y, x);
 		System.out.println("Current: "+currTile.longString());
 		System.out.println("Player1:" + Game.getIsP1Turn());
 		ArrayList<Tile> suggestedSkips = game.getBoard().avilableSkipsForTile(currTile, Game.getIsP1Turn());
