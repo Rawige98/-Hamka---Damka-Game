@@ -1,7 +1,9 @@
 package Controller;
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import Model.Game;
 import Model.Player;
@@ -53,29 +55,23 @@ public class PlayGameController {
 
 	public MoveType movePiece(int oldX, int oldY, int newX, int newY) {
 		MoveType type = game.move(oldX, oldY, newX, newY);
-		Tile tile = game.getBoard().getMyBoard()[newY][newX];
-		//		if(type.equals(MoveType.KILL) || type.equals(MoveType.NORMAL)) {
-		//			if(tile.getColor().equals(Color.YELLOW))
-		//				
-		//		}
-
 		return type;
 	}
 	public boolean switchTurnNow() {
-		if(game.getBoard().checkAvailableMoves
-				(!Game.getIsP1Turn()).isEmpty())
-		{
-			game.finishGame(GameStatus.FINISH);
-			Game.notFinished=false;
-			SysData.getInstance().saveGame(DataType.FINISHED_GAMES,game);
-			return false;
-			
-		}
-		else
-		{
+//		if(game.getBoard().checkAvailableMoves
+//				(!Game.getIsP1Turn()).isEmpty())
+//		{
+//			game.finishGame(GameStatus.FINISH);
+//			Game.notFinished=false;
+//			SysData.getInstance().saveGame(DataType.FINISHED_GAMES,game);
+//			return false;
+//			
+//		}
+//		else
+//		{
 			game.switchTurn();	
 			return true;
-		}
+//		}
 		
 	}
 
@@ -84,6 +80,17 @@ public class PlayGameController {
 	//	}
 
 	
+	public boolean isLastMove() {
+		if(game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()).isEmpty())
+		{
+			game.finishGame(GameStatus.FINISH);
+			Game.notFinished=false;
+			SysData.getInstance().saveGame(DataType.FINISHED_GAMES,game);
+			return true;
+			
+		}
+		return false;
+	}
 	
 	public boolean isQueen(int x, int y)
 	{
@@ -183,5 +190,18 @@ public class PlayGameController {
 	
 	public boolean checkIfQueen(int x, int y) {
 		return game.getBoard().getMyBoard()[x][y].isQueen();
+	}
+	
+	public boolean haveAnotherKill(int x, int y) {
+		Tile currTile = game.getBoard().getTile(x, y);
+		System.out.println("Current: "+currTile.longString());
+		System.out.println("Player1:" + Game.getIsP1Turn());
+		ArrayList<Tile> suggestedSkips = game.getBoard().avilableSkipsForTile(currTile, Game.getIsP1Turn());
+		System.out.println(suggestedSkips);
+		for(Tile tile : suggestedSkips) {
+			System.out.println(tile.longString());
+		}
+		System.out.println("will return -" + !suggestedSkips.isEmpty() + "- for another kill");
+		return !suggestedSkips.isEmpty();
 	}
 }

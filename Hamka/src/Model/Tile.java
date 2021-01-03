@@ -87,6 +87,10 @@ public abstract class Tile implements Cloneable,Serializable{
 	public String toString() {
 		return value+"";
 	}
+	
+	public String longString() {
+		return "Tile [value=" + value + ", rows=" + rows + ", cols=" + cols + "]";
+	}
 
 	/**
 	 * in this method we upgrade the soldier to queen
@@ -95,6 +99,7 @@ public abstract class Tile implements Cloneable,Serializable{
 	 * @return true if the soldier upgraded successfully
 	 */
 	public abstract boolean upgradeToQueen() ;
+	
 	public abstract boolean isQueen();
 	public abstract Tile makeCopy(int cols,int rows);
 	public abstract String subClass();

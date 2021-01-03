@@ -279,8 +279,6 @@ public class MainPageController implements Initializable {
 		Color color1 = p1ColorPicker.getValue() , color2 = p2ColorPicker.getValue();
 		nickname1 = p1.getText();
 		nickname2 = p2.getText();
-		System.out.println("hoooon"+nickname2+"aaa");
-		System.out.println(nickname2);
 		if(p1.getText().isEmpty() || p2.getText().isEmpty() ) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Missing nickname");
