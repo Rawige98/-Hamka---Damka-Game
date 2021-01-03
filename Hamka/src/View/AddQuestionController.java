@@ -17,12 +17,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class AddQuestionController implements Initializable {
@@ -80,8 +82,8 @@ public class AddQuestionController implements Initializable {
 		String answer3 = ans3.getText();
 		String answer4 = ans4.getText();
 		int rightAnswer;
-		Difficulty d = diff.getValue();
-		E_Teams t = team.getValue();
+		
+		
 		if (r1.isSelected()) {
 			rightAnswer = 1;
 		} else if (r2.isSelected()) {
@@ -91,21 +93,64 @@ public class AddQuestionController implements Initializable {
 		} else {
 			rightAnswer = 4;
 		}
-		Question q = new Question(ques, d, rightAnswer, t);
-		q.addAnswer(answer1);
-		q.addAnswer(answer2);
-		q.addAnswer(answer3);
-		q.addAnswer(answer4);
-		SysData.getInstance().addQuestion(q);
-		//SysData.getInstance().loadQuestions(null);
-		//SysData.getInstance().saveQuestions(null);
-		closeWindow();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));
-		Scene scene = new Scene(root, 450, 456);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("questions");
-		primaryStage.show();
+		if(!r1.isSelected() && !r2.isSelected() && !r3.isSelected()&&!r4.isSelected())
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("right answer");
+			alert.setContentText("You must select the right answer!");
+			alert.show();
+			
+		}
+		else
+		{
+			if(diff.getValue()==null || team.getValue()==null)
+			{
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("difficulty\team");
+				alert.setContentText("You must select difficulty and team!");
+				alert.show();
+				
+			}
+			
+		
+			else
+			{
+				Difficulty d = diff.getValue();
+				E_Teams t =team.getValue();
+				Question q = new Question(ques, d, rightAnswer, t);
+				if(q.getAnswers().contains(answer1) ||q.getAnswers().contains(answer2) ||q.getAnswers().contains(answer3)
+						||q.getAnswers().contains(answer4))
+				{
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("same answer");
+					alert.setContentText("You must enter different answers!");
+					alert.show();
+					 
+				}
+			
+				else
+				{
+				
+				q.addAnswer(answer1);
+				q.addAnswer(answer2);
+				q.addAnswer(answer3);
+				q.addAnswer(answer4);
+				SysData.getInstance().addQuestion(q);
+				//SysData.getInstance().loadQuestions(null);
+				//SysData.getInstance().saveQuestions(null);
+				closeWindow();
+				Stage primaryStage = new Stage();
+				Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));
+				Scene scene = new Scene(root, 450, 456);
+				primaryStage.setScene(scene);
+				primaryStage.setTitle("questions");
+				primaryStage.show();
+				}
+			}
+			
+			
+		}
+		
 	}
 
 	@Override
