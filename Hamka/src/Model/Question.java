@@ -120,10 +120,22 @@ public class Question {
 		}
 	}
 	
+	
+	
 	@Override
 	public String toString() {
-	   return text+" ?- level :"+difficulty+ "\n1)"+ answers.get(0)+"\n2)"+answers.get(1)+"\n3)"
-			   +answers.get(2)+"\n4)"+answers.get(3)+"\nTeam:"+team+"\n----------------------------------------------------------------------------------------";
+		if(answers.size()==4)
+		{
+			  return text+" ?- level :"+difficulty+ "\n1)"+ answers.get(0)+"\n2)"+answers.get(1)+"\n3)"
+					   +answers.get(2)+"\n4)"+answers.get(3)+"\nTeam:"+team+"\n----------------------------------------------------------------------------------------";
+		}
+		
+		else
+		{
+			  return text+" ?- level :"+difficulty+ "\n1)"+ answers.get(0)+"\n2)"+answers.get(1)+"\n3)"
+					   +"\nTeam:"+team+"\n----------------------------------------------------------------------------------------";
+		}
+	 
 	}
 
 	@Override

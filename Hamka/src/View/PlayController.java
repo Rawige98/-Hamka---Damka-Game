@@ -201,6 +201,8 @@ public class PlayController implements Initializable {
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
 									currentPlayer.getColor(), row - 1, col - 1);
 
+							checkQueen(newPiece, row-1, col-1);
+						
 							PlayGameController.getInstance().getBackSoldierToLife(row - 1, col - 1);
 							TileView newTileView = boardView[row - 1][col - 1];
 							newTileView.setPiece(newPiece);
@@ -507,7 +509,7 @@ public class PlayController implements Initializable {
 			ans4.setVisible(false);
 		} else if (q.getAnswers().size() == 3) {
 			ans3.setText(q.getAnswers().get(2));
-			ans3.setVisible(true);
+			ans3.setVisible(false);
 			ans4.setVisible(false);
 		} else if (q.getAnswers().size() == 4) {
 			ans3.setText(q.getAnswers().get(2));

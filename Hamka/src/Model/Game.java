@@ -37,7 +37,7 @@ public class Game {
 		super();
 		this.player1 = player1;
 		this.player2 = player2;
-		if(player1.getColor().equals(player2.getColor())) {
+		if (player1.getColor().equals(player2.getColor())) {
 			player2.setColor(Color.GREY);
 		}
 		board = new Board();
@@ -53,74 +53,11 @@ public class Game {
 
 	}
 
-	/*
-	 * public void run() { GameStatus status = GameStatus.FINISH; String turnString,
-	 * scoresStatus, moveInput; Player playerToPlay; int fromX, fromY, toX, toY;
-	 * System.out.println(
-	 * "NOTE:\nIn each turn the player should enter the indexes of the soldier he wants to move, then the indexes of the new tile.\nBut he also can write: quit, pause, resume, save game"
-	 * ); System.out.println(); while (!finishGame(status)) { playerToPlay =
-	 * isP1Turn() ? getPlayer1() : getPlayer2(); turnString =
-	 * String.format("%s's turn:", playerToPlay.getUsername());
-	 * System.out.println(turnString); System.out.println("Time for previos turn : "
-	 * + getTime()); scoresStatus = "Current scores status: " +
-	 * getPlayer1().getUsername() + ": " + getPlayer1().getScore() + " , " +
-	 * getPlayer2().getUsername() + ": " + getPlayer2().getScore();
-	 * System.out.println(scoresStatus); checkColorsToShow();
-	 * System.out.println(getGameState()); boolean legalFirstMoveInput = false;
-	 * while (!legalFirstMoveInput) { System.out
-	 * .println("Please enter the indexes [format: (row,col)] of the soldier that you want to move:"
-	 * ); moveInput = runGameScanner.nextLine(); if (moveInput.equals("quit")) {
-	 * status = GameStatus.QUIT; finishGame(status);
-	 * System.out.println("Game finished. " + playerToPlay.getUsername() +
-	 * " had quited"); System.out.println(getWinner().getUsername() + " wins !!!");
-	 * SysData.getInstance().addFinishedGame(this); legalFirstMoveInput = true; }
-	 * else if (moveInput.equals("save game")) {
-	 * SysData.getInstance().addPausedGame(this);
-	 * System.out.println("This game had been paused and saved\nSee you later");
-	 * status = GameStatus.PAUSE; legalFirstMoveInput = true; } else { if
-	 * (validateMoveInput(moveInput)) { boolean legalSecondMoveInput = false; char[]
-	 * moveArr = moveInput.toCharArray(); fromX =
-	 * Integer.parseInt(String.valueOf(moveArr[1])); fromY =
-	 * Integer.parseInt(String.valueOf(moveArr[3])); while (!legalSecondMoveInput) {
-	 * System.out.
-	 * println("Please enter the indexes [format: (row,col)] of the distination tile:"
-	 * ); moveInput = runGameScanner.nextLine(); if (validateMoveInput(moveInput)) {
-	 * moveArr = moveInput.toCharArray(); toX =
-	 * Integer.parseInt(String.valueOf(moveArr[1])); toY =
-	 * Integer.parseInt(String.valueOf(moveArr[3])); move(fromX, fromY, toX, toY);
-	 * board.turnOffAllTilesColor(); legalSecondMoveInput = true; } else {
-	 * System.out.println("Illegal move input! Try Again"); } } legalFirstMoveInput
-	 * = true; } } if (!legalFirstMoveInput)
-	 * System.out.println("Illegal move input! Try Again"); }
-	 * 
-	 * } }
-	 */
-
 	public Player showPlayerTurn() {
 
 		return (isP1Turn() ? getPlayer1() : getPlayer2());
 
 	}
-
-//	public boolean validateMoveInput(String moveInput) {
-//
-//		// TODO Auto-generated method stub
-//		// format (x,y)
-//		// String regex = "/n(X,Y)/";
-//		// Pattern pattern = Pattern.compile(regex);
-//		// System.out.println(pattern.matcher(moveInput).find());
-//		// return pattern.matcher(moveInput).find();
-//		if (moveInput.length() > 5)
-//			return false;
-//		if (moveInput.charAt(0) != '(' || moveInput.charAt(2) != ',' || moveInput.charAt(4) != ')')
-//			return false;
-//		if (Character.isDigit(moveInput.charAt(1)) && Character.isDigit(moveInput.charAt(3))) {
-//			int x = Integer.parseInt(String.valueOf(moveInput.charAt(1)));
-//			int y = Integer.parseInt(String.valueOf(moveInput.charAt(3)));
-//			return x >= 0 && x < 8 && y >= 0 && y < 8;
-//		}
-//		return false;
-//	}
 
 	// ------------------------Getters and Setters---------------------
 
@@ -222,7 +159,7 @@ public class Game {
 			return true;
 		} else if (status.equals(GameStatus.FINISH) /* && board.checkAvailableMoves(!isP1Turn).isEmpty() */) {
 			if (player1.getScore() > player2.getScore())
-				
+
 				winner = player1;
 			else
 				winner = player2;
@@ -232,22 +169,6 @@ public class Game {
 		} else
 			return false;
 	}
-	/*
-	 * public void popQuestion() { Question question =
-	 * SysData.getInstance().popQuestion();
-	 * System.out.println("You Got a bunos question :D ===>");
-	 * System.out.println("Question: " + question.getText());
-	 * System.out.print("Answers: "); int i = 0; for (String answer :
-	 * question.getAnswers()) { System.out.print("\t" + i + ". " + answer); }
-	 * System.out.println();
-	 * 
-	 * System.out.println("Enter the number of the right question:"); Scanner scan =
-	 * new Scanner(System.in); int ans = scan.nextInt(); int score =
-	 * question.checkAnswer(ans); if (score > 0)
-	 * System.out.println("Good job!! You had earned: " + score + " points."); else
-	 * System.out.println("Bad luck :( You had lost: " + score + " points."); Player
-	 * player = isP1Turn ? player1 : player2; player.updateScore(score); }
-	 */
 
 	public MoveType move(int xStart, int yStart, int xEnd, int yEnd) {
 		Player p = null;
@@ -265,7 +186,7 @@ public class Game {
 				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());
 				ownKill = true;
 				killedSoldier = t;
-			}else {
+			} else {
 				ownKill = false;
 				killedSoldier = null;
 			}
@@ -273,45 +194,14 @@ public class Game {
 		}
 		return MType;
 	}
+
 	public void switchTurn() {
 		System.out.println("before isP1Turn: " + isP1Turn);
 
 		isP1Turn = !isP1Turn;
 		System.out.println("after isP1Turn: " + isP1Turn);
 	}
-	/*
-	 * private void checkDestinatonTile(Tile destinationTile) { // TODO
-	 * Auto-generated method stub if
-	 * (destinationTile.getColor().equals(Color.YELLOW)) popQuestion(); else if
-	 * (destinationTile.getColor().equals(Color.BLUE)) { System.out.
-	 * println("Congrats! you had earned a chance to bring back a soldier from death."
-	 * ); String tileInput; boolean leaglTile = false; Scanner scanner = new
-	 * Scanner(System.in); while (!leaglTile) { do { System.out.println(
-	 * "Please enter the tile coordinates [format: (row,col)] that you want the soldier to return to:"
-	 * ); tileInput = scanner.nextLine(); } while (!validateMoveInput(tileInput));
-	 * scanner.close(); char[] moveArr = tileInput.toCharArray(); int x =
-	 * Integer.parseInt(String.valueOf(moveArr[1])); int y =
-	 * Integer.parseInt(String.valueOf(moveArr[3])); Tile tile = board.getTile(x,
-	 * y); if (tile.getColor().equals(Color.WHITE)) {
-	 * System.out.println("You must choose a black tile. Try again!"); } else {
-	 * HashMap<Tile, ArrayList<Tile>> suggestedSkips =
-	 * board.checkAvailableSkips(isP1Turn); if (suggestedSkips.containsKey(tile))
-	 * System.out.println("Illegal tile! You are to close of the contest's soldiers"
-	 * ); else { leaglTile = true; tile.setValue(isP1Turn ? 1 : 2); } } } } else if
-	 * (destinationTile.getColor().equals(Color.GREEN)) { Player player = isP1Turn ?
-	 * player1 : player2; player.updateScore(Consts.POINTS_FOR_GREEN_TILE);
-	 * System.out.println("You had earned " + Consts.POINTS_FOR_GREEN_TILE +
-	 * " points."); } else if (destinationTile.getColor().equals(Color.RED)) {
-	 * System.out.
-	 * println("You had won a one more turn with the same soldier. [indexes: (" +
-	 * destinationTile.getRows() + "," + destinationTile.getCols() + ")"); Scanner
-	 * scanner = new Scanner(System.in); String input; do {
-	 * System.out.println("Enter a new destination tile"); input =
-	 * scanner.nextLine(); } while (!validateMoveInput(input)); char[] moveArr =
-	 * input.toCharArray(); int x = Integer.parseInt(String.valueOf(moveArr[1]));
-	 * int y = Integer.parseInt(String.valueOf(moveArr[3]));
-	 * move(destinationTile.getRows(), destinationTile.getCols(), x, y); } }
-	 */
+
 	public String getGameState() {
 		return board.toString();
 	}
@@ -327,14 +217,7 @@ public class Game {
 
 		// ************ Red tile **********
 		HashMap<Tile, ArrayList<Tile>> suggestedSkips = board.checkAvailableSkips(isP1Turn);
-//		System.out.println("***************** SKIPS ************************");
-//		for(Tile key : suggestedSkips.keySet()) {
-//			System.out.println(key.longString());
-//			for(Tile tile : suggestedSkips.get(key))
-//					System.out.println("\t"+tile.longString());
-//		}
-//		System.out.println(getGameState());
-//		System.out.println();
+
 		if (suggestedSkips.isEmpty()) {
 			board.colorRandomTile(suggestedTiles, Color.RED);
 		}
@@ -359,10 +242,7 @@ public class Game {
 			}
 		}
 
-//		if (qCount == 1)
-//			board.colorRandomTile(suggestedTiles, Color.BLUE);
-
-		if (sCount == 5 && qCount == 1)
+		if (sCount == 2 && qCount == 1)
 			board.colorRandomTile(suggestedTiles, Color.BLUE);
 
 		// *********** Yellow tiles ****************
@@ -409,50 +289,6 @@ public class Game {
 		int col_2 = tile.getCols() - 2;
 
 		if (!isBlack) {
-//			if(MoveValidation.isValidPoint(row2, col2))
-//			{
-//				if(board.getTile(row2, col2).getValue() != 1 &&
-//						board.getTile(row2, col2).getValue() != 11)
-//				{
-//					
-//				}
-//				if(MoveValidation.isValidPoint(row1, col1)&&board.getTile(row1, col1).getValue() != 1 &&
-//						board.getTile(row1, col1).getValue() !=11)
-//				{
-//					if(MoveValidation.isValidPoint(row_2, col_2)&&board.getTile(row_2, col_2).getValue() != 1 &&
-//							board.getTile(row_2, col_2).getValue() != 11)
-//					{
-//						if(MoveValidation.isValidPoint(row_1, col_1)&&board.getTile(row_1, col_1).getValue() != 1 &&
-//								board.getTile(row_1, col_1).getValue() != 11)
-//						{
-//							if(MoveValidation.isValidPoint(row_2, col2)&&board.getTile(row_2, col2).getValue() != 1 &&
-//									board.getTile(row_2, col2).getValue() != 11)
-//							{
-//								if(MoveValidation.isValidPoint(row_1, col1)&&board.getTile(row_1, col1).getValue() != 1 &&
-//										board.getTile(row_1, col1).getValue() != 11)
-//								{
-//									if(MoveValidation.isValidPoint(row2, col_2)&&board.getTile(row2, col_2).getValue() != 1 &&
-//											board.getTile(row2, col_2).getValue() != 11)
-//									{
-//										if(MoveValidation.isValidPoint(row1, col_1)&&board.getTile(row1, col_1).getValue() != 1 &&
-//												board.getTile(row1, col_1).getValue() != 11)
-//										{
-//											return true;
-//										}
-//									}
-//									
-//								}
-//								
-//							}
-//							
-//						}
-//					}
-//				}
-//			}
-//			else
-//			{
-//				return false;
-//			}
 
 			if (MoveValidation.isValidPoint(row_2, col_2)) {
 				if (board.getTile(row_2, col_2).getValue() == 1 || board.getTile(row_2, col_2).getValue() == 11)
@@ -496,33 +332,6 @@ public class Game {
 				}
 			}
 			return true;
-//			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 1
-//					|| board.getTile(row_2, col_2).getValue() == 11))
-//				return false; aa
-//			 if (MoveValidation.isValidPoint(row_2, col2) && (board.getTile(row_2, col2).getValue() == 1
-//					|| board.getTile(row_2, col2).getValue() == 11))
-//				return false;aa
-//			 if (MoveValidation.isValidPoint(row2, col_2) && (board.getTile(row2, col_2).getValue() == 1
-//					|| board.getTile(row2, col_2).getValue() == 11))
-//				return false;aa
-//			 if (MoveValidation.isValidPoint(row2, col2) && (board.getTile(row2, col2).getValue() == 1
-//					|| board.getTile(row2, col2).getValue() == 11))
-//				return false;aa
-//
-//			 if (MoveValidation.isValidPoint(row_1, col_1) && (board.getTile(row_1, col_1).getValue() == 1
-//					|| board.getTile(row_1, col_1).getValue() == 11))
-//				return false;aa
-//			 if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 1
-//					|| board.getTile(row_1, col1).getValue() == 11))
-//				return false;aa
-//			 if (MoveValidation.isValidPoint(row1, col_1) && (board.getTile(row1, col_1).getValue() == 1
-//					|| board.getTile(row1, col_1).getValue() == 11))
-//				return false;aa
-//			 if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 1
-//					|| board.getTile(row1, col1).getValue() == 11))
-//				return false;
-
-//				return true;
 
 		}
 
@@ -568,73 +377,6 @@ public class Game {
 				}
 			}
 			return true;
-//				if(MoveValidation.isValidPoint(row2, col2)&&board.getTile(row2, col2).getValue() != 2 &&
-//						board.getTile(row2, col2).getValue() != 22)
-//				{
-//					if(MoveValidation.isValidPoint(row1, col1)&&board.getTile(row1, col1).getValue() != 2 &&
-//							board.getTile(row1, col1).getValue() !=22)
-//					{
-//						if(MoveValidation.isValidPoint(row_2, col_2)&&board.getTile(row_2, col_2).getValue() != 2 &&
-//								board.getTile(row_2, col_2).getValue() != 22)
-//						{
-//							if(MoveValidation.isValidPoint(row_1, col_1)&&board.getTile(row_1, col_1).getValue() != 2 &&
-//									board.getTile(row_1, col_1).getValue() != 22)
-//							{
-//								if(MoveValidation.isValidPoint(row_2, col2)&&board.getTile(row_2, col2).getValue() != 2 &&
-//										board.getTile(row_2, col2).getValue() != 22)
-//								{
-//									if(MoveValidation.isValidPoint(row_1, col1)&&board.getTile(row_1, col1).getValue() != 2 &&
-//											board.getTile(row_1, col1).getValue() != 22)
-//									{
-//										if(MoveValidation.isValidPoint(row2, col_2)&&board.getTile(row2, col_2).getValue() != 2 &&
-//												board.getTile(row2, col_2).getValue() != 22)
-//										{
-//											if(MoveValidation.isValidPoint(row1, col_1)&&board.getTile(row1, col_1).getValue() != 2 &&
-//													board.getTile(row1, col_1).getValue() != 22)
-//											{
-//												return true;
-//											}
-//										}
-//										
-//									}
-//									
-//								}
-//								
-//							}
-//						}
-//					}
-//				}
-//				else
-//				{
-//					return false;
-//				}
-//			if (MoveValidation.isValidPoint(row_2, col_2) &&( board.getTile(row_2, col_2).getValue() == 2
-//					|| board.getTile(row_2, col_2).getValue() == 22))
-//				return false;
-//			 if (MoveValidation.isValidPoint(row_2, col2) &&( board.getTile(row_2, col2).getValue() == 2
-//					|| board.getTile(row_2, col2).getValue() == 22))
-//				return false;
-//			 if (MoveValidation.isValidPoint(row2, col_2) &&( board.getTile(row2, col_2).getValue() == 2
-//					|| board.getTile(row2, col_2).getValue() == 22))
-//				return false;
-//				if (MoveValidation.isValidPoint(row2, col2) &&( board.getTile(row2, col2).getValue() == 2
-//					|| board.getTile(row2, col2).getValue() == 22))
-//				return false;
-//
-//			 if (MoveValidation.isValidPoint(row_1, col_1) &&( board.getTile(row_1, col_1).getValue() == 2
-//					|| board.getTile(row_1, col_1).getValue() == 22))
-//				return false;
-//			 if (MoveValidation.isValidPoint(row_1, col1) && (board.getTile(row_1, col1).getValue() == 2
-//					|| board.getTile(row_1, col1).getValue() == 22))
-//				return false;
-//			 if (MoveValidation.isValidPoint(row1, col_1) &&( board.getTile(row1, col_1).getValue() == 2
-//					|| board.getTile(row1, col_1).getValue() == 22))
-//				return false;
-//			 if (MoveValidation.isValidPoint(row1, col1) && (board.getTile(row1, col1).getValue() == 2
-//					|| board.getTile(row1, col1).getValue() == 22))
-//				return false;
-
-//			return true;
 
 		}
 
@@ -658,9 +400,10 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "Player 1 :" + player1.getUsername() + " Player 2 :"
-				+ player2.getUsername() + "\n--------------------------------------------------";
+		return "Player 1 :" + player1.getUsername() + " Player 2 :" + player2.getUsername()
+				+ "\n--------------------------------------------------";
 	}
+
 	public String briefToString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
 				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
@@ -681,15 +424,16 @@ public class Game {
 	public static void setKilledSoldier(Tile killedSoldier) {
 		Game.killedSoldier = killedSoldier;
 	}
+
 	public void addSoldier(int x, int y) {
-		Tile[][] m=board.getMyBoard();
+		Tile[][] m = board.getMyBoard();
 		if (isP1Turn) {
-			System.out.println("adding white soldier");	
-			m[x][y]=new WhiteSoldier(x,y);
+			System.out.println("adding white soldier");
+			m[x][y] = new WhiteSoldier(x, y);
 			m[x][y].upgradeToQueen();
 		} else {
 			System.out.println("adding black soldier");
-			m[x][y]=new BlackSoldier(x,y);
+			m[x][y] = new BlackSoldier(x, y);
 			m[x][y].upgradeToQueen();
 		}
 		board.setMyBoard(m);
