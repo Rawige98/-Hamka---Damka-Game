@@ -285,6 +285,9 @@ public class Board {
 
 	public void colorRandomTile(ArrayList<Tile> tiles, Color color) {
 		Random random = new Random();
+		if (tiles.size() == 0) {
+			return;
+		}
 		int index = random.nextInt(tiles.size());
 		tiles.get(index).setColor(color);
 	}
@@ -356,12 +359,17 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
+		System.out.println("############# row:" + t.getRows() + " col:"+ t.getCols());
+
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
 				MoveValidation v = new MoveValidation(t.getRows(), i, t.getCols(), j, this, isP1Turn, true);
 				if (v.moveValidation()) {
-					if (isSkip(t.getRows(), t.getCols(), i, j, isP1Turn))
+					if (isSkip(t.getRows(), t.getCols(), i, j, isP1Turn)) {
+						System.out.println("i:"+i+" j:"+j);
+						System.out.println();
 						mymoves.add(myBoard[j][i]);
+					}
 				}
 			}
 		}

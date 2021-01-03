@@ -536,7 +536,8 @@ public class SysData {
 
 	// ***********************************************SaveGames****************************************************************************
 	@SuppressWarnings({ "unchecked", "resource" })
-	public void saveGame(DataType d) {
+	public void saveGame(DataType d,Game game1) {   
+		games.add(game1);
 		String externalPath = null;
 		if (d.equals(DataType.FINISHED_GAMES)) {
 			externalPath = gameJsonPath;

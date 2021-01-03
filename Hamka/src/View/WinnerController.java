@@ -3,6 +3,8 @@ package View;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Controller.PlayGameController;
+import Model.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +42,11 @@ public class WinnerController  implements Initializable{
 	    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		PlayGameController.getInstance().getGame();
+		
+			winner.setText(PlayGameController.getInstance().getGame().getWinner().getUsername());
+			score.setText(Integer.toString(PlayGameController.getInstance().getGame().getWinner().getScore()));
+		
 		
 	}
 

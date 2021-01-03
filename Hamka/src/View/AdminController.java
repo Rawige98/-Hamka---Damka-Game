@@ -1,5 +1,6 @@
 package View;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,7 +27,10 @@ public class AdminController implements Initializable {
 
 	    @FXML
 	    private TextField userName;
-	    
+	    @FXML
+	    private Button back;
+
+	  
 	    void closeWindow() {
 	    	((Stage) login.getScene().getWindow()).close();
 	    }
@@ -66,7 +70,18 @@ public class AdminController implements Initializable {
 
 		}
 	    
-	    
+		  @FXML
+		    void back(ActionEvent event) throws IOException {
+			  ((Stage) back.getScene().getWindow()).close();
+				Stage primaryStage = new Stage();
+				Parent root = FXMLLoader.load(getClass().getResource("/View/Main.fxml"));
+				Scene scene = new Scene(root,581, 449);
+				primaryStage.setScene(scene);
+				primaryStage.setTitle("Main");
+				primaryStage.show();
+
+		    }
+		    
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

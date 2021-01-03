@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
+import Controller.PlayGameController;
 import Model.Game;
 import Model.Player;
 import Model.SysData;
@@ -78,7 +79,7 @@ public class HistoryControl implements Initializable {
 		while(finishedGames.size()>10) {
 			finishedGames.remove(finishedGames.last());
 		}
-		SysData.getInstance().saveGame(DataType.FINISHED_GAMES);
+		SysData.getInstance().saveGame(DataType.FINISHED_GAMES,PlayGameController.getInstance().getGame());
 		observableList.setAll(finishedGames);
 		HistoryList.setItems(observableList);
 		HistoryList.setCellFactory(new Callback<ListView<Game>, javafx.scene.control.ListCell<Game>>() {

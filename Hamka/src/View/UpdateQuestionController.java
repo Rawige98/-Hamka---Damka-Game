@@ -15,12 +15,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class UpdateQuestionController implements Initializable  {
@@ -87,7 +89,8 @@ public class UpdateQuestionController implements Initializable  {
 		String answer2 = ans2.getText();
 		String answer3 = ans3.getText();
 		String answer4 = ans4.getText();
-		int rightAnswer;
+		int rightAnswer = 0;
+		int flag=0;
 		Difficulty d = diff.getValue();
 		E_Teams t = team.getValue();
 		if (r1.isSelected()) {
@@ -96,25 +99,59 @@ public class UpdateQuestionController implements Initializable  {
 			rightAnswer = 2;
 		} else if (r3.isSelected()) {
 			rightAnswer = 3;
-		} else {
+		} else if (r4.isSelected()){
 			rightAnswer = 4;
 		}
-		Question q1 = new Question(ques, d, rightAnswer, t);
-		q1.addAnswer(answer1);
-		q1.addAnswer(answer2);
-		q1.addAnswer(answer3);
-		q1.addAnswer(answer4);
-		System.out.println(QuestionController.updatedQ.getText());
-		SysData.getInstance().addQuestion(q1);
-		SysData.getInstance().removeQuestion(QuestionController.updatedQ);
-		//SysData.getInstance().saveQuestions(null);
-		((Stage) ans3.getScene().getWindow()).close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));
-		Scene scene = new Scene(root, 450, 456);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("questions");
-		primaryStage.show();
+		else
+		{
+			flag=1;
+		}
+		
+		if(ques.isEmpty()||flag==1||diff.getValue()==null ||team.getValue()==null 
+				|| ans1.getText().isEmpty()||ans2.getText().isEmpty()|| ans3.getText().isEmpty()|| 
+				ans4.getText().isEmpty())
+		{
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("missing fields");
+			alert.setContentText("You must fill all the fields!");
+			alert.show();
+			 
+		}
+		else
+		{
+			Question q1 = new Question(ques, d, rightAnswer, t);
+			if(q1.getAnswers().contains(answer1) ||q1.getAnswers().contains(answer2) ||q1.getAnswers().contains(answer3)
+					||q1.getAnswers().contains(answer4) )
+			{
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("same answer");
+				alert.setContentText("You must enter different answers!");
+				alert.show();
+			}
+			else
+			{
+				q1.addAnswer(answer1);
+				q1.addAnswer(answer2);
+				q1.addAnswer(answer3);
+				q1.addAnswer(answer4);
+				
+				System.out.println(QuestionController.updatedQ.getText());
+				SysData.getInstance().addQuestion(q1);
+				SysData.getInstance().removeQuestion(QuestionController.updatedQ);
+				//SysData.getInstance().saveQuestions(null);
+				((Stage) ans3.getScene().getWindow()).close();
+				Stage primaryStage = new Stage();
+				Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));
+				Scene scene = new Scene(root, 450, 456);
+				primaryStage.setScene(scene);
+				primaryStage.setTitle("questions");
+				primaryStage.show();
+			}
+		
+	
+			
+		}
+		
 		
 	}
 	
