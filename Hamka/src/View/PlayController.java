@@ -12,9 +12,11 @@ import Model.ColorTilesHandler;
 import Model.Game;
 import Model.Player;
 import Model.Question;
+import Model.SysData;
 import Model.Tile;
 import Model.WhiteSoldier;
 import Utils.Consts;
+import Utils.DataType;
 import Utils.Difficulty;
 import Utils.MoveResult;
 import Utils.MoveType;
@@ -126,7 +128,6 @@ public class PlayController implements Initializable {
 	private boolean samePlayerTurn = false;
 	private static Color lastColor = Color.BLACK;
 	private boolean flag;
-
 	// private TimerForPlayer2 PlayerTimer2;
 	@FXML
 	void closeWindow(ActionEvent event) {
@@ -137,7 +138,11 @@ public class PlayController implements Initializable {
 		tp1.stop();
 		((Stage) player1.getScene().getWindow()).close();
 	}
-
+	@FXML
+	void PauseGame(ActionEvent event) {
+		SysData.getInstance().addPausedGame(game);
+		SysData.getInstance().saveGame(DataType.PAUSED_GAMES);
+	}
 	@FXML
 	public void back(ActionEvent event) throws Exception {
 		Game.notFinished = false;
@@ -151,7 +156,6 @@ public class PlayController implements Initializable {
 		primaryStage.setTitle("Hamka game");
 		primaryStage.show();
 	}
-
 	public Pane createBoardView() {
 		// boardPane = new Pane();
 		boardPane.setPrefSize(Consts.COLS * Consts.TILE_SIZE, Consts.ROWS * Consts.TILE_SIZE);
@@ -181,7 +185,8 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						System.out.println("here is " + col + " and " + row);
-						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col- 1];
+						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
+								- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 
 							Piece newPiece = makePiece(
@@ -263,7 +268,7 @@ public class PlayController implements Initializable {
 				// showYellowTiles();
 				// check indexes
 				checkDestinationTile(boardView[newX][newY]);
-				if(!lastColor.equals(Color.BLUE))
+				if (!lastColor.equals(Color.BLUE))
 					colorTiles();
 				checkQueen(piece, newX, newY);
 				break;
@@ -277,7 +282,8 @@ public class PlayController implements Initializable {
 					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 					pieceGroup.getChildren().remove(otherPiece);
 				} else {
-					System.out.println("Killed Game "+Game.getKilledSoldier().getCols()+" Row "+Game.getKilledSoldier().getRows());
+					System.out.println("Killed Game " + Game.getKilledSoldier().getCols() + " Row "
+							+ Game.getKilledSoldier().getRows());
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
 							.setPiece(null);
 					pieceGroup.getChildren().remove(
@@ -286,7 +292,7 @@ public class PlayController implements Initializable {
 				}
 				// showYellowTiles();
 				checkDestinationTile(boardView[newX][newY]);
-				if(!lastColor.equals(Color.BLUE))
+				if (!lastColor.equals(Color.BLUE))
 					colorTiles();
 				checkQueen(piece, newX, newY);
 				break;
@@ -325,7 +331,7 @@ public class PlayController implements Initializable {
 			samePlayerTurn = false;
 			lastColor = Color.GREEN;
 		} else if (tileView.getFill().equals(Color.BLUE)) {
-			if(!suggestedTileBlueMove().isEmpty()) {
+			if (!suggestedTileBlueMove().isEmpty()) {
 				System.out.println("********** BLUE ***********");
 				colorSuggesstedForBlueTile();
 				lastColor = Color.BLUE;

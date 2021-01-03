@@ -7,7 +7,8 @@ public class ValidateDistance {
 	private int yEnd;
 	private Board myBoard;
 	private boolean isP1;
-	public ValidateDistance(int xStart, int xEnd, int yStart, int yEnd, Board myBoard, boolean isP1 ) {
+
+	public ValidateDistance(int xStart, int xEnd, int yStart, int yEnd, Board myBoard, boolean isP1) {
 		super();
 		this.xStart = xStart;
 		this.xEnd = xEnd;
@@ -16,6 +17,7 @@ public class ValidateDistance {
 		this.myBoard = myBoard;
 		this.isP1 = isP1;
 	}
+
 	/**
 	 * Checks that the move is diagonal and magnitude 1 or 2 in the correct
 	 * direction. If the magnitude is not 2 (i.e. not a skip), it checks that no
@@ -48,6 +50,7 @@ public class ValidateDistance {
 		}
 		return true;
 	}
+
 	/**
 	 * in this method we check the validate of the queen move
 	 * 
@@ -61,10 +64,12 @@ public class ValidateDistance {
 		int dy = yEnd - yStart;
 		int dx = xEnd - xStart;
 		int i = xStart, j = yStart;
-		int r=0;
-		if (Math.abs(dx) != Math.abs(dy) && Math.abs(dx) + Math.abs(dy) != 8)
+		int r = 0;
+		if (Math.abs(dx) != Math.abs(dy) && Math.abs(dx) + Math.abs(dy) != 8) {
+			return false;
+		}
 			// check if the road to the target is clear
-			while ((i != xEnd && j != yEnd)&&r!=20) {
+			while ((i != xEnd && j != yEnd) && r != 20) {
 				r++;
 				if (Math.abs(dx) == Math.abs(dy)) {
 					if (dx > 0 && dy > 0) {
@@ -83,11 +88,10 @@ public class ValidateDistance {
 					if (dx < 0 && dy < 0) {
 						i--;
 						j--;
-
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (xEnd == 0 || xEnd == 7) {
+						if (xEnd != 0 && xEnd != 7) {
 							if (dx > 0 && dy > 0) {
 								i++;
 								j--;
@@ -137,11 +141,10 @@ public class ValidateDistance {
 					j = 0;
 				dy = yEnd - j;
 				dx = xEnd - i;
-				if ((!isP1 && (myBoard.getMyBoard()[j][i] instanceof WhiteSoldier))
-						|| isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier))
+				if ((isP1 && (myBoard.getMyBoard()[j][i] instanceof WhiteSoldier))
+						|| !isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier))
 					return false;
 			}
 		return true;
 	}
-
 }
