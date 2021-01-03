@@ -264,13 +264,19 @@ public class Game {
 				board.getMyBoard()[t.getCols()][t.getRows()] = new BlackTile(t.getCols(), t.getRows());
 				ownKill = true;
 				killedSoldier = t;
+			}else {
+				ownKill = false;
+				killedSoldier = null;
 			}
 			return MType;
 		}
 		return MType;
 	}
 	public void switchTurn() {
+		System.out.println("before isP1Turn: " + isP1Turn);
+
 		isP1Turn = !isP1Turn;
+		System.out.println("after isP1Turn: " + isP1Turn);
 	}
 	/*
 	 * private void checkDestinatonTile(Tile destinationTile) { // TODO
