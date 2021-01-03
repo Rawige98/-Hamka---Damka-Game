@@ -15,7 +15,6 @@ public class BlackSoldier extends Tile {
 
 	@Override
 	public boolean upgradeToQueen() {
-		System.out.println("black:"+MoveValidation.toIndex(getRows(),getCols()));
 	if( MoveValidation.toIndex(getRows(), getCols()) >= 28 && MoveValidation.toIndex(getRows(), getCols()) < 32)
 	{
 		setValue(22);

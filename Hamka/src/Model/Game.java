@@ -193,10 +193,7 @@ public class Game {
 	}
 
 	public void switchTurn() {
-		System.out.println("before isP1Turn: " + isP1Turn);
-
 		isP1Turn = !isP1Turn;
-		System.out.println("after isP1Turn: " + isP1Turn);
 	}
 
 	public String getGameState() {
@@ -424,11 +421,9 @@ public class Game {
 	public void addSoldier(int x, int y) {
 		Tile[][] m = board.getMyBoard();
 		if (isP1Turn) {
-			System.out.println("adding white soldier");
 			m[x][y] = new WhiteSoldier(x, y);
 			m[x][y].upgradeToQueen();
 		} else {
-			System.out.println("adding black soldier");
 			m[x][y] = new BlackSoldier(x, y);
 			m[x][y].upgradeToQueen();
 		}
