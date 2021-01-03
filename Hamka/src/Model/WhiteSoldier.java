@@ -12,7 +12,6 @@ public class WhiteSoldier extends Tile{
 	}
 	@Override
 	public boolean upgradeToQueen() {
-		System.out.println("white:"+MoveValidation.toIndex(getRows(),getCols()));
 
 		if( MoveValidation.toIndex(getRows(), getCols()) >= 0 && MoveValidation.toIndex(getRows(), getCols()) < 4)
 		{

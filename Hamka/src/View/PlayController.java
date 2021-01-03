@@ -198,7 +198,6 @@ public class PlayController implements Initializable {
 						double mouseY = e.getSceneY();
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
-						System.out.println("here is " + col + " and " + row);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
 								- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
@@ -239,7 +238,6 @@ public class PlayController implements Initializable {
 	private void colorSuggesstedForBlueTile() {
 
 		for (Tile tile : suggestedTileBlueMove()) {
-			System.out.println("suggested row " + tile.getCols() + " & col" + tile.getRows());
 
 			if (!boardView[tile.getCols()][tile.getRows()].getFill().equals(Color.WHITE)) {
 				boardView[tile.getCols()][tile.getRows()].setStroke(Color.BLUE);
@@ -257,10 +255,6 @@ public class PlayController implements Initializable {
 			int newY = toBoard(piece.getLayoutY());
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
-
-//			System.out.println("(oldX , oldY) = ( "+x0+" , "+y0+")");
-//			System.out.println("(newX , newY) = ( "+newX+" , "+newY+")");
-			// calling tryMoveTest instead of tryMove
 			currentPlayer = PlayGameController.getInstance().getCurrentPlayer();
 			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 			if (lastTile == null) {
@@ -300,8 +294,6 @@ public class PlayController implements Initializable {
 					pieceGroup.getChildren().remove(otherPiece);
 					checkAnotherKill(newX, newY);
 				} else {
-					System.out.println("Killed Game " + Game.getKilledSoldier().getCols() + " Row "
-							+ Game.getKilledSoldier().getRows());
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
 							.setPiece(null);
 					pieceGroup.getChildren().remove(
@@ -326,14 +318,10 @@ public class PlayController implements Initializable {
 		if (!(lastColor.equals(Color.YELLOW) && lastColor.equals(Color.RED)))
 			PlayGameController.getInstance().switchTurnNow();
 		if (PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
-			System.out.println(
-					"++++++++++++++ HAVE MORE KILL ++++++++++++++++ " + " FOR PLAYER1(" + Game.getIsP1Turn() + ")");
 			samePlayerTurn = true;
 			lastColor = Color.RED;
 
 		} else {
-			System.out.println(
-					"-------------- NO MORE KILL ---------------- " + " FOR PLAYER1(" + Game.getIsP1Turn() + ")");
 			PlayGameController.getInstance().switchTurnNow();
 		}
 	}
@@ -377,7 +365,7 @@ public class PlayController implements Initializable {
 		} else {
 			samePlayerTurn = false;
 			lastColor = Color.BLACK;
-			 PlayGameController.getInstance().switchTurnNow();
+			PlayGameController.getInstance().switchTurnNow();
 		}
 		if (!samePlayerTurn) {
 			if (currentPlayer.equals(player_1)) {
@@ -410,7 +398,7 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 				return;
-			} 
+			}
 		}
 	}
 
@@ -449,7 +437,6 @@ public class PlayController implements Initializable {
 		}
 		updateScore(player_1);
 		updateScore(player_2);
-		System.out.println("********board********:" + game.getGameState());
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 
@@ -644,8 +631,6 @@ public class PlayController implements Initializable {
 
 		@Override
 		public void run() {
-			// System.out.println("aya");
-			// System.out.println(Game.getIsP1Turn());
 			reset();
 
 			while (Game.getIsP1Turn() && Game.notFinished) {

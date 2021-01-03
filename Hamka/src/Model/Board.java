@@ -174,7 +174,7 @@ public class Board {
 				return MoveType.NORMAL;
 			}
 		}
-	
+
 		return MoveType.NONE;
 	}
 
@@ -249,7 +249,6 @@ public class Board {
 	 * changed to yellow
 	 */
 	public void showYellowTiles() {
-//		ArrayList<Tile> yellowTiles = new ArrayList<Tile>(); 
 		int x, y, yellowCount = 0;
 		Random random = new Random();
 		boolean done = false;
@@ -268,21 +267,7 @@ public class Board {
 				}
 			}
 		}
-//		return yellowTiles;
 	}
-
-//	public void showRedGreenTile(boolean isP1Turn , Color color) {
-//		HashMap<Tile, ArrayList<Tile>> suggested = checkAvailableMoves(isP1Turn);
-//		Tile randomTile = getRandomTile((Tile[])suggested.values().toArray());
-//		randomTile.setColor(color);
-//	}
-//
-//	public void showBlueTile(boolean isP1Turn) {
-//		HashMap<Tile, ArrayList<Tile>> suggested = checkAvailableMoves(isP1Turn);
-//		Tile randomTile = getRandomTile((Tile[])suggested.values().toArray());
-//		randomTile.setColor(Color.blue);
-//	}
-
 	public void colorRandomTile(ArrayList<Tile> tiles, Color color) {
 		Random random = new Random();
 		if (tiles.size() == 0) {
@@ -297,12 +282,6 @@ public class Board {
 			tiles.get(i).setColor(color);
 		}
 	}
-
-//	private Tile getRandomTile(Tile[] tiles) {
-//		Random random = new Random();
-//		int index = random.nextInt(tiles.length);
-//		return tiles[index];
-//	}
 
 	public void turnOffTileColor(Tile tile) {
 		tile.setColor(Color.BLACK);
@@ -359,15 +338,11 @@ public class Board {
 	 */
 	public ArrayList<Tile> avilableSkipsForTile(Tile t, boolean isP1Turn) {
 		ArrayList<Tile> mymoves = new ArrayList<Tile>();
-		System.out.println("############# row:" + t.getRows() + " col:"+ t.getCols());
-
 		for (int i = 0; i < myBoard.length; i++) {
 			for (int j = 0; j < myBoard.length; j++) {
 				MoveValidation v = new MoveValidation(t.getRows(), i, t.getCols(), j, this, isP1Turn, true);
 				if (v.moveValidation()) {
 					if (isSkip(t.getRows(), t.getCols(), i, j, isP1Turn)) {
-						System.out.println("i:"+i+" j:"+j);
-						System.out.println();
 						mymoves.add(myBoard[j][i]);
 					}
 				}
