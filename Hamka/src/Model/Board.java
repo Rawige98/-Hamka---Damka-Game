@@ -41,27 +41,6 @@ public class Board {
 	}
 
 	/**
-	 * Checks if a point corresponds to a black tile on the checker board.
-	 * 
-	 * @param testPoint the point to check.
-	 * @return true if and only if the point is on the board, specifically on a
-	 *         black tile.
-	 */
-//	public static boolean isValidPoint(int x, int y) {
-//		// Check that it is on the board
-//		if (x < 0 || x > Consts.COLS - 1 || y < 0 || y > Consts.COLS - 1) {
-//			return false;
-//		}
-//
-//		// Check that it is on a black tile
-//		if (x % 2 == y % 2) {
-//			return false;
-//		}
-//
-//		return true;
-//	}
-
-	/**
 	 * in this method we move the soldier after check the validation
 	 * 
 	 * @param xStart
@@ -95,108 +74,107 @@ public class Board {
 				}
 			}
 			// Queen
-			else {
-				int i = xStart, j = yStart;
-				boolean isSkip = false;
-				int col = -1, row = -1;
-				int r = 0;
-				// check if the road to the target is clear
-				while ((i != xEnd && j != yEnd) && r != 20) {
-					r++;
-					if (Math.abs(dx) == Math.abs(dy)) {
-						if (dx > 0 && dy > 0) {
-							i++;
-							j++;
-						}
-						if (dx < 0 && dy > 0) {
-							i--;
-							j++;
-						}
-						if (dx > 0 && dy < 0) {
-							j--;
-							i++;
-
-						}
-						if (dx < 0 && dy < 0) {
-							i--;
-							j--;
-
-						}
-					} else {
-						if (Math.abs(dx) + Math.abs(dy) == 8) {
-							if (xEnd == 0 || xEnd == 7) {
-								if (dx > 0 && dy > 0) {
-									i++;
-									j--;
-								}
-								if (dx < 0 && dy > 0) {
-									i--;
-									j--;
-								}
-								if (dx > 0 && dy < 0) {
-									j++;
-									i++;
-								}
-								if (dx < 0 && dy < 0) {
-									i--;
-									j++;
-								}
-							} else {
-								if (dx > 0 && dy > 0) {
-									i--;
-									j++;
-								}
-								if (dx < 0 && dy > 0) {
-									j++;
-									i++;
-								}
-								if (dx > 0 && dy < 0) {
-
-									i--;
-									j--;
-								}
-								if (dx < 0 && dy < 0) {
-
-									i++;
-									j--;
-								}
-
-							}
-						}
+			int i = xStart, j = yStart;
+			boolean isSkip = false;
+			int col = -1, row = -1;
+			int r = 0;
+			// check if the road to the target is clear
+			while ((i != xEnd && j != yEnd) && r != 20) {
+				r++;
+				if (Math.abs(dx) == Math.abs(dy)) {
+					if (dx > 0 && dy > 0) {
+						i++;
+						j++;
 					}
-					if (i == -1)
-						i = 7;
-					if (i == 8)
-						i = 0;
-					if (j == -1)
-						j = 7;
-					if (j == 8)
-						j = 0;
-					dy = yEnd - j;
-					dx = xEnd - i;
-					if (!isP1Turn && (myBoard[j][i] instanceof WhiteSoldier)
-							|| isP1Turn && (myBoard[j][i] instanceof BlackSoldier)) {
-						col = j;
-						row = i;
-						isSkip = true;
+					if (dx < 0 && dy > 0) {
+						i--;
+						j++;
+					}
+					if (dx > 0 && dy < 0) {
+						j--;
+						i++;
+
+					}
+					if (dx < 0 && dy < 0) {
+						i--;
+						j--;
+
+					}
+				} else {
+					if (Math.abs(dx) + Math.abs(dy) == 8) {
+						if (xEnd != 0 && xEnd != 7) {
+							if (dx > 0 && dy > 0) {
+								i++;
+								j--;
+							}
+							if (dx < 0 && dy > 0) {
+								i--;
+								j--;
+							}
+							if (dx > 0 && dy < 0) {
+								j++;
+								i++;
+							}
+							if (dx < 0 && dy < 0) {
+								i--;
+								j++;
+							}
+						} else {
+							if (dx > 0 && dy > 0) {
+								i--;
+								j++;
+							}
+							if (dx < 0 && dy > 0) {
+								j++;
+								i++;
+							}
+							if (dx > 0 && dy < 0) {
+
+								i--;
+								j--;
+							}
+							if (dx < 0 && dy < 0) {
+
+								i++;
+								j--;
+							}
+
+						}
 					}
 				}
-				if (isSkip) {
-					myBoard[col][row] = new BlackTile(col, row);
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
-					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
-					p.setScore(100);
-					turnOffAllTilesColor();
-					setSkipedTile(new BlackTile(col, row));
-					return MoveType.KILL;
-				} else {
-					myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
-					myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
-					turnOffAllTilesColor();
-					return MoveType.NORMAL;
+				if (i == -1)
+					i = 7;
+				if (i == 8)
+					i = 0;
+				if (j == -1)
+					j = 7;
+				if (j == 8)
+					j = 0;
+				dy = yEnd - j;
+				dx = xEnd - i;
+				if (!isP1Turn && (myBoard[j][i] instanceof WhiteSoldier)
+						|| isP1Turn && (myBoard[j][i] instanceof BlackSoldier)) {
+					col = j;
+					row = i;
+					isSkip = true;
 				}
 			}
+			if (isSkip) {
+				myBoard[col][row] = new BlackTile(col, row);
+				myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
+				myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
+				p.setScore(100);
+				turnOffAllTilesColor();
+				setSkipedTile(new BlackTile(col, row));
+				return MoveType.KILL;
+			} else {
+				myBoard[yEnd][xEnd] = myBoard[yStart][xStart].makeCopy(yEnd, xEnd);
+				myBoard[yStart][xStart] = new BlackTile(yStart, xStart);
+				turnOffAllTilesColor();
+				return MoveType.NORMAL;
+			}
 		}
+	
 		return MoveType.NONE;
 	}
 
@@ -414,7 +392,6 @@ public class Board {
 						|| (myBoard[yStart][xStart] instanceof BlackSoldier
 								&& !(myBoard[ymid][xmid] instanceof WhiteSoldier)))
 					return false;
-
 				return true;
 			} else {
 				return false;
@@ -508,6 +485,7 @@ public class Board {
 			return isSkip && c == 1;
 		}
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

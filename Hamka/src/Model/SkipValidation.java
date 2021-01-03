@@ -7,6 +7,8 @@ public class SkipValidation {
 	private int yEnd;
 	private Board myBoard;
 	private boolean isP1;
+	
+	
 
 	public SkipValidation(int xStart, int xEnd, int yStart, int yEnd, Board myBoard, boolean isP1) {
 		super();
@@ -38,27 +40,21 @@ public class SkipValidation {
 			}
 			int xmid = (xStart + xEnd) / 2;
 			int ymid = (yStart + yEnd) / 2;
-			if ((myBoard.getMyBoard()[yStart][xStart] instanceof WhiteSoldier
-					&& !(myBoard.getMyBoard()[ymid][xmid] instanceof BlackSoldier))
-					|| (myBoard.getMyBoard()[yStart][xStart] instanceof BlackSoldier
-							&& !(myBoard.getMyBoard()[ymid][xmid] instanceof WhiteSoldier))) {
+			if ((myBoard.getMyBoard()[yStart][xStart] instanceof WhiteSoldier &&!(myBoard.getMyBoard()[ymid][xmid] instanceof BlackSoldier))
+					|| (myBoard.getMyBoard()[yStart][xStart] instanceof BlackSoldier && !(myBoard.getMyBoard()[ymid][xmid] instanceof WhiteSoldier)))
 				return false;
-			}
-			if (!MoveValidation.isValidPoint(xEnd, yEnd)) {
+			if (!MoveValidation.isValidPoint(xEnd, yEnd))
 				return false;
-			}
-			if (myBoard.getMyBoard()[yEnd][xEnd].getValue() != 0) {
+			if (myBoard.getMyBoard()[yEnd][xEnd].getValue() != 0)
 				return false;
-			}
-
 		} else {
 			// Walls
 			// Queen Skip Validate
 			int i = xStart, j = yStart;
 			int c = 0;
 			// check if the road to the target is clear
-			int r = 0;
-			while ((i != xEnd && j != yEnd) && r != 20) {
+			int r=0;
+			while ((i != xEnd && j != yEnd)&&r!=20) {
 				r++;
 				if (Math.abs(dx) == Math.abs(dy)) {
 					if (dx > 0 && dy > 0) {
@@ -81,7 +77,7 @@ public class SkipValidation {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (xEnd == 0 || xEnd == 7) {
+						if (xEnd != 0 && xEnd != 7) {
 							if (dx > 0 && dy > 0) {
 								i++;
 								j--;

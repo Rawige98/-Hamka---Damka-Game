@@ -13,9 +13,11 @@ import Model.ColorTilesHandler;
 import Model.Game;
 import Model.Player;
 import Model.Question;
+import Model.SysData;
 import Model.Tile;
 import Model.WhiteSoldier;
 import Utils.Consts;
+import Utils.DataType;
 import Utils.Difficulty;
 import Utils.MoveResult;
 import Utils.MoveType;
@@ -137,7 +139,6 @@ public class PlayController implements Initializable {
 	private boolean samePlayerTurn = false;
 	private static Color lastColor = Color.BLACK;
 	private boolean flag;
-
 	// private TimerForPlayer2 PlayerTimer2;
 
 	@FXML
@@ -148,6 +149,11 @@ public class PlayController implements Initializable {
 		t.stop();
 		tp1.stop();
 		((Stage) player1.getScene().getWindow()).close();
+	}
+
+	@FXML
+	void PauseGame(ActionEvent event) {
+		SysData.getInstance().saveGame(DataType.PAUSED_GAMES, game);
 	}
 
 	@FXML
@@ -201,8 +207,8 @@ public class PlayController implements Initializable {
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
 									currentPlayer.getColor(), row - 1, col - 1);
 
-							checkQueen(newPiece, row-1, col-1);
-						
+							checkQueen(newPiece, row - 1, col - 1);
+
 							PlayGameController.getInstance().getBackSoldierToLife(row - 1, col - 1);
 							TileView newTileView = boardView[row - 1][col - 1];
 							newTileView.setPiece(newPiece);
@@ -302,7 +308,6 @@ public class PlayController implements Initializable {
 							boardView[Game.getKilledSoldier().getCols()][Game.getKilledSoldier().getRows()].getPiece());
 					Game.setOwnKill(false);
 				}
-
 				if (!lastColor.equals(Color.BLUE))
 					colorTiles();
 				checkQueen(piece, newX, newY);
@@ -364,6 +369,7 @@ public class PlayController implements Initializable {
 
 		} else if (tileView.getFill().equals(Color.BLUE)) {
 			if (!suggestedTileBlueMove().isEmpty()) {
+
 				colorSuggesstedForBlueTile();
 				lastColor = Color.BLUE;
 				samePlayerTurn = true;
@@ -371,7 +377,7 @@ public class PlayController implements Initializable {
 		} else {
 			samePlayerTurn = false;
 			lastColor = Color.BLACK;
-			//PlayGameController.getInstance().switchTurnNow();
+			 PlayGameController.getInstance().switchTurnNow();
 		}
 		if (!samePlayerTurn) {
 			if (currentPlayer.equals(player_1)) {
@@ -404,11 +410,7 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 				return;
-			}
-			else{
-			 PlayGameController.getInstance().switchTurnNow();
-			// lastColor = Color.BLACK;
-			 }
+			} 
 		}
 	}
 

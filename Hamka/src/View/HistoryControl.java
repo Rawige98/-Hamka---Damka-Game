@@ -79,7 +79,6 @@ public class HistoryControl implements Initializable {
 		while(finishedGames.size()>10) {
 			finishedGames.remove(finishedGames.last());
 		}
-		SysData.getInstance().saveGame(DataType.FINISHED_GAMES,PlayGameController.getInstance().getGame());
 		observableList.setAll(finishedGames);
 		HistoryList.setItems(observableList);
 		HistoryList.setCellFactory(new Callback<ListView<Game>, javafx.scene.control.ListCell<Game>>() {

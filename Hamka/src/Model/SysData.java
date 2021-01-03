@@ -459,6 +459,7 @@ public class SysData {
 
 	@SuppressWarnings("unchecked")
 	public boolean LoadGames(DataType d) {
+		games.clear();
 		String externalPath = null;
 		ArrayList<Game> aa = new ArrayList<Game>();
 		if (d.equals(DataType.FINISHED_GAMES)) {
@@ -490,7 +491,7 @@ public class SysData {
 				Player p2 = new Player((String) g.get("p2Username"));
 				p1.setScore(Integer.valueOf(g.get("p1Score").toString()));
 				p2.setScore(Integer.valueOf(g.get("p2Score").toString()));
-				String winnerUser = (String) g.get("WUsername");
+				
 				// Date gameDate =new Date(g.get("gameDate").toString());
 				// Timer gameDuration = (Timer) g.get("gameDuration");
 				boolean isP1T = (boolean) g.get("isP1Turn");
@@ -506,12 +507,15 @@ public class SysData {
 					}
 				}
 				Game s = new Game(p1, p2);
+				if(DataType.FINISHED_GAMES.equals(d)) {
+					String winnerUser = (String) g.get("WUsername");
 				if (p1.getUsername().equals(winnerUser))
 					s.setWinner(p1);
 				else
 					s.setWinner(p2);
+				}
 				s.getBoard().setMyBoard(x);
-				s.setP1Turn(isP1T);
+				Game.setP1Turn(isP1T);
 				s.setId(id);
 				aa.add(s);
 			}
@@ -533,7 +537,9 @@ public class SysData {
 	// ***********************************************SaveGames****************************************************************************
 	@SuppressWarnings({ "unchecked", "resource" })
 	public void saveGame(DataType d,Game game1) {   
-		games.add(game1);
+		if(!games.contains(game1)) {
+			games.add(game1);
+		}
 		String externalPath = null;
 		if (d.equals(DataType.FINISHED_GAMES)) {
 			externalPath = gameJsonPath;
@@ -572,6 +578,9 @@ public class SysData {
 				JSONObject ja = new JSONObject();
 				// get all answers
 				JSONArray Board = new JSONArray();
+				for(Game g:gamesToPars) {
+					g.setId(gamesToPars.indexOf(g)+1);
+				}
 				for (int i = 0; i < Consts.COLS; i++) {
 					JSONArray row = new JSONArray();
 					for (int j = 0; j < Consts.ROWS; j++) {
@@ -584,10 +593,12 @@ public class SysData {
 				ja.put("p1Score", game.getPlayer1().getScore());
 				ja.put("p2Username", game.getPlayer2().getUsername());
 				ja.put("p2Score", game.getPlayer2().getScore());
+				if (d.equals(DataType.FINISHED_GAMES)) {
 				ja.put("WUsername", game.getWinner().getUsername());
+				ja.put("winner", game.getWinner().getId());
+				}
 				ja.put("id", game.getId());
 				ja.put("gameDate", game.getGameDate().toString());
-				ja.put("winner", game.getWinner().getId());
 				ja.put("gameDuration", game.getGameDuration());
 				ja.put("isP1Turn", game.isP1Turn());
 				ja.put("Board", Board);
