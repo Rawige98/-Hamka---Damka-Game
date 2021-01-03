@@ -37,6 +37,9 @@ public class Game {
 		super();
 		this.player1 = player1;
 		this.player2 = player2;
+		if(player1.getColor().equals(player2.getColor())) {
+			player2.setColor(Color.GREY);
+		}
 		board = new Board();
 		gameDate = java.util.Calendar.getInstance().getTime();
 		id = ++Serial;
@@ -266,11 +269,9 @@ public class Game {
 		}
 		return MType;
 	}
-
 	public void switchTurn() {
 		isP1Turn = !isP1Turn;
 	}
-
 	/*
 	 * private void checkDestinatonTile(Tile destinationTile) { // TODO
 	 * Auto-generated method stub if
@@ -650,10 +651,9 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "--------------------------------------------------\nPlayer 1 :" + player1.getUsername() + " Player 2 :"
+		return "Player 1 :" + player1.getUsername() + " Player 2 :"
 				+ player2.getUsername() + "\n--------------------------------------------------";
 	}
-
 	public String briefToString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
 				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
@@ -674,21 +674,17 @@ public class Game {
 	public static void setKilledSoldier(Tile killedSoldier) {
 		Game.killedSoldier = killedSoldier;
 	}
-
 	public void addSoldier(int x, int y) {
-
+		Tile[][] m=board.getMyBoard();
 		if (isP1Turn) {
-			System.out.println("adding white soldier");
-			System.out.println("the tile is:" + board.getMyBoard()[y][x]);
-
-			board.getMyBoard()[x][y].setValue(1);
-
+			System.out.println("adding white soldier");	
+			m[x][y]=new WhiteSoldier(x,y);
+			m[x][y].upgradeToQueen();
 		} else {
 			System.out.println("adding black soldier");
-
-			board.getMyBoard()[x][y].setValue(2);
-
+			m[x][y]=new BlackSoldier(x,y);
+			m[x][y].upgradeToQueen();
 		}
-
+		board.setMyBoard(m);
 	}
 }

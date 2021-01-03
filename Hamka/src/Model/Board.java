@@ -12,7 +12,8 @@ import javafx.scene.paint.Color;
 public class Board {
 	private Tile[][] myBoard;
 
-	private static Tile SkipedTile; 
+	private static Tile SkipedTile;
+
 	public Board() {
 		setMyBoard(new Tile[Consts.ROWS][Consts.COLS]);
 		initBoard();
@@ -240,10 +241,6 @@ public class Board {
 		}
 		return availableMoves;
 	}
-	
-	
-	
-	
 
 	/**
 	 * in this method we find the available moves for a specific soldier
@@ -503,7 +500,6 @@ public class Board {
 			return isSkip && c == 1;
 		}
 	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

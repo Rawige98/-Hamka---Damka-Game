@@ -21,9 +21,7 @@ public class Main extends Application {
 
 	 @SuppressWarnings("deprecation")
 	public static void main(String[] args) throws SQLException, IOException, ParseException {
-
-		
-		launch(args);
+		 launch(args);
 
 	}
 

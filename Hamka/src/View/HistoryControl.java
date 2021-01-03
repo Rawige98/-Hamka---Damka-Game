@@ -2,11 +2,13 @@ package View;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
+import Controller.PlayGameController;
 import Model.Game;
 import Model.Player;
 import Model.SysData;
@@ -38,7 +40,7 @@ public class HistoryControl implements Initializable {
 	@FXML
 	private ListView<Game> HistoryList;
 	ObservableList<Game> observableList = FXCollections.observableArrayList();
-	Set<Game> finishedGames;
+	TreeSet<Game> finishedGames;
 	ArrayList<Game> arr ;
 	 @FXML
 	    private Button back;
@@ -46,16 +48,18 @@ public class HistoryControl implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		//Player x = new Player("Nagwan");
-		//Game m = new Game(x, new Player("tony"));
-		//m.setWinner(x);
-		 //m.move(5, 0, 4, 1);
-		 //m.move(2, 3, 3, 2);
-		//SysData.getInstance().addFinishedGame(m);
-		//SysData.getInstance().saveGame(DataType.FINISHED_GAMES);
+	
 		SysData.getInstance().LoadGames(DataType.FINISHED_GAMES);
-		finishedGames = new HashSet<Game>();
+		finishedGames = new TreeSet<Game>(new Comparator<Game>() {
+
+			@Override
+			public int compare(Game o1, Game o2) {
+				if(o1.getWinner().getScore()>=o2.getWinner().getScore())
+					return -1;
+				else
+					return 1;
+			}
+		});
 		arr=SysData.getInstance().getGames();
 		finishedGames.addAll(arr);
 		setListView();
@@ -72,6 +76,10 @@ public class HistoryControl implements Initializable {
 	    }
 
 	public void setListView() {
+		while(finishedGames.size()>10) {
+			finishedGames.remove(finishedGames.last());
+		}
+		SysData.getInstance().saveGame(DataType.FINISHED_GAMES,PlayGameController.getInstance().getGame());
 		observableList.setAll(finishedGames);
 		HistoryList.setItems(observableList);
 		HistoryList.setCellFactory(new Callback<ListView<Game>, javafx.scene.control.ListCell<Game>>() {

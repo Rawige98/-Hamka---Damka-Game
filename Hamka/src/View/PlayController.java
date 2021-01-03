@@ -273,8 +273,6 @@ public class PlayController implements Initializable {
 				boardView[x0][y0].setPiece(null);
 				boardView[newX][newY].setPiece(piece);
 				// showYellowTiles();
-				System.out.println("test" + newX + "," + newY);
-
 				// check indexes
 				checkDestinationTile(boardView[newX][newY]);
 				if(!lastColor.equals(Color.BLUE))
@@ -291,6 +289,7 @@ public class PlayController implements Initializable {
 					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 					pieceGroup.getChildren().remove(otherPiece);
 				} else {
+					System.out.println("Killed Game "+Game.getKilledSoldier().getCols()+" Row "+Game.getKilledSoldier().getRows());
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
 							.setPiece(null);
 					pieceGroup.getChildren().remove(
@@ -532,7 +531,6 @@ public class PlayController implements Initializable {
 		 easy.setVisible(false);
 		questionPane.setVisible(false);
 		Game.notFinished = true;
-		Game.setP1Turn(true);
 		timer = new TimerForGame();
 		t = new Thread(timer);
 		t.start();
@@ -557,17 +555,15 @@ public class PlayController implements Initializable {
 		point2.setText(Integer.toString(PlayGameController.getInstance().getPlayer2().getScore()));
 		tileGroup = new Group();
 		pieceGroup = new Group();
-		player_1 = PlayGameController.getInstance().getPlayer1();
-		player_2 = PlayGameController.getInstance().getPlayer2();
+		player_1 = PlayGameController.getInstance().getGame().getPlayer1();
+		player_2 = PlayGameController.getInstance().getGame().getPlayer2();
 		currentPlayer = player_1;
 		game = PlayGameController.getInstance().getGame();
+		Game.setP1Turn(game.isP1Turn());
 		player1image.setFill(player_1.getColor());
 		player2image.setFill(player_2.getColor());
-
 		createBoardView();
-
 		colorTiles();
-
 	}
 
 	public class TimerForPlayer1 implements Runnable {
