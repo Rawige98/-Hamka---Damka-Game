@@ -220,8 +220,9 @@ public class Game {
 			notFinished = false;
 			SysData.getInstance().addPausedGame(this);
 			return true;
-		} else if (status.equals(GameStatus.FINISH) && board.checkAvailableMoves(isP1Turn).isEmpty()) {
+		} else if (status.equals(GameStatus.FINISH) /* && board.checkAvailableMoves(!isP1Turn).isEmpty() */) {
 			if (player1.getScore() > player2.getScore())
+				
 				winner = player1;
 			else
 				winner = player2;
@@ -361,7 +362,7 @@ public class Game {
 //		if (qCount == 1)
 //			board.colorRandomTile(suggestedTiles, Color.BLUE);
 
-		if (sCount == 2 && qCount == 1)
+		if (sCount == 5 && qCount == 1)
 			board.colorRandomTile(suggestedTiles, Color.BLUE);
 
 		// *********** Yellow tiles ****************
