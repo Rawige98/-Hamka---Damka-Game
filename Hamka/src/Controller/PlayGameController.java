@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import Model.Game;
 import Model.Player;
+import Model.SysData;
 import Model.Tile;
+import Utils.DataType;
 import Utils.GameStatus;
 import Utils.MoveType;
 import View.Piece;
@@ -59,8 +61,22 @@ public class PlayGameController {
 
 		return type;
 	}
-	public void switchTurnNow() {
-		game.switchTurn();
+	public boolean switchTurnNow() {
+		if(game.getBoard().checkAvailableMoves
+				(!Game.getIsP1Turn()).isEmpty())
+		{
+			game.finishGame(GameStatus.FINISH);
+			Game.notFinished=false;
+			SysData.getInstance().saveGame(DataType.FINISHED_GAMES,game);
+			return false;
+			
+		}
+		else
+		{
+			game.switchTurn();	
+			return true;
+		}
+		
 	}
 
 	//	public ArrayList<Tile> returnYellowTiles() {

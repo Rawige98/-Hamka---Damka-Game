@@ -54,5 +54,10 @@
             <Font name="Berlin Sans FB" size="12.0" />
          </font>
       </Button>
+      <Label layoutX="138.0" layoutY="45.0" prefHeight="17.0" prefWidth="149.0" text="GAME OVER !!!">
+         <font>
+            <Font name="Berlin Sans FB" size="23.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

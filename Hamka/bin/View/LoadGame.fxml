@@ -22,7 +22,7 @@
                   <Font name="Aharoni Bold" size="24.0" />
                </font>
             </Label>
-            <ListView fx:id="LoadList" layoutX="2.0" layoutY="64.0" onMouseClicked="#cellSelected" prefHeight="219.0" prefWidth="532.0" styleClass="list-cell" stylesheets="@../../list2.css" />
+            <ListView fx:id="LoadList" layoutX="2.0" layoutY="64.0" prefHeight="219.0" prefWidth="532.0" styleClass="list-cell" stylesheets="@../../list2.css" />
             <Button layoutX="376.0" layoutY="274.0" mnemonicParsing="false" onAction="#LoadBPressed" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 100; -fx-background-color: #ffdd6c;" text="Load" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
