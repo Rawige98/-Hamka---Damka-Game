@@ -314,7 +314,8 @@ public class PlayController implements Initializable {
 
 	private void checkAnotherKill(int newX, int newY) {
 		// TODO Auto-generated method stub
-		PlayGameController.getInstance().switchTurnNow();
+		if(!(lastColor.equals(Color.YELLOW) && lastColor.equals(Color.RED)))
+			PlayGameController.getInstance().switchTurnNow();
 		if(PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
 			System.out.println("++++++++++++++ HAVE MORE KILL ++++++++++++++++ " + " FOR PLAYER1("+Game.getIsP1Turn()+")" );
 			samePlayerTurn = true;
