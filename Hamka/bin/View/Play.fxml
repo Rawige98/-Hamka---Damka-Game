@@ -13,21 +13,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="rootBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="629.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PlayController">
+<AnchorPane fx:id="rootBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="667.0" prefWidth="634.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PlayController">
    <children>
-      <Pane prefHeight="59.0" prefWidth="629.0" style="-fx-background-color: white;">
+      <Pane prefHeight="73.0" prefWidth="629.0" style="-fx-background-color: white;">
          <children>
-            <Label fx:id="player1" layoutX="77.0" layoutY="15.0" prefHeight="19.0" prefWidth="107.0">
+            <Label fx:id="player1" layoutX="78.0" layoutY="24.0" prefHeight="19.0" prefWidth="107.0" text="aya">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="437.0" layoutY="33.0" prefHeight="16.0" prefWidth="52.0" text="POINTS:">
+            <Label layoutX="437.0" layoutY="41.0" prefHeight="16.0" prefWidth="52.0" text="POINTS:">
                <font>
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="point1" layoutX="130.0" layoutY="34.0" prefHeight="16.0" prefWidth="46.0" text="120">
+            <Label fx:id="point1" layoutX="131.0" layoutY="41.0" prefHeight="16.0" prefWidth="46.0" text="120">
                <font>
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
@@ -37,18 +37,18 @@
                   <Font name="Berlin Sans FB" size="30.0" />
                </font>
             </Label>
-            <Circle fx:id="player2image" fill="DODGERBLUE" layoutX="408.0" layoutY="42.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Label fx:id="player2" layoutX="443.0" layoutY="16.0" prefHeight="19.0" prefWidth="113.0">
+            <Circle fx:id="player2image" fill="DODGERBLUE" layoutX="397.0" layoutY="35.0" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label fx:id="player2" layoutX="437.0" layoutY="24.0" prefHeight="19.0" prefWidth="113.0" text="aya234">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="76.0" layoutY="34.0" text="POINTS:">
+            <Label layoutX="77.0" layoutY="41.0" text="POINTS:">
                <font>
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="point2" layoutX="489.0" layoutY="33.0" prefHeight="16.0" prefWidth="49.0" text="90">
+            <Label fx:id="point2" layoutX="489.0" layoutY="41.0" prefHeight="16.0" prefWidth="49.0" text="90">
                <font>
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
@@ -58,20 +58,20 @@
                   <Font name="Berlin Sans FB" size="20.0" />
                </font>
             </Label>
-            <Circle fx:id="player1image" fill="DODGERBLUE" layoutX="48.0" layoutY="41.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <ImageView fx:id="p1Turn" fitHeight="36.0" fitWidth="46.0" layoutX="25.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <Circle fx:id="player1image" fill="DODGERBLUE" layoutX="40.0" layoutY="35.0" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+            <ImageView fx:id="p1Turn" fitHeight="19.0" fitWidth="46.0" layoutX="77.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/692de06a73666b614d3319f206f51d9b.gif" />
                </image>
             </ImageView>
-            <ImageView fx:id="p2Turn" fitHeight="36.0" fitWidth="46.0" layoutX="385.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="p2Turn" fitHeight="25.0" fitWidth="38.0" layoutX="437.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/692de06a73666b614d3319f206f51d9b.gif" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Pane layoutX="10.0" layoutY="589.0" prefHeight="45.0" prefWidth="574.0" style="-fx-background-color: white;">
+      <Pane layoutX="7.0" layoutY="607.0" prefHeight="45.0" prefWidth="574.0" style="-fx-background-color: white;">
          <children>
             <Button layoutX="472.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-radius: 30; -fx-background-color: #e9d29d;" text="EXIT">
                <font>
@@ -90,7 +90,7 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="boardPane" layoutX="7.0" layoutY="60.0" prefHeight="530.0" prefWidth="586.0" style="-fx-background-color: white;">
+      <Pane fx:id="boardPane" layoutX="7.0" layoutY="77.0" prefHeight="530.0" prefWidth="586.0" style="-fx-background-color: white;">
          <children>
             <Button layoutX="274.0" layoutY="27.0" mnemonicParsing="false" text="Button" />
          </children>

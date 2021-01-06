@@ -5,5 +5,8 @@
 	<classpathentry kind="lib" path="json-simple-1.1.jar"/>
 	<classpathentry kind="lib" path="junit-4.10.jar"/>
 	<classpathentry kind="lib" path="gson-2.8.6 (1).jar"/>
+	<classpathentry kind="lib" path="webcam-capture-0.3.12.jar"/>
+	<classpathentry kind="lib" path="bridj-0.7.0.jar"/>
+	<classpathentry kind="lib" path="slf4j-api-1.7.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

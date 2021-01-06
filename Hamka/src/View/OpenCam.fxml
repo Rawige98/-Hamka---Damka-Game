@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="333.0" prefWidth="500.0" style="-fx-background-color: #59a6da;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="View.WebCamPreviewController">
+   <children>
+      <ImageView fx:id="imgWebCamCapturedImage" fitHeight="150.0" fitWidth="200.0" layoutX="150.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="btnStartCamera" focusTraversable="false" layoutX="171.0" layoutY="187.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stopCamera" prefHeight="40.0" prefWidth="157.0" style="-fx-background-radius: 30; -fx-background-color: white; -fx-border-color: black; -fx-border-radius: 30;" text="Capture">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="20.0" fx:id="x1" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/icons8-camera-96.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="btnProceedCamera" focusTraversable="false" layoutX="301.0" layoutY="281.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#proceed" prefHeight="34.0" prefWidth="97.0" style="-fx-background-radius: 30; -fx-background-color: white; -fx-border-radius: 30; -fx-border-color: black;" text="Proceed">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="16.0" fx:id="x11" />
+         </font>
+      </Button>
+      <Button fx:id="btnResetCamera" focusTraversable="false" layoutX="362.0" layoutY="68.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startCamera" prefHeight="49.0" prefWidth="50.0" style="-fx-background-radius: 30; -fx-background-color: white; -fx-border-radius: 30; -fx-border-color: black;">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="20.0" fx:id="x12" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/icons8-reset-100%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="btnDisposeCamera" focusTraversable="false" layoutX="412.0" layoutY="281.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#disposeCamera" prefHeight="34.0" prefWidth="74.0" style="-fx-background-radius: 30; -fx-background-color: white; -fx-border-color: black; -fx-border-radius: 30;" text="Close">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="16.0" fx:id="x111" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
