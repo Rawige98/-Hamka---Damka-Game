@@ -36,10 +36,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -577,8 +579,29 @@ public class PlayController implements Initializable {
 		currentPlayer = player_1;
 		game = PlayGameController.getInstance().getGame();
 		Game.setP1Turn(game.isP1Turn());
-		player1image.setFill(player_1.getColor());
-		player2image.setFill(player_2.getColor());
+		if(WebCamPreviewController.profilePic.getImage()!=null)
+		{
+			player1image.setFill(new ImagePattern(WebCamPreviewController.profilePic.getImage()));
+			player1image.setStroke(player_1.getColor());
+			player1image.setStrokeWidth(5);
+		}
+		else
+		{
+			player1image.setFill(player_1.getColor());
+		}
+		if(WebCamPreviewController.profilePic2.getImage()!=null)
+		{
+			player2image.setFill(new ImagePattern(WebCamPreviewController.profilePic2.getImage()));
+			player2image.setStroke(player_2.getColor());
+			player2image.setStrokeWidth(5);
+		}
+		else
+		{
+			player2image.setFill(player_2.getColor());
+		}
+		
+		
+		
 		createBoardView();
 		colorTiles();
 	}
