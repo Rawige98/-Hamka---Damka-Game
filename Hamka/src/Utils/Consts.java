@@ -24,5 +24,7 @@ public class Consts {
 	public static final int MIN_EMPTY_TILES_BETWEEN_RETURNED_SOLDIER_TO_OPPONENT = 2;
 	
 	public static final int TILE_SIZE = 66;
+	public static final String Voice="cmu-rms-hsmm";
+
 
 }
