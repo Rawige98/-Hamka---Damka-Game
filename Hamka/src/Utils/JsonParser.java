@@ -2,10 +2,7 @@ package Utils;
 
 import java.lang.reflect.Type;
 import java.util.List;
-import org.omg.CORBA.IRObject;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -16,7 +13,6 @@ import Model.Board;
 import Model.Game;
 import Model.Player;
 import Model.Question;
-import Model.RuntimeTypeAdapterFactory;
 import Model.Tile;
 import Model.WhiteSoldier;
 import Model.WhiteTile;
@@ -46,17 +42,8 @@ public class JsonParser {
 //				.registerSubtype(WhiteSoldier.class, WhiteSoldier.class.getName());
 //		builder.registerTypeAdapterFactory(adapter);
 //		builder.registerTypeAdapter(Tile[][].class, new InterfaceAdapter<Tile[][]>());
-		gson = builder.setExclusionStrategies(new ExclusionStrategy() {
-			@Override
-			public boolean shouldSkipField(FieldAttributes f) {
-				return f.getDeclaringClass().equals(IRObject.class);
-			}
-			@Override
-			public boolean shouldSkipClass(Class<?> clazz) {
-				return false;
-			}
-		}).create();
-		;
+		gson = builder.create();
+		
 	}
 	public static JsonParser getInstance() {
 		if (instance == null)
