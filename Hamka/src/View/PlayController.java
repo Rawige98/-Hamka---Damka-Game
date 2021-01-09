@@ -19,6 +19,7 @@ import Model.WhiteSoldier;
 import Utils.Consts;
 import Utils.DataType;
 import Utils.Difficulty;
+import Utils.GameStatus;
 import Utils.MoveResult;
 import Utils.MoveType;
 import Utils.PieceType;
@@ -175,6 +176,10 @@ public class PlayController implements Initializable {
 	@FXML
 	void PauseGame(ActionEvent event) {
 		SysData.getInstance().saveGame(DataType.PAUSED_GAMES, game);
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Pause Game");
+		alert.setContentText("The Game has been Paused and Saved");
+		alert.show();
 	}
 
 	@FXML
@@ -204,9 +209,13 @@ public class PlayController implements Initializable {
 				// changes in (if)
 				if (game.getBoard().getMyBoard()[x][y] instanceof BlackSoldier) {
 					piece = makePiece(PieceType.WHITE, player_2.getColor(), x, y);
+					if (game.getBoard().getMyBoard()[x][y].isQueen())
+						piece.showCrown();
 				}
 				if (game.getBoard().getMyBoard()[x][y] instanceof WhiteSoldier) {
 					piece = makePiece(PieceType.GREY, player_1.getColor(), x, y);
+					if (game.getBoard().getMyBoard()[x][y].isQueen())
+						piece.showCrown();
 				}
 				if (piece != null) {
 					tileView.setPiece(piece);
@@ -222,13 +231,10 @@ public class PlayController implements Initializable {
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
 								- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
-
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
 									currentPlayer.getColor(), row - 1, col - 1);
-
 							checkQueen(newPiece, row - 1, col - 1);
-
 							PlayGameController.getInstance().getBackSoldierToLife(row - 1, col - 1);
 							TileView newTileView = boardView[row - 1][col - 1];
 							newTileView.setPiece(newPiece);
@@ -238,7 +244,6 @@ public class PlayController implements Initializable {
 							refreshBoardTilesColors();
 							PlayGameController.getInstance().switchTurnNow();
 							// lastColor=Color.BLACK;
-
 						}
 					}
 				});
@@ -364,7 +369,6 @@ public class PlayController implements Initializable {
 			piece.showCrown();
 		}
 	}
-
 	private void checkDestinationTile(TileView tileView) {
 		lastTile = tileView;
 		// System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[tileView.getX_value()][tileView.getY_value()].longString());
@@ -696,26 +700,21 @@ public class PlayController implements Initializable {
 		@Override
 		public void run() {
 			reset();
-
 			while (Game.getIsP1Turn() && Game.notFinished) {
 				player1.setTextFill(Color.RED);
 				player2.setTextFill(Color.BLACK);
 				p2Turn.setVisible(false);
 				p1Turn.setVisible(true);
-
 				second++;
 				if (second >= 60) {
 					second = 0;
 					mints++;
 				}
-
-				if (second == 30 && mints == 0)
+				if (second == 10 && mints == 0)
 					handler.showColor(Color.GREEN);
-				if (second == 30 && mints == 1)
+				if (second == 20 && mints == 0)
 					handler.showColor(Color.ORANGE);
-
 				Platform.runLater(() -> {
-
 					if (mints < 10 && second < 10) {
 						playerTimer.setText("0" + mints + " : 0" + second);
 					} else if (mints < 10) {
@@ -725,7 +724,6 @@ public class PlayController implements Initializable {
 					} else {
 						playerTimer.setText(mints + " : " + second);
 					}
-
 				});
 				try {
 					Thread.sleep(1000);
@@ -753,7 +751,10 @@ public class PlayController implements Initializable {
 					second = 0;
 					mints++;
 				}
-
+				if (second == 10 && mints == 0)
+					handler.showColor(Color.GREEN);
+				if (second == 20 && mints == 0)
+					handler.showColor(Color.ORANGE);
 				Platform.runLater(() -> {
 					if (mints < 10 && second < 10) {
 						playerTimer.setText("0" + mints + " : 0" + second);

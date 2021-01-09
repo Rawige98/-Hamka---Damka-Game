@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
 
 public class Board {
 	private Tile[][] myBoard;
-
 	private static Tile SkipedTile;
 
 	public Board() {
@@ -74,14 +73,17 @@ public class Board {
 				}
 			}
 			// Queen
+			int direction = validation.getDirectionNum();
 			int i = xStart, j = yStart;
 			boolean isSkip = false;
 			int col = -1, row = -1;
 			int r = 0;
+			boolean flag=direction==3;
 			// check if the road to the target is clear
+			System.out.println(direction);
 			while ((i != xEnd && j != yEnd) && r != 20) {
 				r++;
-				if (Math.abs(dx) == Math.abs(dy)) {
+				if (Math.abs(dx) == Math.abs(dy) && direction != 2 && direction != 3) {
 					if (dx > 0 && dy > 0) {
 						i++;
 						j++;
@@ -98,11 +100,10 @@ public class Board {
 					if (dx < 0 && dy < 0) {
 						i--;
 						j--;
-
 					}
 				} else {
-					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (xEnd != 0 && xEnd != 7) {
+					if ((Math.abs(dx) + Math.abs(dy) == 8)) {
+						if (i != 0 && i != 7 && direction != 3&&flag==false) {
 							if (dx > 0 && dy > 0) {
 								i++;
 								j--;
@@ -142,6 +143,7 @@ public class Board {
 						}
 					}
 				}
+				direction=-1;
 				if (i == -1)
 					i = 7;
 				if (i == 8)
@@ -152,6 +154,8 @@ public class Board {
 					j = 0;
 				dy = yEnd - j;
 				dx = xEnd - i;
+			
+				System.out.println(i+"  j"+j);
 				if (!isP1Turn && (myBoard[j][i] instanceof WhiteSoldier)
 						|| isP1Turn && (myBoard[j][i] instanceof BlackSoldier)) {
 					col = j;
@@ -268,6 +272,7 @@ public class Board {
 			}
 		}
 	}
+
 	public void colorRandomTile(ArrayList<Tile> tiles, Color color) {
 		Random random = new Random();
 		if (tiles.size() == 0) {
@@ -358,6 +363,7 @@ public class Board {
 	public boolean isSkip(int xStart, int yStart, int xEnd, int yEnd, boolean isP1Turn) {
 		int dx = xEnd - xStart;
 		int dy = yEnd - yStart;
+		MoveValidation validation = new MoveValidation(xStart, xEnd, yStart, yEnd, this, isP1Turn, true);
 		if (!myBoard[yStart][xStart].isQueen()) {
 			// if its not a skip
 			if (Math.abs(dx) == 2) {
@@ -376,12 +382,11 @@ public class Board {
 		else {
 			int i = xStart, j = yStart;
 			boolean isSkip = false; // check if the road to the target is clear
-			int c = 0;
-			int r = 0;
+			int c = 0, r = 0, col = -1, row = -1;
+			int direction = validation.getDirectionnNum();
 			while ((i != xEnd && j != yEnd) && r != 20) {
 				r++;
-				c++;
-				if (Math.abs(dx) == Math.abs(dy)) {
+				if (Math.abs(dx) == Math.abs(dy) && direction != 2 && direction != 3) {
 					if (dx > 0 && dy > 0) {
 						i++;
 						j++;
@@ -402,7 +407,7 @@ public class Board {
 					}
 				} else {
 					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (xEnd == 0 || xEnd == 7) {
+						if (i != 0 && i != 7 && direction != 3) {
 							if (dx > 0 && dy > 0) {
 								i++;
 								j--;
@@ -440,6 +445,8 @@ public class Board {
 							}
 
 						}
+						// direction = -1;
+
 					}
 				}
 				if (i == -1)
@@ -454,10 +461,19 @@ public class Board {
 				dx = xEnd - i;
 				if (!isP1Turn && (myBoard[j][i] instanceof WhiteSoldier)
 						|| isP1Turn && (myBoard[j][i] instanceof BlackSoldier)) {
+					c++;
 					isSkip = true;
+					col = j;
+					row = i;
 				}
 			}
-			return isSkip && c == 1;
+			int x = row - xStart;
+			int y = col - yStart;
+			if ((Math.abs(x) == 1 && Math.abs(y) == 1) || (Math.abs(x) == 1 && Math.abs(y) == 7)
+					|| (Math.abs(x) == 7 && Math.abs(y) == 1)) {
+				return isSkip && c == 1;
+			}
+			return false;
 		}
 	}
 
@@ -466,7 +482,6 @@ public class Board {
 		StringBuilder builder = new StringBuilder();
 		String newLine = System.getProperty("line.separator");
 		String wall = "|";
-
 		builder.append(" ");
 		for (int i = 0; i < myBoard.length; i++) {
 			if (i < (myBoard.length - 1)) {
