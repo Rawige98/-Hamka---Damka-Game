@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Controller.PlayGameController;
 import Controller.PopQ;
+
 import Model.BlackSoldier;
 import Model.Board;
 import Model.ColorTilesHandler;
@@ -22,6 +23,7 @@ import Utils.Difficulty;
 import Utils.MoveResult;
 import Utils.MoveType;
 import Utils.PieceType;
+import Voice.Voice;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -267,6 +269,8 @@ public class PlayController implements Initializable {
 				if (!lastPiece.equals(piece))
 					moveResult.setType(MoveType.NONE);
 			}
+			
+			Voice.voicesExamples("correct answer!");
 
 			switch (moveResult.getType()) {
 			case NONE:
@@ -439,6 +443,7 @@ public class PlayController implements Initializable {
 		}
 		updateScore(player_1);
 		updateScore(player_2);
+
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 
@@ -579,29 +584,21 @@ public class PlayController implements Initializable {
 		currentPlayer = player_1;
 		game = PlayGameController.getInstance().getGame();
 		Game.setP1Turn(game.isP1Turn());
-		if(WebCamPreviewController.profilePic.getImage()!=null)
-		{
+		if (WebCamPreviewController.profilePic.getImage() != null) {
 			player1image.setFill(new ImagePattern(WebCamPreviewController.profilePic.getImage()));
 			player1image.setStroke(player_1.getColor());
 			player1image.setStrokeWidth(5);
-		}
-		else
-		{
+		} else {
 			player1image.setFill(player_1.getColor());
 		}
-		if(WebCamPreviewController.profilePic2.getImage()!=null)
-		{
+		if (WebCamPreviewController.profilePic2.getImage() != null) {
 			player2image.setFill(new ImagePattern(WebCamPreviewController.profilePic2.getImage()));
 			player2image.setStroke(player_2.getColor());
 			player2image.setStrokeWidth(5);
-		}
-		else
-		{
+		} else {
 			player2image.setFill(player_2.getColor());
 		}
-		
-		
-		
+
 		createBoardView();
 		colorTiles();
 	}
