@@ -11,16 +11,14 @@ import javafx.scene.shape.Ellipse;
 public class Piece extends StackPane {
 
 	public PieceType pieceType;
-	public String iconPath;
 	private double mouseX, mouseY, oldX, oldY;
 	Ellipse bgEllipse , ellipse, crownEllipse;
 	Color color;
 	
-	public Piece(PieceType pieceType, Color color, int x, int y ,String iconPath) {
+	public Piece(PieceType pieceType, Color color, int x, int y) {
 		this.pieceType = pieceType;
 		oldX = x * Consts.TILE_SIZE;	
 		oldY = y * Consts.TILE_SIZE;
-		this.iconPath = iconPath;
 		this.color = color;
 
 		relocate(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE	);
@@ -92,18 +90,14 @@ public class Piece extends StackPane {
 		relocate(oldX, oldY);
 	}
 
-	public void showCrown() {
-		Image greyCrown = new Image("/images/ic_grey_crown.png", false);
-		Image whiteCrown = new Image("/images/ic_white_crown.png", false);		
+	public Ellipse getCrownEllipse() {
+		return crownEllipse;
+	}
+	
+	public void showCrown() {	
 		Image goldCrown = new Image("/images/ic_crown.png", false);
-
-//		Image blackCrown = new Image("/images/ic_black_crown.png", false);
-//		ImagePattern pattern = (pieceType == PieceType.WHITE) ? new ImagePattern(whiteCrown) : new ImagePattern(greyCrown);
 		ImagePattern pattern = new ImagePattern(goldCrown);
-
-//		ellipse.setFill(pattern);
 		crownEllipse.setFill(pattern);
 		bgEllipse.setFill(Color.GOLD);
-
 	}
 }

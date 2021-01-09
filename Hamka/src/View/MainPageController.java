@@ -7,9 +7,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 import Controller.PlayGameController;
-import Model.Game;
 import Model.Player;
-import Model.SysData;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,16 +19,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 public class MainPageController implements Initializable {
@@ -93,6 +91,8 @@ public class MainPageController implements Initializable {
 
     @FXML
     private ColorPicker p1ColorPicker;
+    @FXML
+    private ImageView pic;
 
 	
 
@@ -319,7 +319,7 @@ public class MainPageController implements Initializable {
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
-		Scene scene = new Scene(root, 609, 637);
+		Scene scene = new Scene(root, 612, 697);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Play");
 		primaryStage.show();
@@ -339,6 +339,34 @@ public class MainPageController implements Initializable {
 				+ "-fx-border-color: transparent;" + "-fx-border-radius: 30;" + "-fx-text-fill: #cd4f06");
 	}
 
+	  
+    public void takePhoto(){
+        try {
+            Stage dialogStage = new Stage(StageStyle.UNDECORATED);
+            AnchorPane root = FXMLLoader.load(getClass().getResource("/View/OpenCam.fxml"));
+            Scene scene = new Scene(root, 500, 333);
+            dialogStage.setUserData("fromAddParent");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void takePhoto2(){
+        try {
+            Stage dialogStage = new Stage(StageStyle.UNDECORATED);
+            AnchorPane root = FXMLLoader.load(getClass().getResource("/View/OpenCam2.fxml"));
+            Scene scene = new Scene(root, 500, 333);
+            dialogStage.setUserData("fromAddParent");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setScene(scene);
+            dialogStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		if (MainPageController.isSoundOn)
