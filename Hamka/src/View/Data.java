@@ -92,8 +92,9 @@ public class Data {
 				Stage primaryStage = new Stage();
 				Parent root;
 				try {
+					((Stage) b1.getScene().getWindow()).close();
 					root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
-					Scene scene = new Scene(root, 650, 600);
+					Scene scene = new Scene(root, 609, 637);
 					primaryStage.setScene(scene);
 					primaryStage.setTitle("Play");
 					primaryStage.show();	

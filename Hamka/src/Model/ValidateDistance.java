@@ -7,6 +7,14 @@ public class ValidateDistance {
 	private int yEnd;
 	private Board myBoard;
 	private boolean isP1;
+	private int directionNum=0;
+
+	public int getDirectionNum() {
+		return directionNum;
+	}
+	public void setDirectionNum(int directionNum) {
+		this.directionNum = directionNum;
+	}
 
 	public ValidateDistance(int xStart, int xEnd, int yStart, int yEnd, Board myBoard, boolean isP1) {
 		super();
@@ -65,86 +73,89 @@ public class ValidateDistance {
 		int dx = xEnd - xStart;
 		int i = xStart, j = yStart;
 		int r = 0;
+		int d = directionNum;
+		boolean flag=d==3;
 		if (Math.abs(dx) != Math.abs(dy) && Math.abs(dx) + Math.abs(dy) != 8) {
 			return false;
 		}
-			// check if the road to the target is clear
-			while ((i != xEnd && j != yEnd) && r != 20) {
-				r++;
-				if (Math.abs(dx) == Math.abs(dy)) {
-					if (dx > 0 && dy > 0) {
-						i++;
-						j++;
-					}
-					if (dx < 0 && dy > 0) {
-						i--;
-						j++;
-					}
-					if (dx > 0 && dy < 0) {
-						j--;
-						i++;
+		// check if the road to the target is clear
+		while ((i != xEnd && j != yEnd) && r != 20) {
+			r++;
+			if (Math.abs(dx) == Math.abs(dy) && d != 2 && d != 3) {
+				if (dx > 0 && dy > 0) {
+					i++;
+					j++;
+				}
+				if (dx < 0 && dy > 0) {
+					i--;
+					j++;
+				}
+				if (dx > 0 && dy < 0) {
+					j--;
+					i++;
 
-					}
-					if (dx < 0 && dy < 0) {
-						i--;
-						j--;
-					}
-				} else {
-					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (xEnd != 0 && xEnd != 7) {
-							if (dx > 0 && dy > 0) {
-								i++;
-								j--;
-							}
-							if (dx < 0 && dy > 0) {
-								i--;
-								j--;
-							}
-							if (dx > 0 && dy < 0) {
-								j++;
-								i++;
-							}
-							if (dx < 0 && dy < 0) {
-								i--;
-								j++;
-							}
-						} else {
-							if (dx > 0 && dy > 0) {
-								i--;
-								j++;
-							}
-							if (dx < 0 && dy > 0) {
-								j++;
-								i++;
-							}
-							if (dx > 0 && dy < 0) {
-
-								i--;
-								j--;
-							}
-							if (dx < 0 && dy < 0) {
-
-								i++;
-								j--;
-							}
-
+				}
+				if (dx < 0 && dy < 0) {
+					i--;
+					j--;
+				}
+			} else {
+				if ((Math.abs(dx) + Math.abs(dy) == 8)) {
+					if (i != 0 && i != 7&& d != 3&&flag!=true) {
+						if (dx > 0 && dy > 0) {
+							i++;
+							j--;
 						}
+						if (dx < 0 && dy > 0) {
+							i--;
+							j--;
+						}
+						if (dx > 0 && dy < 0) {
+							j++;
+							i++;
+						}
+						if (dx < 0 && dy < 0) {
+							i--;
+							j++;
+						}
+					} else {
+						if (dx > 0 && dy > 0) {
+							i--;
+							j++;
+						}
+						if (dx < 0 && dy > 0) {
+							j++;
+							i++;
+						}
+						if (dx > 0 && dy < 0) {
+
+							i--;
+							j--;
+						}
+						if (dx < 0 && dy < 0) {
+
+							i++;
+							j--;
+						}
+
 					}
 				}
-				if (i == -1)
-					i = 7;
-				if (i == 8)
-					i = 0;
-				if (j == -1)
-					j = 7;
-				if (j == 8)
-					j = 0;
-				dy = yEnd - j;
-				dx = xEnd - i;
-				if ((isP1 && (myBoard.getMyBoard()[j][i] instanceof WhiteSoldier))
-						|| !isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier))
-					return false;
 			}
+			d=-1;
+			if (i == -1)
+				i = 7;
+			if (i == 8)
+				i = 0;
+			if (j == -1)
+				j = 7;
+			if (j == 8)
+				j = 0;
+			dy = yEnd - j;
+			dx = xEnd - i;
+			if ((isP1 && (myBoard.getMyBoard()[j][i] instanceof WhiteSoldier))
+					|| !isP1 && (myBoard.getMyBoard()[j][i] instanceof BlackSoldier))
+				return false;
+		}
 		return true;
 	}
 }
