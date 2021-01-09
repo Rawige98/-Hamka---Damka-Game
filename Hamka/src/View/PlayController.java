@@ -22,11 +22,16 @@ import Utils.Difficulty;
 import Utils.MoveResult;
 import Utils.MoveType;
 import Utils.PieceType;
+import Utils.TileIconType;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,12 +44,17 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class PlayController implements Initializable {
 
@@ -67,14 +77,22 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private Label playerTimer;
+	
 	@FXML
 	private Label point2;
 
+	@FXML
+    private Label msgLabel;
+	
 	@FXML
 	public Pane boardPane;
 
 	@FXML
 	private AnchorPane rootPane;
+	
+	@FXML
+	private FlowPane msgPane;
+	
 	@FXML
 	private Label gameTimer;
 
@@ -201,7 +219,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-								- 1];
+						                                                                                        - 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 
 							Piece newPiece = makePiece(
@@ -232,7 +250,7 @@ public class PlayController implements Initializable {
 		for (int y = 0; y < Consts.ROWS; y++) {
 			for (int x = 0; x < Consts.COLS; x++) {
 
-				boardView[x][y].setStroke(null);
+				boardView[x][y].getBaseShape().setStroke(null);
 			}
 		}
 	}
@@ -241,9 +259,9 @@ public class PlayController implements Initializable {
 
 		for (Tile tile : suggestedTileBlueMove()) {
 
-			if (!boardView[tile.getCols()][tile.getRows()].getFill().equals(Color.WHITE)) {
-				boardView[tile.getCols()][tile.getRows()].setStroke(Color.BLUE);
-				boardView[tile.getCols()][tile.getRows()].setStrokeWidth(5);
+			if (!boardView[tile.getCols()][tile.getRows()].getBaseShape().getFill().equals(Color.WHITE)) {
+				boardView[tile.getCols()][tile.getRows()].getBaseShape().setStroke(Color.BLUE);
+				boardView[tile.getCols()][tile.getRows()].getBaseShape().setStrokeWidth(5);
 				boardView[tile.getCols()][tile.getRows()].toFront();
 
 			}
@@ -251,7 +269,7 @@ public class PlayController implements Initializable {
 	}
 
 	private Piece makePiece(PieceType type, Color color, int x, int y) {
-		Piece piece = new Piece(type, color, x, y, "b.jpg");
+		Piece piece = new Piece(type, color, x, y);
 		piece.setOnMouseReleased(e -> {
 			int newX = toBoard(piece.getLayoutX());
 			int newY = toBoard(piece.getLayoutY());
@@ -270,7 +288,12 @@ public class PlayController implements Initializable {
 
 			switch (moveResult.getType()) {
 			case NONE:
+				String msg = "";
 				piece.aboartMove();
+				if(Game.getIsP1Turn() == true) {
+					
+				}
+				showMsg("Bad move, Try again!");
 				break;
 			case NORMAL:
 				piece.move(newX, newY);
@@ -295,12 +318,14 @@ public class PlayController implements Initializable {
 					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 					pieceGroup.getChildren().remove(otherPiece);
 					checkAnotherKill(newX, newY);
+					showMsg("!! Great, nice move !!\nNOTE: If you have another kill... Do it with the same soldier!");
 				} else {
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
 							.setPiece(null);
 					pieceGroup.getChildren().remove(
 							boardView[Game.getKilledSoldier().getCols()][Game.getKilledSoldier().getRows()].getPiece());
 					Game.setOwnKill(false);
+					showMsg("You had to eat the soldier next to you!");
 				}
 				if (!lastColor.equals(Color.BLUE))
 					colorTiles();
@@ -330,36 +355,41 @@ public class PlayController implements Initializable {
 
 	private void checkQueen(Piece piece, int x, int y) {
 		// TODO Auto-generated method stub
-		if (PlayGameController.getInstance().checkIfQueen(x, y))
+		if (PlayGameController.getInstance().checkIfQueen(x, y)) {
+			if(piece.getCrownEllipse().getFill() == null)
+				showMsg("Long live for the new Queen");
 			piece.showCrown();
+		}
 	}
 
 	private void checkDestinationTile(TileView tileView) {
 		lastTile = tileView;
-//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[tileView.getX_value()][tileView.getY_value()].longString());
-		if (tileView.getFill().equals(Color.YELLOW)) {
+		//		System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[tileView.getX_value()][tileView.getY_value()].longString());
+		if (tileView.getBaseShape().getFill().equals(Color.YELLOW)) {
 			popQuestion();
 			samePlayerTurn = true;
 			lastColor = Color.YELLOW;
-		} else if (tileView.getFill().equals(Color.RED)) {
+		} else if (tileView.getBaseShape().getFill().equals(Color.RED)) {
 			if (PlayGameController.getInstance().checkMovesAvailability(tileView.getX_value(), tileView.getY_value())) {
 				samePlayerTurn = true;
 				lastColor = Color.RED;
+				showMsg("You had earned a one more turn with the same soldier");
 			} else {
 				samePlayerTurn = false;
 				lastColor = Color.BLACK;
 				PlayGameController.getInstance().switchTurnNow();
 			}
-		} else if (tileView.getFill().equals(Color.GREEN)) {
+		} else if (tileView.getBaseShape().getFill().equals(Color.GREEN)) {
+			showMsg("Congrats! You had earned "+ Consts.POINTS_FOR_GREEN_TILE+" ponits.");
 			currentPlayer.updateScore(Consts.POINTS_FOR_GREEN_TILE);
 			updateScore(currentPlayer);
 			samePlayerTurn = false;
 			lastColor = Color.GREEN;
 			PlayGameController.getInstance().switchTurnNow();
 
-		} else if (tileView.getFill().equals(Color.BLUE)) {
+		} else if (tileView.getBaseShape().getFill().equals(Color.BLUE)) {
 			if (!suggestedTileBlueMove().isEmpty()) {
-
+				showMsg("Good job! You had earned a chance to get back one soldier to life\nChooce a tile that marked with a blue border");
 				colorSuggesstedForBlueTile();
 				lastColor = Color.BLUE;
 				samePlayerTurn = true;
@@ -448,18 +478,31 @@ public class PlayController implements Initializable {
 	}
 
 	private void refreshBoardTilesColors() {
+		TileIconType type;
 		for (int x = 0; x < Consts.COLS; x++) {
 			for (int y = 0; y < Consts.COLS; y++) {
+				type = TileIconType.NONE;
 				Color color = game.getBoard().getMyBoard()[y][x].getColor();
-				boardView[y][x].setFill(color);
-//				if(game.getBoard().getMyBoard()[y][x].getValue() == 0 && boardView[x][y].getPiece() != null) {
-//					boardView[y][x].setPiece(null);
-//					pieceGroup.getChildren().remove(boardView[y][x].getPiece());
-//				}
+				if(color.equals(Color.YELLOW)) {
+					type = TileIconType.QUESTION;
+				}else if(color.equals(Color.GREEN) || color.equals(Color.ORANGE)) {
+					type = TileIconType.HELP;
+				}else if(color.equals(Color.RED)) {
+					type = TileIconType.REPLAY;
+				}else if(color.equals(Color.BLUE)) {
+					type = TileIconType.BACK_TO_LIFE;
+				}
+				boardView[y][x].setIcon(type);
+				boardView[y][x].getBaseShape().setFill(color);
+
+				//				if(game.getBoard().getMyBoard()[y][x].getValue() == 0 && boardView[x][y].getPiece() != null) {
+				//					boardView[y][x].setPiece(null);
+				//					pieceGroup.getChildren().remove(boardView[y][x].getPiece());
+				//				}
 				// boardView[y][x].setStroke(null);
-//				if(game.getBoard().getMyBoard()[y][x].getValue() == 0) {
-//					boardView[x][y].setPiece(null);
-//				}
+				//				if(game.getBoard().getMyBoard()[y][x].getValue() == 0) {
+				//					boardView[x][y].setPiece(null);
+				//				}
 			}
 		}
 	}
@@ -599,11 +642,12 @@ public class PlayController implements Initializable {
 		{
 			player2image.setFill(player_2.getColor());
 		}
-		
-		
-		
+
+
+
 		createBoardView();
 		colorTiles();
+		showMsg("Let's start the game");
 	}
 
 	public class TimerForPlayer1 implements Runnable {
@@ -693,10 +737,10 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-//			if (PlayerTimer1.getMints() < 1)
-//				player_1.setScore(60 - PlayerTimer1.getSecond());
-//			else
-//				player_1.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+			//			if (PlayerTimer1.getMints() < 1)
+			//				player_1.setScore(60 - PlayerTimer1.getSecond());
+			//			else
+			//				player_1.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
 			// updateScore(player_1);
 			reset();
 
@@ -731,10 +775,10 @@ public class PlayController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-//			if (PlayerTimer1.getMints() < 1)
-//				player_2.setScore(60 - PlayerTimer1.getSecond());
-//			else
-//				player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
+			//			if (PlayerTimer1.getMints() < 1)
+			//				player_2.setScore(60 - PlayerTimer1.getSecond());
+			//			else
+			//				player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
 			if (Game.notFinished) {
 				run();
 			}
@@ -872,5 +916,34 @@ public class PlayController implements Initializable {
 		}
 
 	}
+	
+	private void showMsg(String msg) {
+		Color color = currentPlayer.getColor();
+		if (color.equals(Color.BLACK)) {
+			msgLabel.setTextFill(Color.WHITE);
+		}else {
+			msgLabel.setTextFill(Color.BLACK);
+		}
+		
+		msgPane.setVisible(true);
+		msgLabel.setText(msg);
+		msgPane.setStyle("-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
+//		msgPane.setStyle("-fx-background-raduis: 100");
 
+//		msgPane.setBackground(color);
+//		msgPane.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.millis(2500), 
+                        new KeyValue(msgPane.visibleProperty(), false)));
+        timeline.play();
+	}
+
+	private String toHexString(Color color) {
+		  int r = ((int) Math.round(color.getRed()     * 255)) << 24;
+		  int g = ((int) Math.round(color.getGreen()   * 255)) << 16;
+		  int b = ((int) Math.round(color.getBlue()    * 255)) << 8;
+		  int a = ((int) Math.round(color.getOpacity() * 255));
+		  return String.format("#%08X", (r + g + b + a));
+		}
 }
