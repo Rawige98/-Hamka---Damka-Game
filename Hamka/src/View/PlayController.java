@@ -643,7 +643,6 @@ public class PlayController implements Initializable {
 
 		createBoardView();
 		colorTiles();
-		// playSound=true;
 		showMsg("Let's start the game");
 
 	}
