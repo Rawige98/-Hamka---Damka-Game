@@ -7,8 +7,15 @@ public class SkipValidation {
 	private int yEnd;
 	private Board myBoard;
 	private boolean isP1;
-	
-	
+	private int directionnNum = 0;
+
+	public int getDirectionnNum() {
+		return directionnNum;
+	}
+
+	public void setDirectionnNum(int directionnNum) {
+		this.directionnNum = directionnNum;
+	}
 
 	public SkipValidation(int xStart, int xEnd, int yStart, int yEnd, Board myBoard, boolean isP1) {
 		super();
@@ -40,8 +47,10 @@ public class SkipValidation {
 			}
 			int xmid = (xStart + xEnd) / 2;
 			int ymid = (yStart + yEnd) / 2;
-			if ((myBoard.getMyBoard()[yStart][xStart] instanceof WhiteSoldier &&!(myBoard.getMyBoard()[ymid][xmid] instanceof BlackSoldier))
-					|| (myBoard.getMyBoard()[yStart][xStart] instanceof BlackSoldier && !(myBoard.getMyBoard()[ymid][xmid] instanceof WhiteSoldier)))
+			if ((myBoard.getMyBoard()[yStart][xStart] instanceof WhiteSoldier
+					&& !(myBoard.getMyBoard()[ymid][xmid] instanceof BlackSoldier))
+					|| (myBoard.getMyBoard()[yStart][xStart] instanceof BlackSoldier
+							&& !(myBoard.getMyBoard()[ymid][xmid] instanceof WhiteSoldier)))
 				return false;
 			if (!MoveValidation.isValidPoint(xEnd, yEnd))
 				return false;
@@ -53,10 +62,12 @@ public class SkipValidation {
 			int i = xStart, j = yStart;
 			int c = 0;
 			// check if the road to the target is clear
-			int r=0;
-			while ((i != xEnd && j != yEnd)&&r!=20) {
+			int r = 0;
+			int d = directionnNum;
+			boolean flag=d==3;
+			while ((i != xEnd && j != yEnd) && r != 20) {
 				r++;
-				if (Math.abs(dx) == Math.abs(dy)) {
+				if ((Math.abs(dx) == Math.abs(dy)) && d != 2 && d != 3) {
 					if (dx > 0 && dy > 0) {
 						i++;
 						j++;
@@ -73,11 +84,10 @@ public class SkipValidation {
 					if (dx < 0 && dy < 0) {
 						i--;
 						j--;
-
 					}
 				} else {
-					if (Math.abs(dx) + Math.abs(dy) == 8) {
-						if (xEnd != 0 && xEnd != 7) {
+					if ((Math.abs(dx) + Math.abs(dy) == 8)) {
+						if (i != 0 && i != 7 && d != 3&&flag!=true) {
 							if (dx > 0 && dy > 0) {
 								i++;
 								j--;
@@ -113,10 +123,10 @@ public class SkipValidation {
 								i++;
 								j--;
 							}
-
 						}
 					}
 				}
+				d=-1;
 				if (i == -1)
 					i = 7;
 				if (i == 8)
@@ -136,5 +146,4 @@ public class SkipValidation {
 		}
 		return true;
 	}
-
 }

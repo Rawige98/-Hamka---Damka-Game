@@ -32,6 +32,7 @@ public class Game {
 	Scanner runGameScanner;
 	private static boolean ownKill = false;
 	private static Tile killedSoldier;
+	private String LoadedFileName;
 
 	public Game(Player player1, Player player2) {
 		super();
@@ -47,6 +48,7 @@ public class Game {
 		notFinished = true;
 		runGameScanner = new Scanner(System.in);
 		checkColorsToShow();
+		LoadedFileName=null;
 	}
 
 	public Game() {
@@ -393,10 +395,16 @@ public class Game {
 	}
 	@Override
 	public String toString() {
-		return "Player 1 :" + player1.getUsername() + " Player 2 :" + player2.getUsername()
-				+ "\n--------------------------------------------------";
+		if(LoadedFileName==null) {
+		return "-----------------------------------------------------------------\n"
+				+"Player 1 :" + player1.getUsername() + " Player 2 :" + player2.getUsername()
+				+ "\n-----------------------------------------------------------------";
+		}
+		else {
+			return "This is a loaded game from "+LoadedFileName+" file "
+					+ "\n-----------------------------------------------------------------";
+		}
 	}
-
 	public String briefToString() {
 		return "Game id=" + id + ", player1=" + player1 + ", player2=" + player2 + ",\ngameDate=" + gameDate
 				+ ", winner=" + winner + ", gameDuration=" + gameDuration + "]";
@@ -450,6 +458,14 @@ public class Game {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public String getLoadedFileName() {
+		return LoadedFileName;
+	}
+
+	public void setLoadedFileName(String loadedFileName) {
+		LoadedFileName = loadedFileName;
 	}
 	
 }

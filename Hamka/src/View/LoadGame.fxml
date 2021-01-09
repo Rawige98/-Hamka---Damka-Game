@@ -17,7 +17,7 @@
                   <Image url="@../images/LoadBack.jpg" />
                </image>
             </ImageView>
-            <Label layoutX="199.0" layoutY="14.0" prefHeight="0.0" prefWidth="139.0" text="Load Game" textFill="#ffd343">
+            <Label layoutX="199.0" layoutY="14.0" prefHeight="0.0" prefWidth="139.0" text="Load Game" textFill="#ffce49">
                <font>
                   <Font name="Aharoni Bold" size="24.0" />
                </font>
