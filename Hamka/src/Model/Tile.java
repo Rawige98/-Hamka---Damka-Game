@@ -85,7 +85,7 @@ public abstract class Tile implements Cloneable,Serializable{
 	}
 	@Override
 	public String toString() {
-		return value+"";
+		return value==0?"*":value+"";
 	}
 	
 	public String longString() {

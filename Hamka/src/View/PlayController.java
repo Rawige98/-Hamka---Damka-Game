@@ -180,7 +180,7 @@ public class PlayController implements Initializable {
 	private static TileView lastTile;
 	private boolean samePlayerTurn = false;
 	private static Color lastColor = Color.BLACK;
-	private boolean flag=false;
+	private boolean flag = false;
 	// private TimerForPlayer2 PlayerTimer2;
 
 	@FXML
@@ -301,16 +301,17 @@ public class PlayController implements Initializable {
 			int newY = toBoard(piece.getLayoutY());
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
+			MoveResult moveResult = new MoveResult(MoveType.NONE);
 			currentPlayer = PlayGameController.getInstance().getCurrentPlayer();
-			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 			if (lastTile == null) {
 				lastTile = boardView[x0][y0];
 			}
 			if (lastColor.equals(Color.RED)) {
 				Piece lastPiece = lastTile.getPiece();
-				if (!lastPiece.equals(piece))
-					moveResult.setType(MoveType.NONE);
-			}
+				if (lastPiece.equals(piece)) 
+					moveResult = tryMoveTest(piece, newX, newY);
+			} else
+				moveResult = tryMoveTest(piece, newX, newY);
 
 			switch (moveResult.getType()) {
 			case NONE:
@@ -369,7 +370,7 @@ public class PlayController implements Initializable {
 
 	private void checkAnotherKill(int newX, int newY) {
 		// TODO Auto-generated method stub
-		//PlayGameController.getInstance().switchTurnNow();
+		// PlayGameController.getInstance().switchTurnNow();
 		if (PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
 			samePlayerTurn = true;
 			lastColor = Color.RED;
@@ -455,6 +456,7 @@ public class PlayController implements Initializable {
 			return;
 		}
 	}
+
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 		int oldX = toBoard(piece.getOldX());
@@ -489,6 +491,7 @@ public class PlayController implements Initializable {
 		}
 		updateScore(player_1);
 		updateScore(player_2);
+		System.out.println(game.getGameState());
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 
@@ -639,11 +642,7 @@ public class PlayController implements Initializable {
 		player_2 = PlayGameController.getInstance().getGame().getPlayer2();
 		game = PlayGameController.getInstance().getGame();
 		Game.setP1Turn(game.isP1Turn());
-		if(Game.getIsP1Turn())
 		currentPlayer = player_1;
-		else {
-			currentPlayer=player_2;
-		}
 		if (WebCamPreviewController.profilePic.getImage() != null) {
 			player1image.setFill(new ImagePattern(WebCamPreviewController.profilePic.getImage()));
 			player1image.setStroke(player_1.getColor());
@@ -950,7 +949,10 @@ public class PlayController implements Initializable {
 			timeline.getKeyFrames().addAll(
 					new KeyFrame(Duration.millis(1500), new KeyValue(resultPane.visibleProperty(), false)),
 					new KeyFrame(Duration.millis(1500), new KeyValue(questionPane.visibleProperty(), false)),
-					new KeyFrame(Duration.millis(1500), e ->  {if(!samePlayerTurn)PlayGameController.getInstance().switchTurnNow();}));
+					new KeyFrame(Duration.millis(1500), e -> {
+						if (!samePlayerTurn)
+							PlayGameController.getInstance().switchTurnNow();
+					}));
 			timeline.play();
 			questionPane.setDisable(false);
 			boardPane.setDisable(false);

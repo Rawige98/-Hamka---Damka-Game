@@ -32,6 +32,7 @@ import Utils.DataType;
 import Utils.Difficulty;
 import Utils.E_Teams;
 import Utils.JsonParser;
+import javafx.scene.paint.Color;
 
 public class SysData {
 
@@ -41,6 +42,7 @@ public class SysData {
 	private ArrayList<Game> games;
 	private ArrayList<Game> pausedGames;
 	private ArrayList<Game> statesLoadedGames;
+
 	public ArrayList<Game> getStatesLoadedGames() {
 		return statesLoadedGames;
 	}
@@ -71,7 +73,7 @@ public class SysData {
 		pausedGames = new ArrayList<Game>();
 		rules = new ArrayList<>();
 		pop = new HashMap<Difficulty, ArrayList<Question>>();
-		statesLoadedGames=new ArrayList<Game>();
+		statesLoadedGames = new ArrayList<Game>();
 	}
 
 	// *********************************getters and
@@ -361,7 +363,6 @@ public class SysData {
 
 	public boolean loadData(DataType type) {
 		// TODO Auto-generated method stub
-
 		if (type == null)
 			return false;
 		try {
@@ -375,7 +376,6 @@ public class SysData {
 					this.rules.addAll(rules);
 				}
 				return true;
-
 			} else if (type.equals(DataType.PAUSED_GAMES)) {
 				String file = "src/JSON/pausedGames_json.txt";
 				String json = readFileAsString(file);
@@ -491,7 +491,7 @@ public class SysData {
 			// convert Games's JSON file to array.
 			JSONArray gamesArray = (JSONArray) jo.get("games");
 			// iterate over the values (Games).
-			if(gamesArray==null)
+			if (gamesArray == null)
 				return false;
 			Iterator<JSONObject> gameIterator = gamesArray.iterator();
 			// get the Games data.
@@ -502,7 +502,10 @@ public class SysData {
 				Player p2 = new Player((String) g.get("p2Username"));
 				p1.setScore(Integer.valueOf(g.get("p1Score").toString()));
 				p2.setScore(Integer.valueOf(g.get("p2Score").toString()));
-				
+				Color P1Color=Color.valueOf((String) g.get("P1Color"));
+				Color P2Color=Color.valueOf((String) g.get("P2Color"));
+				p1.setColor(P1Color);
+				p2.setColor(P2Color);
 				// Date gameDate =new Date(g.get("gameDate").toString());
 				// Timer gameDuration = (Timer) g.get("gameDuration");
 				boolean isP1T = (boolean) g.get("isP1Turn");
@@ -518,12 +521,12 @@ public class SysData {
 					}
 				}
 				Game s = new Game(p1, p2);
-				if(DataType.FINISHED_GAMES.equals(d)) {
+				if (DataType.FINISHED_GAMES.equals(d)) {
 					String winnerUser = (String) g.get("WUsername");
-				if (p1.getUsername().equals(winnerUser))
-					s.setWinner(p1);
-				else
-					s.setWinner(p2);
+					if (p1.getUsername().equals(winnerUser))
+						s.setWinner(p1);
+					else
+						s.setWinner(p2);
 				}
 				s.getBoard().setMyBoard(x);
 				Game.setP1Turn(isP1T);
@@ -547,18 +550,18 @@ public class SysData {
 
 	// ***********************************************SaveGames****************************************************************************
 	@SuppressWarnings({ "unchecked", "resource" })
-	public void saveGame(DataType d,Game game1) {   
-		
+	public void saveGame(DataType d, Game game1) {
+		LoadGames(d);
 		String externalPath = null;
 		if (d.equals(DataType.FINISHED_GAMES)) {
 			externalPath = gameJsonPath;
-			if(!games.contains(game1)) {
+			if (!games.contains(game1)) {
 				games.add(game1);
 			}
 		}
 		if (d.equals(DataType.PAUSED_GAMES)) {
 			externalPath = "src/JSON/pausedGames_json.txt";
-			if(!pausedGames.contains(game1)) {
+			if (!pausedGames.contains(game1)) {
 				pausedGames.add(game1);
 			}
 		}
@@ -593,8 +596,8 @@ public class SysData {
 				JSONObject ja = new JSONObject();
 				// get all answers
 				JSONArray Board = new JSONArray();
-				for(Game g:gamesToPars) {
-					g.setId(gamesToPars.indexOf(g)+1);
+				for (Game g : gamesToPars) {
+					g.setId(gamesToPars.indexOf(g) + 1);
 				}
 				for (int i = 0; i < Consts.COLS; i++) {
 					JSONArray row = new JSONArray();
@@ -609,14 +612,16 @@ public class SysData {
 				ja.put("p2Username", game.getPlayer2().getUsername());
 				ja.put("p2Score", game.getPlayer2().getScore());
 				if (d.equals(DataType.FINISHED_GAMES)) {
-				ja.put("WUsername", game.getWinner().getUsername());
-				ja.put("winner", game.getWinner().getId());
+					ja.put("WUsername", game.getWinner().getUsername());
+					ja.put("winner", game.getWinner().getId());
 				}
 				ja.put("id", game.getId());
 				ja.put("gameDate", game.getGameDate().toString());
 				ja.put("gameDuration", game.getGameDuration());
 				ja.put("isP1Turn", game.isP1Turn());
 				ja.put("Board", Board);
+				ja.put("P1Color", game.getPlayer1().getColor().toString());
+				ja.put("P2Color", game.getPlayer2().getColor().toString());
 				JSONGame.add(ja);
 				// add json array to object question
 				toWrite.put("games", JSONGame);
@@ -652,24 +657,24 @@ public class SysData {
 			}
 			String state[] = st.split(",");
 			int k = 0;
-			Tile[][] myBoard=new Tile[Consts.COLS][Consts.ROWS];
-			TileFactory factory=new TileFactory();
+			Tile[][] myBoard = new Tile[Consts.COLS][Consts.ROWS];
+			TileFactory factory = new TileFactory();
 			for (int i = 0; i < Consts.COLS; i++) {
 				for (int j = 0; j < Consts.ROWS; j++) {
-					if(!MoveValidation.isValidPoint(i, j)) {
-						myBoard[j][i]=new WhiteTile(j, i);
-					}else {
-						myBoard[j][i]=factory.getSubTile(j, i, Integer.valueOf(state[k++]));
+					if (!MoveValidation.isValidPoint(i, j)) {
+						myBoard[j][i] = new WhiteTile(j, i);
+					} else {
+						myBoard[j][i] = factory.getSubTile(j, i, Integer.valueOf(state[k++]));
 					}
 				}
 			}
 			boolean isP1;
-			if(state[k].equals("W")) {
-				isP1=true;
-			}else {
-				isP1=false;
+			if (state[k].equals("W")) {
+				isP1 = true;
+			} else {
+				isP1 = false;
 			}
-			Game gameState=new Game(new Player("P1"),new Player("P2"));
+			Game gameState = new Game(new Player("P1"), new Player("P2"));
 			gameState.setLoadedFileName(file.getName());
 			gameState.getBoard().setMyBoard(myBoard);
 			Game.setP1Turn(isP1);
