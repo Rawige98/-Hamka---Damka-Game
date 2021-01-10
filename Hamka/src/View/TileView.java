@@ -105,7 +105,7 @@ public class TileView extends StackPane{
 			iconImage = new Image("/images/back_to_life.png", false);
 		}
 		else if(iconType.equals(TileIconType.MOREPOINTS)) {
-			iconImage = new Image("/images/50.png", false);
+			iconImage = new Image("/images/50pls.png", false);
 		}else {
 			iconShape.setFill(null);
 			return;

@@ -47,6 +47,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -111,6 +112,8 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private Text question;
+	  @FXML
+	    private Button save;
 
 	@FXML
 	private AnchorPane resultPane;
@@ -180,7 +183,13 @@ public class PlayController implements Initializable {
 	private static TileView lastTile;
 	private boolean samePlayerTurn = false;
 	private static Color lastColor = Color.BLACK;
-	private boolean flag=false;
+	private boolean flag = false;
+	@FXML
+	private Button unmute;
+
+	@FXML
+	private Button mute;
+	boolean isSoundOn = true;
 	// private TimerForPlayer2 PlayerTimer2;
 
 	@FXML
@@ -249,7 +258,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-						                                                                                        - 1];
+								- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
@@ -369,8 +378,8 @@ public class PlayController implements Initializable {
 
 	private void checkAnotherKill(int newX, int newY) {
 		// TODO Auto-generated method stub
-		//PlayGameController.getInstance().switchTurnNow();
-		if(lastColor.equals(Color.BLACK))
+		// PlayGameController.getInstance().switchTurnNow();
+		if (lastColor.equals(Color.BLACK))
 			PlayGameController.getInstance().switchTurnNow();
 
 		if (PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
@@ -380,7 +389,7 @@ public class PlayController implements Initializable {
 			lastColor = Color.RED;
 		} else {
 			samePlayerTurn = false;
-			if(!lastColor.equals(Color.YELLOW))
+			if (!lastColor.equals(Color.YELLOW))
 				PlayGameController.getInstance().switchTurnNow();
 			lastColor = Color.BLACK;
 
@@ -464,6 +473,7 @@ public class PlayController implements Initializable {
 			return;
 		}
 	}
+
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 		int oldX = toBoard(piece.getOldX());
@@ -514,14 +524,11 @@ public class PlayController implements Initializable {
 				Color color = game.getBoard().getMyBoard()[y][x].getColor();
 				if (color.equals(Color.YELLOW)) {
 					type = TileIconType.QUESTION;
-				} else if ( color.equals(Color.ORANGE)) {
+				} else if (color.equals(Color.ORANGE)) {
 					type = TileIconType.HELP;
-				} 
-				else if(color.equals(Color.GREEN))
-				{
+				} else if (color.equals(Color.GREEN)) {
 					type = TileIconType.MOREPOINTS;
-				}
-				else if (color.equals(Color.RED)) {
+				} else if (color.equals(Color.RED)) {
 					type = TileIconType.REPLAY;
 				} else if (color.equals(Color.BLUE)) {
 					type = TileIconType.BACK_TO_LIFE;
@@ -539,6 +546,32 @@ public class PlayController implements Initializable {
 				// boardView[x][y].setPiece(null);
 				// }
 			}
+		}
+	}
+
+	@FXML
+	public void mute(ActionEvent event) throws Exception {
+		unmute.setVisible(false);
+		mute.setVisible(true);
+	}
+
+	@FXML
+	public void unmute(ActionEvent event) throws Exception {
+		mute.setVisible(false);
+		unmute.setVisible(true);
+
+	}
+
+	@FXML
+	void soundClicked(MouseEvent event) {
+		if (isSoundOn) {
+			unmute.setVisible(false);
+			mute.setVisible(true);
+			isSoundOn = false;
+		} else {
+			unmute.setVisible(true);
+			mute.setVisible(false);
+			isSoundOn = true;
 		}
 	}
 
@@ -620,29 +653,49 @@ public class PlayController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		isSoundOn = true;
+		save.setVisible(true);
 		hard.setVisible(false);
 		medium.setVisible(false);
 		easy.setVisible(false);
 		questionPane.setVisible(false);
-		Game.notFinished = true;
-		timer = new TimerForGame();
-		t = new Thread(timer);
-		t.start();
-		////////////////////////////
-		PlayerTimer1 = new TimerForPlayer1(new ColorTilesHandler() {
-			@Override
-			public void showColor(Color color) {
-				// TODO Auto-generated method stub
-				ArrayList<Tile> suggestedTiles = getSuggestedTilesArray();
-				if (color.equals(Color.GREEN))
-					PlayGameController.getInstance().colorRandomTile(suggestedTiles, color);
-				else if (color.equals(Color.ORANGE))
-					PlayGameController.getInstance().colorAllTiles(suggestedTiles, color);
-				refreshBoardTilesColors();
-			}
-		});
-		tp1 = new Thread(PlayerTimer1);
-		tp1.start();
+		playerTimer.setVisible(true);
+		gameTimer.setVisible(true);
+		Game.notFinished = true;timer = new TimerForGame();
+			t = new Thread(timer);
+			t.start();
+			////////////////////////////
+			PlayerTimer1 = new TimerForPlayer1(new ColorTilesHandler() {
+				@Override
+				public void showColor(Color color) {
+					// TODO Auto-generated method stub
+					ArrayList<Tile> suggestedTiles = getSuggestedTilesArray();
+					if (color.equals(Color.GREEN))
+						PlayGameController.getInstance().colorRandomTile(suggestedTiles, color);
+					else if (color.equals(Color.ORANGE))
+						PlayGameController.getInstance().colorAllTiles(suggestedTiles, color);
+					refreshBoardTilesColors();
+				}
+			});
+			tp1 = new Thread(PlayerTimer1);
+			tp1.start();
+
+			if (PlayGameController.getInstance().isHistory()) {
+				System.out.println("timmmmer");
+				playerTimer.setVisible(false);
+				gameTimer.setVisible(false);
+				player1.setTextFill(Color.BLACK);
+				player2.setTextFill(Color.BLACK);
+				p2Turn.setVisible(false);
+				p1Turn.setVisible(false);
+				mute.setVisible(false);
+				unmute.setVisible(false);
+				save.setVisible(false);
+				isSoundOn = false;
+				
+			
+		} 
+			
 		player1.setText(PlayGameController.getInstance().getPlayer1().getUsername());
 		player2.setText(PlayGameController.getInstance().getPlayer2().getUsername());
 		point1.setText(Integer.toString(PlayGameController.getInstance().getPlayer1().getScore()));
@@ -773,9 +826,9 @@ public class PlayController implements Initializable {
 					second = 0;
 					mints++;
 				}
-				if (second == 10 && mints == 0)
+				if (second == 30 && mints == 0)
 					handler.showColor(Color.GREEN);
-				if (second == 20 && mints == 0)
+				if (second == 30 && mints == 1)
 					handler.showColor(Color.ORANGE);
 				Platform.runLater(() -> {
 					if (mints < 10 && second < 10) {
@@ -960,7 +1013,10 @@ public class PlayController implements Initializable {
 			timeline.getKeyFrames().addAll(
 					new KeyFrame(Duration.millis(1500), new KeyValue(resultPane.visibleProperty(), false)),
 					new KeyFrame(Duration.millis(1500), new KeyValue(questionPane.visibleProperty(), false)),
-					new KeyFrame(Duration.millis(1500), e ->  {if(!samePlayerTurn)PlayGameController.getInstance().switchTurnNow();}));
+					new KeyFrame(Duration.millis(1500), e -> {
+						if (!samePlayerTurn)
+							PlayGameController.getInstance().switchTurnNow();
+					}));
 			timeline.play();
 			questionPane.setDisable(false);
 			boardPane.setDisable(false);
@@ -972,8 +1028,10 @@ public class PlayController implements Initializable {
 
 	private void showMsg(String msg) {
 		Color color = currentPlayer.getColor();
-		Voice voice = new Voice(msg);
-		voice.start();
+		if (isSoundOn) {
+			Voice voice = new Voice(msg);
+			voice.start();
+		}
 		if (color.equals(Color.BLACK)) {
 			msgLabel.setTextFill(Color.WHITE);
 		} else {
@@ -991,7 +1049,7 @@ public class PlayController implements Initializable {
 		// CornerRadii.EMPTY, Insets.EMPTY)));
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames()
-		.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
+				.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
 		timeline.play();
 	}
 

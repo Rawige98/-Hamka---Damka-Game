@@ -16,6 +16,15 @@ import View.Piece;
 import javafx.scene.paint.Color;
 
 public class PlayGameController {
+	private  boolean isHistory=false;
+	public  boolean isHistory() {
+		return isHistory;
+	}
+
+	public  void setHistory(boolean isHistory) {
+		this.isHistory = isHistory;
+	}
+
 	private static PlayGameController instance;
 	private Game game;
 

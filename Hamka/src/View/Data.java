@@ -89,6 +89,7 @@ public class Data {
 				PlayGameController.getInstance().setGame(getCellGame());
 				PlayGameController.getInstance().setPlayer1(getCellGame().getPlayer1());
 				PlayGameController.getInstance().setPlayer2(getCellGame().getPlayer2());
+				PlayGameController.getInstance().setHistory(true);
 				Stage primaryStage = new Stage();
 				Parent root;
 				try {
