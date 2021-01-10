@@ -505,9 +505,14 @@ public class PlayController implements Initializable {
 				Color color = game.getBoard().getMyBoard()[y][x].getColor();
 				if (color.equals(Color.YELLOW)) {
 					type = TileIconType.QUESTION;
-				} else if (color.equals(Color.GREEN) || color.equals(Color.ORANGE)) {
+				} else if ( color.equals(Color.ORANGE)) {
 					type = TileIconType.HELP;
-				} else if (color.equals(Color.RED)) {
+				} 
+				else if(color.equals(Color.GREEN))
+				{
+					type = TileIconType.MOREPOINTS;
+				}
+				else if (color.equals(Color.RED)) {
 					type = TileIconType.REPLAY;
 				} else if (color.equals(Color.BLUE)) {
 					type = TileIconType.BACK_TO_LIFE;

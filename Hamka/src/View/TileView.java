@@ -51,32 +51,15 @@ public class TileView extends StackPane{
 		relocate(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
 		//changes in the colors
 		baseShape.setFill(isWhite ? Color.WHITE : Color.BLACK);
-		iconShape = new Rectangle(Consts.TILE_SIZE, Consts.TILE_SIZE/* , Consts.TILE_SIZE/2, Consts.TILE_SIZE/2 */);
+		iconShape = new Rectangle(Consts.TILE_SIZE-Consts.TILE_SIZE/3,Consts.TILE_SIZE-Consts.TILE_SIZE/3);
 		iconShape.relocate(x * Consts.TILE_SIZE - (Consts.TILE_SIZE /2) , y * Consts.TILE_SIZE - (Consts.TILE_SIZE /2) );
+		iconShape.setStroke(Color.TRANSPARENT);
 		rotateTransition = new RotateTransition(Duration.seconds(10), iconShape);
-//		iconShape.setTranslateX(Consts.TILE_SIZE - (Consts.TILE_SIZE /6));
-//		iconShape.setTranslateY(Consts.TILE_SIZE - (Consts.TILE_SIZE /6));
 		setIcon(TileIconType.NONE);
 		getChildren().addAll(baseShape, iconShape);
 	}
 	
-//	public TileView(Color color , int x, int y)
-//	{
-//		setX_value(x);
-//		setY_value(y);
-//		baseShape = new Rectangle(Consts.TILE_SIZE, Consts.TILE_SIZE);
-//		relocate(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
-//		//changes in the colors
-//		baseShape.setFill(color);
-//		iconShape = new Rectangle(Consts.TILE_SIZE, Consts.TILE_SIZE);
-////		iconShape.relocate(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
-//		iconShape.setTranslateX(Consts.TILE_SIZE - (Consts.TILE_SIZE /2));
-//		iconShape.setTranslateY(Consts.TILE_SIZE - (Consts.TILE_SIZE /2));
-//		rotateTransition = new RotateTransition(Duration.seconds(10), iconShape);
-//		setIcon(TileIconType.NONE);
-//		getChildren().addAll(baseShape, iconShape);
-//
-//	}
+
 
 	public Rectangle getBaseShape() {
 		return baseShape;
@@ -120,23 +103,18 @@ public class TileView extends StackPane{
 			iconImage = new Image("/images/help.png", false);
 		}else if(iconType.equals(TileIconType.BACK_TO_LIFE)) {
 			iconImage = new Image("/images/back_to_life.png", false);
+		}
+		else if(iconType.equals(TileIconType.MOREPOINTS)) {
+			iconImage = new Image("/images/50.png", false);
 		}else {
 			iconShape.setFill(null);
-			if(rotateTransition.getStatus() == Animation.Status.RUNNING)
-				rotateTransition.pause();
 			return;
 		}
 		
 		ImagePattern pattern = new ImagePattern(iconImage);
 		iconShape.setFill(pattern);
-		iconShape.setStroke(Color.PINK);
 	
-		rotateTransition.setFromAngle(0);
-		rotateTransition.setToAngle(360);
-		rotateTransition.setAutoReverse(true);
-		rotateTransition.setAxis(new Point3D(5, 5, 5));
-		if(rotateTransition.getStatus() == Animation.Status.PAUSED)
-			rotateTransition.play();
+	
 		
 	}
 
