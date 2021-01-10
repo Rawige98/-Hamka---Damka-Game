@@ -50,7 +50,6 @@ public class Game {
 		checkColorsToShow();
 		LoadedFileName=null;
 	}
-
 	public Game() {
 
 	}
@@ -159,7 +158,6 @@ public class Game {
 			return true;
 		} else if (status.equals(GameStatus.FINISH) /* && board.checkAvailableMoves(!isP1Turn).isEmpty() */) {
 			if (player1.getScore() > player2.getScore())
-
 				winner = player1;
 			else
 				winner = player2;

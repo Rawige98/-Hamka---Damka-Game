@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.hamcrest.core.Is;
+
 import Controller.PlayGameController;
 import Controller.PopQ;
 import Model.BlackSoldier;
@@ -126,7 +128,6 @@ public class PlayController implements Initializable {
 	@FXML
 	private ImageView resultIcon2;
 
-
 	@FXML
 	private RadioButton ans1;
 
@@ -185,7 +186,7 @@ public class PlayController implements Initializable {
 	private static TileView lastTile;
 	private boolean samePlayerTurn = false;
 	private static Color lastColor = Color.BLACK;
-	private boolean flag;
+	private boolean flag=false;
 	// private TimerForPlayer2 PlayerTimer2;
 
 	@FXML
@@ -254,7 +255,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-						                                                                                        - 1];
+								- 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
@@ -350,7 +351,6 @@ public class PlayController implements Initializable {
 
 				if (Game.getIsP1Turn() == true) {
 
-
 				}
 				showMsg("Bad move, Try again!");
 
@@ -373,12 +373,10 @@ public class PlayController implements Initializable {
 				boardView[newX][newY].setPiece(piece);
 				Piece otherPiece = moveResult.getPiece();
 				checkDestinationTile(boardView[newX][newY]);
-
 				if (!Game.isOwnKill()) {
 					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 					pieceGroup.getChildren().remove(otherPiece);
 					checkAnotherKill(newX, newY);
-
 					showMsg("!! Great, nice move !!\nNOTE: If you have another kill... Do it with the same soldier!");
 				} else {
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
@@ -403,12 +401,10 @@ public class PlayController implements Initializable {
 
 	private void checkAnotherKill(int newX, int newY) {
 		// TODO Auto-generated method stub
-		if (!(lastColor.equals(Color.YELLOW) && lastColor.equals(Color.RED)))
-			PlayGameController.getInstance().switchTurnNow();
+		//PlayGameController.getInstance().switchTurnNow();
 		if (PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
 			samePlayerTurn = true;
 			lastColor = Color.RED;
-
 		} else {
 			PlayGameController.getInstance().switchTurnNow();
 		}
@@ -422,12 +418,12 @@ public class PlayController implements Initializable {
 			piece.showCrown();
 		}
 	}
+
 	private void checkDestinationTile(TileView tileView) {
 		lastTile = tileView;
-		// System.out.println(PlayGameController.getInstance().getGame().getBoard().getMyBoard()[tileView.getX_value()][tileView.getY_value()].longString());
 		if (tileView.getBaseShape().getFill().equals(Color.YELLOW)) {
 			popQuestion();
-			samePlayerTurn = true;
+			samePlayerTurn = false;
 			lastColor = Color.YELLOW;
 		} else if (tileView.getBaseShape().getFill().equals(Color.RED)) {
 			if (PlayGameController.getInstance().checkMovesAvailability(tileView.getX_value(), tileView.getY_value())) {
@@ -470,30 +466,27 @@ public class PlayController implements Initializable {
 					player_2.setScore(60 - PlayerTimer1.getSecond());
 				else
 					player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
-
-			}
-
-			updateScore(player_1);
-			updateScore(player_2);
-			if (!samePlayerTurn && PlayGameController.getInstance().isLastMove()) {
-				((Stage) player1.getScene().getWindow()).close();
-				Stage primaryStage = new Stage();
-				Parent root;
-				try {
-					root = FXMLLoader.load(getClass().getResource("/View/Winner.fxml"));
-					Scene scene = new Scene(root, 439, 256);
-					primaryStage.setScene(scene);
-					primaryStage.setTitle("winner");
-					primaryStage.show();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return;
 			}
 		}
+		updateScore(player_1);
+		updateScore(player_2);
+		if (PlayGameController.getInstance().isLastMove()) {
+			((Stage) player1.getScene().getWindow()).close();
+			Stage primaryStage = new Stage();
+			Parent root;
+			try {
+				root = FXMLLoader.load(getClass().getResource("/View/Winner.fxml"));
+				Scene scene = new Scene(root, 439, 256);
+				primaryStage.setScene(scene);
+				primaryStage.setTitle("winner");
+				primaryStage.show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
 	}
-
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 		int oldX = toBoard(piece.getOldX());
@@ -513,7 +506,6 @@ public class PlayController implements Initializable {
 				result = PlayGameController.getInstance().movePiece(oldY, oldX, newY, newX);
 			}
 		}
-
 		int x1, y1;
 		if (result.equals(MoveType.KILL)) {
 			x1 = Board.getSkipedTile().getCols();
@@ -583,7 +575,6 @@ public class PlayController implements Initializable {
 	}
 
 	public void popQuestion() {
-
 		ans1.setSelected(false);
 		ans2.setSelected(false);
 		ans3.setSelected(false);
@@ -612,7 +603,6 @@ public class PlayController implements Initializable {
 			ans3.setVisible(true);
 			ans4.setVisible(true);
 		}
-
 		if (q.getDifficulty().equals(Difficulty.EASY)) {
 			easy.setVisible(true);
 			medium.setVisible(false);
@@ -627,7 +617,6 @@ public class PlayController implements Initializable {
 			medium.setVisible(false);
 			easy.setVisible(false);
 		}
-
 	}
 
 	public void updateScore(Player p) {
@@ -680,9 +669,13 @@ public class PlayController implements Initializable {
 		pieceGroup = new Group();
 		player_1 = PlayGameController.getInstance().getGame().getPlayer1();
 		player_2 = PlayGameController.getInstance().getGame().getPlayer2();
-		currentPlayer = player_1;
 		game = PlayGameController.getInstance().getGame();
 		Game.setP1Turn(game.isP1Turn());
+		if(Game.getIsP1Turn())
+		currentPlayer = player_1;
+		else {
+			currentPlayer=player_2;
+		}
 		if (WebCamPreviewController.profilePic.getImage() != null) {
 			player1image.setFill(new ImagePattern(WebCamPreviewController.profilePic.getImage()));
 			player1image.setStroke(player_1.getColor());
@@ -697,10 +690,9 @@ public class PlayController implements Initializable {
 		} else {
 			player2image.setFill(player_2.getColor());
 		}
-
 		createBoardView();
 		colorTiles();
-		//		showMsg("Let's start the game");
+		// showMsg("Let's start the game");
 	}
 
 	public class TimerForPlayer1 implements Runnable {
@@ -915,12 +907,11 @@ public class PlayController implements Initializable {
 	}
 
 	public void check(ActionEvent event) {
-
-		String title="" , description="" ;
-		int score=0;
+		flag = true;
+		String title = "", description = "";
+		int score = 0;
 		Image img;
 		Color color;
-
 		if ((ans1.isSelected() && rightA == 1) || (ans2.isSelected() && rightA == 2)
 				|| (ans3.isSelected() && rightA == 3) || (ans4.isSelected() && rightA == 4)) {
 			if (q.getDifficulty().equals(Difficulty.HARD)) {
@@ -978,23 +969,21 @@ public class PlayController implements Initializable {
 			questionPane.setDisable(true);
 			resultLbl.setText(title);
 			resultDesc.setText(description);
-			//			ImagePattern pattern = new ImagePattern(img);
+			// ImagePattern pattern = new ImagePattern(img);
 			resultIcon1.setImage(img);
 			resultIcon2.setImage(img);
-			resultPane.setStyle("-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
+			resultPane.setStyle(
+					"-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
 			resultPane.toFront();
 			new Voice(title).start();
-			
 			updateScore(player_1);
 			updateScore(player_2);
 			Timeline timeline = new Timeline();
 			timeline.getKeyFrames().addAll(
-					new KeyFrame(Duration.millis(1500), 
-							new KeyValue(resultPane.visibleProperty(),false)),
-					new KeyFrame(Duration.millis(1500), 
-							new KeyValue(questionPane.visibleProperty(),false)),
-					new  KeyFrame(Duration.seconds(2), e -> PlayGameController.getInstance().switchTurnNow()));
-			timeline.play();			
+					new KeyFrame(Duration.millis(1500), new KeyValue(resultPane.visibleProperty(), false)),
+					new KeyFrame(Duration.millis(1500), new KeyValue(questionPane.visibleProperty(), false)),
+					new KeyFrame(Duration.millis(1500), e ->  {if(!samePlayerTurn)PlayGameController.getInstance().switchTurnNow();}));
+			timeline.play();
 			questionPane.setDisable(false);
 			boardPane.setDisable(false);
 			colorTiles();
@@ -1018,22 +1007,23 @@ public class PlayController implements Initializable {
 
 		msgPane.setVisible(true);
 		msgLabel.setText(msg);
-		msgPane.setStyle("-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
-		//		msgPane.setStyle("-fx-background-raduis: 100");
+		msgPane.setStyle(
+				"-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
+		// msgPane.setStyle("-fx-background-raduis: 100");
 
-		//		msgPane.setBackground(color);
-		//		msgPane.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
+		// msgPane.setBackground(color);
+		// msgPane.setBackground(new Background(new BackgroundFill(color,
+		// CornerRadii.EMPTY, Insets.EMPTY)));
 		Timeline timeline = new Timeline();
-		timeline.getKeyFrames().add(
-				new KeyFrame(Duration.millis(2500), 
-						new KeyValue(msgPane.visibleProperty(), false)));
+		timeline.getKeyFrames()
+				.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
 		timeline.play();
 	}
 
 	private String toHexString(Color color) {
-		int r = ((int) Math.round(color.getRed()     * 255)) << 24;
-		int g = ((int) Math.round(color.getGreen()   * 255)) << 16;
-		int b = ((int) Math.round(color.getBlue()    * 255)) << 8;
+		int r = ((int) Math.round(color.getRed() * 255)) << 24;
+		int g = ((int) Math.round(color.getGreen() * 255)) << 16;
+		int b = ((int) Math.round(color.getBlue() * 255)) << 8;
 		int a = ((int) Math.round(color.getOpacity() * 255));
 		return String.format("#%08X", (r + g + b + a));
 	}
