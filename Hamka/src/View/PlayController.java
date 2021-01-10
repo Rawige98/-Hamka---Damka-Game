@@ -47,6 +47,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -151,6 +152,11 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private ImageView easy;
+    @FXML
+    private Button unmute;
+
+    @FXML
+    private Button mute;
 
 	@FXML
 	private RadioButton ans4;
@@ -161,7 +167,7 @@ public class PlayController implements Initializable {
 
 	PopQ p = new PopQ();
 	int rightA;
-
+	 boolean isSoundOn=true;
 	private Group tileGroup;
 	private Group pieceGroup;
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
@@ -272,6 +278,32 @@ public class PlayController implements Initializable {
 		return boardPane;
 	}
 
+	@FXML
+	public void mute(ActionEvent event) throws Exception {
+		unmute.setVisible(false);
+		mute.setVisible(true);
+	}
+
+	@FXML
+	public void unmute(ActionEvent event) throws Exception {
+		mute.setVisible(false);
+		unmute.setVisible(true);
+
+	}
+	
+	@FXML
+	void soundClicked(MouseEvent event) {
+		if (isSoundOn) {
+			unmute.setVisible(false);
+			mute.setVisible(true);
+			isSoundOn= false;
+		} else {
+			unmute.setVisible(true);
+			mute.setVisible(false);
+			isSoundOn = true;
+		}
+	}
+	
 	private void removeBlueStroke() {
 		for (int y = 0; y < Consts.ROWS; y++) {
 			for (int x = 0; x < Consts.COLS; x++) {
@@ -962,8 +994,11 @@ public class PlayController implements Initializable {
 
 	private void showMsg(String msg) {
 		Color color = currentPlayer.getColor();
+		if(isSoundOn)
+		{
 		Voice voice = new Voice(msg);
 		voice.start();
+		}
 		if (color.equals(Color.BLACK)) {
 			msgLabel.setTextFill(Color.WHITE);
 		} else {
