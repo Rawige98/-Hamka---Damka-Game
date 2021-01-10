@@ -52,7 +52,10 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -106,6 +109,22 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private Text question;
+
+	@FXML
+	private AnchorPane resultPane;
+
+	@FXML
+	private Label resultLbl;
+
+	@FXML
+	private Label resultDesc;
+
+	@FXML
+	private ImageView resultIcon1;
+
+	@FXML
+	private ImageView resultIcon2;
+
 
 	@FXML
 	private RadioButton ans1;
@@ -229,7 +248,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-								- 1];
+						                                                                                        - 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
@@ -296,7 +315,9 @@ public class PlayController implements Initializable {
 			case NONE:
 				String msg = "";
 				piece.aboartMove();
+
 				if (Game.getIsP1Turn() == true) {
+
 
 				}
 				showMsg("Bad move, Try again!");
@@ -647,8 +668,7 @@ public class PlayController implements Initializable {
 
 		createBoardView();
 		colorTiles();
-		showMsg("Let's start the game");
-
+		//		showMsg("Let's start the game");
 	}
 
 	public class TimerForPlayer1 implements Runnable {
@@ -863,33 +883,52 @@ public class PlayController implements Initializable {
 	}
 
 	public void check(ActionEvent event) {
+
+		String title="" , description="" ;
+		int score=0;
+		Image img;
+		Color color;
+
 		if ((ans1.isSelected() && rightA == 1) || (ans2.isSelected() && rightA == 2)
 				|| (ans3.isSelected() && rightA == 3) || (ans4.isSelected() && rightA == 4)) {
 			if (q.getDifficulty().equals(Difficulty.HARD)) {
-				currentPlayer.updateScore(500);
+				currentPlayer.updateScore(Consts.HARD_RIGHT);
+				score = Consts.HARD_RIGHT;
 			} else if (q.getDifficulty().equals(Difficulty.MEDIUM)) {
-				currentPlayer.updateScore(200);
-
+				currentPlayer.updateScore(Consts.MEDUIM_RIGHT);
+				score = Consts.MEDUIM_RIGHT;
 			} else if (q.getDifficulty().equals(Difficulty.EASY)) {
-				currentPlayer.updateScore(100);
-
+				currentPlayer.updateScore(Consts.EASY_RIGHT);
+				score = Consts.EASY_RIGHT;
 			}
+			title = "EXCELLENT";
+			description = "Right answer!\nYou had earned " + score + " points!";
+			img = new Image("/images/cool.png", false);
+			color = Color.GREEN;
 		} else {
 			if (q.getDifficulty().equals(Difficulty.HARD)) {
-				currentPlayer.updateScore(-50);
+				currentPlayer.updateScore(Consts.HARD_WRONG);
+				score = Consts.HARD_WRONG;
 			} else if (q.getDifficulty().equals(Difficulty.MEDIUM)) {
-				currentPlayer.updateScore(-100);
-
+				currentPlayer.updateScore(Consts.MEDUIM_WRONG);
+				score = Consts.MEDUIM_WRONG;
 			} else if (q.getDifficulty().equals(Difficulty.EASY)) {
-				currentPlayer.updateScore(-250);
-
+				currentPlayer.updateScore(Consts.EASY_WRONG);
+				score = Consts.EASY_WRONG;
 			}
+			title = "BAD LUCK";
+			description = "Wrong answer!\nYou had lost " + score + " points!";
+			img = new Image("/images/sad.png", false);
+			color = Color.RED;
 		}
+		resultPane.setVisible(true);
+
 		if (!ans1.isSelected() && !ans2.isSelected() && !ans3.isSelected() && !ans4.isSelected()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("No answer");
 			alert.setContentText("You must choose an answer!");
 			alert.show();
+			resultPane.setVisible(false);
 			return;
 		} else {
 			if (currentPlayer.equals(player_1)) {
@@ -904,12 +943,30 @@ public class PlayController implements Initializable {
 					player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
 
 			}
+			questionPane.setDisable(true);
+			resultLbl.setText(title);
+			resultDesc.setText(description);
+			//			ImagePattern pattern = new ImagePattern(img);
+			resultIcon1.setImage(img);
+			resultIcon2.setImage(img);
+			resultPane.setStyle("-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
+			resultPane.toFront();
+			new Voice(title).start();
+			
 			updateScore(player_1);
 			updateScore(player_2);
-			PlayGameController.getInstance().switchTurnNow();
-			questionPane.setVisible(false);
+			Timeline timeline = new Timeline();
+			timeline.getKeyFrames().addAll(
+					new KeyFrame(Duration.millis(1500), 
+							new KeyValue(resultPane.visibleProperty(),false)),
+					new KeyFrame(Duration.millis(1500), 
+							new KeyValue(questionPane.visibleProperty(),false)),
+					new  KeyFrame(Duration.seconds(2), e -> PlayGameController.getInstance().switchTurnNow()));
+			timeline.play();			
+			questionPane.setDisable(false);
 			boardPane.setDisable(false);
 			colorTiles();
+
 		}
 
 	}
@@ -926,22 +983,22 @@ public class PlayController implements Initializable {
 
 		msgPane.setVisible(true);
 		msgLabel.setText(msg);
-		msgPane.setStyle(
-				"-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
-//		msgPane.setStyle("-fx-background-raduis: 100");
+		msgPane.setStyle("-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
+		//		msgPane.setStyle("-fx-background-raduis: 100");
 
-//		msgPane.setBackground(color);
-//		msgPane.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
+		//		msgPane.setBackground(color);
+		//		msgPane.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
 		Timeline timeline = new Timeline();
-		timeline.getKeyFrames()
-				.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
+		timeline.getKeyFrames().add(
+				new KeyFrame(Duration.millis(2500), 
+						new KeyValue(msgPane.visibleProperty(), false)));
 		timeline.play();
 	}
 
 	private String toHexString(Color color) {
-		int r = ((int) Math.round(color.getRed() * 255)) << 24;
-		int g = ((int) Math.round(color.getGreen() * 255)) << 16;
-		int b = ((int) Math.round(color.getBlue() * 255)) << 8;
+		int r = ((int) Math.round(color.getRed()     * 255)) << 24;
+		int g = ((int) Math.round(color.getGreen()   * 255)) << 16;
+		int b = ((int) Math.round(color.getBlue()    * 255)) << 8;
 		int a = ((int) Math.round(color.getOpacity() * 255));
 		return String.format("#%08X", (r + g + b + a));
 	}

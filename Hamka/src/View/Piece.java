@@ -51,7 +51,7 @@ public class Piece extends StackPane {
 
 		crownEllipse.setTranslateX((Consts.TILE_SIZE - Consts.TILE_SIZE * 0.3125 * 2) / 2);
 		crownEllipse.setTranslateY((Consts.TILE_SIZE - Consts.TILE_SIZE * 0.26 * 2) / 2);
-		
+		crownEllipse.setFill(null);
 		
 		getChildren().addAll(bgEllipse , ellipse, crownEllipse);
 
