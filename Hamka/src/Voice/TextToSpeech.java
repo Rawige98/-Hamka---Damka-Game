@@ -73,11 +73,11 @@ public class TextToSpeech {
 				tts.join();
 			
 		} catch (SynthesisException ex) {
-			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Error saying phrase.", ex);
+			ex.printStackTrace();
 		} catch (IOException ex) {
-			Logger.getLogger(getClass().getName()).log(Level.WARNING, "IO Exception", ex);
+			ex.printStackTrace();
 		} catch (InterruptedException ex) {
-			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Interrupted ", ex);
+			ex.printStackTrace();
 			tts.interrupt();
 		}
 	}

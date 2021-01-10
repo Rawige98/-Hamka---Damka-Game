@@ -47,7 +47,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -152,11 +151,6 @@ public class PlayController implements Initializable {
 
 	@FXML
 	private ImageView easy;
-    @FXML
-    private Button unmute;
-
-    @FXML
-    private Button mute;
 
 	@FXML
 	private RadioButton ans4;
@@ -167,7 +161,7 @@ public class PlayController implements Initializable {
 
 	PopQ p = new PopQ();
 	int rightA;
-	 boolean isSoundOn=true;
+
 	private Group tileGroup;
 	private Group pieceGroup;
 	private TileView[][] boardView = new TileView[Consts.ROWS][Consts.COLS];
@@ -186,7 +180,7 @@ public class PlayController implements Initializable {
 	private static TileView lastTile;
 	private boolean samePlayerTurn = false;
 	private static Color lastColor = Color.BLACK;
-	private boolean flag = false;
+	private boolean flag=false;
 	// private TimerForPlayer2 PlayerTimer2;
 
 	@FXML
@@ -255,7 +249,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-								- 1];
+						                                                                                        - 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
@@ -278,32 +272,6 @@ public class PlayController implements Initializable {
 		return boardPane;
 	}
 
-	@FXML
-	public void mute(ActionEvent event) throws Exception {
-		unmute.setVisible(false);
-		mute.setVisible(true);
-	}
-
-	@FXML
-	public void unmute(ActionEvent event) throws Exception {
-		mute.setVisible(false);
-		unmute.setVisible(true);
-
-	}
-	
-	@FXML
-	void soundClicked(MouseEvent event) {
-		if (isSoundOn) {
-			unmute.setVisible(false);
-			mute.setVisible(true);
-			isSoundOn= false;
-		} else {
-			unmute.setVisible(true);
-			mute.setVisible(false);
-			isSoundOn = true;
-		}
-	}
-	
 	private void removeBlueStroke() {
 		for (int y = 0; y < Consts.ROWS; y++) {
 			for (int x = 0; x < Consts.COLS; x++) {
@@ -333,17 +301,16 @@ public class PlayController implements Initializable {
 			int newY = toBoard(piece.getLayoutY());
 			int x0 = toBoard(piece.getOldX());
 			int y0 = toBoard(piece.getOldY());
-			MoveResult moveResult = new MoveResult(MoveType.NONE);
 			currentPlayer = PlayGameController.getInstance().getCurrentPlayer();
+			MoveResult moveResult = tryMoveTest(piece, newX, newY);
 			if (lastTile == null) {
 				lastTile = boardView[x0][y0];
 			}
 			if (lastColor.equals(Color.RED)) {
 				Piece lastPiece = lastTile.getPiece();
-				if (lastPiece.equals(piece)) 
-					moveResult = tryMoveTest(piece, newX, newY);
-			} else
-				moveResult = tryMoveTest(piece, newX, newY);
+				if (!lastPiece.equals(piece))
+					moveResult.setType(MoveType.NONE);
+			}
 
 			switch (moveResult.getType()) {
 			case NONE:
@@ -377,8 +344,8 @@ public class PlayController implements Initializable {
 				if (!Game.isOwnKill()) {
 					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 					pieceGroup.getChildren().remove(otherPiece);
+					showMsg("!! Great, nice move !!");
 					checkAnotherKill(newX, newY);
-					showMsg("!! Great, nice move !!\nNOTE: If you have another kill... Do it with the same soldier!");
 				} else {
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
 							.setPiece(null);
@@ -402,12 +369,21 @@ public class PlayController implements Initializable {
 
 	private void checkAnotherKill(int newX, int newY) {
 		// TODO Auto-generated method stub
-		// PlayGameController.getInstance().switchTurnNow();
+		//PlayGameController.getInstance().switchTurnNow();
+		if(lastColor.equals(Color.BLACK))
+			PlayGameController.getInstance().switchTurnNow();
+
 		if (PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
+			showMsg("You have another kill... Do it with the same soldier!");
 			samePlayerTurn = true;
+			PlayerTimer1.reset();
 			lastColor = Color.RED;
 		} else {
-			PlayGameController.getInstance().switchTurnNow();
+			samePlayerTurn = false;
+			if(!lastColor.equals(Color.YELLOW))
+				PlayGameController.getInstance().switchTurnNow();
+			lastColor = Color.BLACK;
+
 		}
 	}
 
@@ -488,7 +464,6 @@ public class PlayController implements Initializable {
 			return;
 		}
 	}
-
 	// move update(Model)
 	private MoveResult tryMoveTest(Piece piece, int newX, int newY) {
 		int oldX = toBoard(piece.getOldX());
@@ -523,7 +498,6 @@ public class PlayController implements Initializable {
 		}
 		updateScore(player_1);
 		updateScore(player_2);
-		System.out.println(game.getGameState());
 		return new MoveResult(result, boardView[x1][y1].getPiece());
 	}
 
@@ -758,9 +732,9 @@ public class PlayController implements Initializable {
 					second = 0;
 					mints++;
 				}
-				if (second == 10 && mints == 0)
+				if (second == 30 && mints == 0)
 					handler.showColor(Color.GREEN);
-				if (second == 20 && mints == 0)
+				if (second == 30 && mints == 1)
 					handler.showColor(Color.ORANGE);
 				Platform.runLater(() -> {
 					if (mints < 10 && second < 10) {
@@ -986,10 +960,7 @@ public class PlayController implements Initializable {
 			timeline.getKeyFrames().addAll(
 					new KeyFrame(Duration.millis(1500), new KeyValue(resultPane.visibleProperty(), false)),
 					new KeyFrame(Duration.millis(1500), new KeyValue(questionPane.visibleProperty(), false)),
-					new KeyFrame(Duration.millis(1500), e -> {
-						if (!samePlayerTurn)
-							PlayGameController.getInstance().switchTurnNow();
-					}));
+					new KeyFrame(Duration.millis(1500), e ->  {if(!samePlayerTurn)PlayGameController.getInstance().switchTurnNow();}));
 			timeline.play();
 			questionPane.setDisable(false);
 			boardPane.setDisable(false);
@@ -1001,11 +972,8 @@ public class PlayController implements Initializable {
 
 	private void showMsg(String msg) {
 		Color color = currentPlayer.getColor();
-		if(isSoundOn)
-		{
 		Voice voice = new Voice(msg);
 		voice.start();
-		}
 		if (color.equals(Color.BLACK)) {
 			msgLabel.setTextFill(Color.WHITE);
 		} else {
@@ -1023,7 +991,7 @@ public class PlayController implements Initializable {
 		// CornerRadii.EMPTY, Insets.EMPTY)));
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames()
-				.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
+		.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
 		timeline.play();
 	}
 
