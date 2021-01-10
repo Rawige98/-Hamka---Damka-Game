@@ -396,7 +396,7 @@ public class Game {
 		if(LoadedFileName==null) {
 		return "-----------------------------------------------------------------\n"
 				+"Player 1 :" + player1.getUsername() + " Player 2 :" + player2.getUsername()
-				+ "\n-----------------------------------------------------------------";
+				+" Date: "+gameDate +"\n-----------------------------------------------------------------";
 		}
 		else {
 			return "This is a loaded game from "+LoadedFileName+" file "

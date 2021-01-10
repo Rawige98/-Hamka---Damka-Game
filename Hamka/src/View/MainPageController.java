@@ -316,6 +316,7 @@ public class MainPageController implements Initializable {
 		player1 = firstPlayer;
 		player2 = secondPlayer;
 		PlayGameController.getInstance().startGame(player1,player2);
+		PlayGameController.getInstance().setHistory(false);
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));

@@ -551,19 +551,31 @@ public class SysData {
 	// ***********************************************SaveGames****************************************************************************
 	@SuppressWarnings({ "unchecked", "resource" })
 	public void saveGame(DataType d, Game game1) {
-		LoadGames(d);
+		try {
+			LoadGames(d);
+		}catch(Exception e)
+		{
+			System.out.println("the file is empty");
+		}
+		
 		String externalPath = null;
 		if (d.equals(DataType.FINISHED_GAMES)) {
 			externalPath = gameJsonPath;
 			if (!games.contains(game1)) {
 				games.add(game1);
 			}
+		
 		}
 		if (d.equals(DataType.PAUSED_GAMES)) {
 			externalPath = "src/JSON/pausedGames_json.txt";
-			if (!pausedGames.contains(game1)) {
-				pausedGames.add(game1);
-			}
+//			if (!pausedGames.contains(game1)) {
+			pausedGames.add(game1);
+//			}
+//			else
+//			{
+//				game1.setId(games.get(games.size()).getId()+1);
+//				games.add(game1);
+//			}
 		}
 		if (externalPath != null) {
 			gameJsonPath = externalPath;

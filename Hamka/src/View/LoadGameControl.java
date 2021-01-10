@@ -40,6 +40,7 @@ public class LoadGameControl implements Initializable {
 			Stage primaryStage = new Stage();
 			Parent root;
 			try {
+				PlayGameController.getInstance().setHistory(false);
 				((Stage) back.getScene().getWindow()).close();
 				root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
 				Scene scene = new Scene(root, 609, 637);
