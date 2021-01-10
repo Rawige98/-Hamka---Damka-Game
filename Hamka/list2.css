@@ -2,9 +2,14 @@
     -fx-background-color: transparent;
    -fx-font-size : 15.0;
      -fx-font-family: "Aharoni";
-     -fx-text-fill: white;
-    
+     -fx-text-fill: white;    
 }
 .list-view {
     -fx-background-color: transparent;
+
+}
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-text-fill:#a6a6a6;
+-fx-opacity:0.6;
+    -fx-background-color: linear-gradient(to right,#fff0c4,#ffce49,#d8a200);
 }

@@ -4,9 +4,15 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="json-simple-1.1.jar"/>
 	<classpathentry kind="lib" path="junit-4.10.jar"/>
+	<classpathentry kind="lib" path="gson-2.8.6 (1).jar"/>
 	<classpathentry kind="lib" path="webcam-capture-0.3.12.jar"/>
 	<classpathentry kind="lib" path="bridj-0.7.0.jar"/>
 	<classpathentry kind="lib" path="slf4j-api-1.7.2.jar"/>
-	<classpathentry kind="lib" path="gson-2.8.6 (1).jar"/>
+	<classpathentry kind="lib" path="new jars/guava-22.0 (1).jar"/>
+	<classpathentry kind="lib" path="new jars/marytts-builder-5.2-jar-with-dependencies (1).jar"/>
+	<classpathentry kind="lib" path="new jars/marytts-lang-en-5.2 (1).jar"/>
+	<classpathentry kind="lib" path="new jars/voice-cmu-rms-hsmm-5.2.jar"/>
+	<classpathentry kind="lib" path="new jars/voice-cmu-slt-hsmm-5.2.jar"/>
+	<classpathentry kind="lib" path="new jars/voice-dfki-poppy-hsmm-5.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -40,6 +40,15 @@ public class SysData {
 	private HashMap<Difficulty, ArrayList<Question>> pop;
 	private ArrayList<Game> games;
 	private ArrayList<Game> pausedGames;
+	private ArrayList<Game> statesLoadedGames;
+	public ArrayList<Game> getStatesLoadedGames() {
+		return statesLoadedGames;
+	}
+
+	public void setStatesLoadedGames(ArrayList<Game> statesLoadedGames) {
+		this.statesLoadedGames = statesLoadedGames;
+	}
+
 	private ArrayList<String> rules;
 
 	private String gameJsonPath = "src/JSON/finishedGames_json.txt";
@@ -62,6 +71,7 @@ public class SysData {
 		pausedGames = new ArrayList<Game>();
 		rules = new ArrayList<>();
 		pop = new HashMap<Difficulty, ArrayList<Question>>();
+		statesLoadedGames=new ArrayList<Game>();
 	}
 
 	// *********************************getters and
@@ -459,13 +469,14 @@ public class SysData {
 
 	@SuppressWarnings("unchecked")
 	public boolean LoadGames(DataType d) {
-		games.clear();
 		String externalPath = null;
 		ArrayList<Game> aa = new ArrayList<Game>();
 		if (d.equals(DataType.FINISHED_GAMES)) {
+			games.clear();
 			externalPath = gameJsonPath;
 		}
 		if (d.equals(DataType.PAUSED_GAMES)) {
+			pausedGames.clear();
 			externalPath = "src/JSON/pausedGames_json.txt";
 		}
 
@@ -537,15 +548,19 @@ public class SysData {
 	// ***********************************************SaveGames****************************************************************************
 	@SuppressWarnings({ "unchecked", "resource" })
 	public void saveGame(DataType d,Game game1) {   
-		if(!games.contains(game1)) {
-			games.add(game1);
-		}
+		
 		String externalPath = null;
 		if (d.equals(DataType.FINISHED_GAMES)) {
 			externalPath = gameJsonPath;
+			if(!games.contains(game1)) {
+				games.add(game1);
+			}
 		}
 		if (d.equals(DataType.PAUSED_GAMES)) {
 			externalPath = "src/JSON/pausedGames_json.txt";
+			if(!pausedGames.contains(game1)) {
+				pausedGames.add(game1);
+			}
 		}
 		if (externalPath != null) {
 			gameJsonPath = externalPath;
@@ -655,9 +670,10 @@ public class SysData {
 				isP1=false;
 			}
 			Game gameState=new Game(new Player("P1"),new Player("P2"));
+			gameState.setLoadedFileName(file.getName());
 			gameState.getBoard().setMyBoard(myBoard);
 			Game.setP1Turn(isP1);
-			pausedGames.add(gameState);
+			statesLoadedGames.add(gameState);
 			br.close();
 			return true;
 		} catch (FileNotFoundException e) {
