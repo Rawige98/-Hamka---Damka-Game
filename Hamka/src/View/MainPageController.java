@@ -319,7 +319,7 @@ public class MainPageController implements Initializable {
 		((Stage) back.getScene().getWindow()).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("/View/Play.fxml"));
-		Scene scene = new Scene(root, 612, 697);
+		Scene scene = new Scene(root, 609, 637);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Play");
 		primaryStage.show();

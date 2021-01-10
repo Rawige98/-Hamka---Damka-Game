@@ -35,7 +35,7 @@ public class TextToSpeech {
 			marytts = new LocalMaryInterface();
 			
 		} catch (MaryConfigurationException ex) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+//			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 	

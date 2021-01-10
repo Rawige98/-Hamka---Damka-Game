@@ -52,7 +52,10 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -245,7 +248,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-								- 1];
+						                                                                                        - 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
@@ -665,8 +668,7 @@ public class PlayController implements Initializable {
 
 		createBoardView();
 		colorTiles();
-		showMsg("Let's start the game");
-
+		//		showMsg("Let's start the game");
 	}
 
 	public class TimerForPlayer1 implements Runnable {
@@ -921,31 +923,12 @@ public class PlayController implements Initializable {
 		}
 		resultPane.setVisible(true);
 
-		questionPane.setDisable(true);
-		resultLbl.setText(title);
-		resultDesc.setText(description);
-		//			ImagePattern pattern = new ImagePattern(img);
-		resultIcon1.setImage(img);
-		resultIcon2.setImage(img);
-		resultPane.setStyle("-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
-		resultPane.toFront();
-
-//		try {
-//			Thread.sleep(3000);
-//			resultPane.setVisible(false);
-//
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-		
-//		
 		if (!ans1.isSelected() && !ans2.isSelected() && !ans3.isSelected() && !ans4.isSelected()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("No answer");
 			alert.setContentText("You must choose an answer!");
 			alert.show();
+			resultPane.setVisible(false);
 			return;
 		} else {
 			if (currentPlayer.equals(player_1)) {
@@ -960,9 +943,16 @@ public class PlayController implements Initializable {
 					player_2.setScore(60 - (PlayerTimer1.getSecond() + 60 * PlayerTimer1.getMints()));
 
 			}
+			questionPane.setDisable(true);
+			resultLbl.setText(title);
+			resultDesc.setText(description);
+			//			ImagePattern pattern = new ImagePattern(img);
+			resultIcon1.setImage(img);
+			resultIcon2.setImage(img);
+			resultPane.setStyle("-fx-background-radius: 100; -fx-border-radius: 100; -fx-background-color: " + toHexString(color));
+			resultPane.toFront();
+			new Voice(title).start();
 			
-			
-
 			updateScore(player_1);
 			updateScore(player_2);
 			Timeline timeline = new Timeline();
@@ -972,10 +962,7 @@ public class PlayController implements Initializable {
 					new KeyFrame(Duration.millis(1500), 
 							new KeyValue(questionPane.visibleProperty(),false)),
 					new  KeyFrame(Duration.seconds(2), e -> PlayGameController.getInstance().switchTurnNow()));
-			timeline.play();
-//			questionPane.setVisible(false);
-			
-
+			timeline.play();			
 			questionPane.setDisable(false);
 			boardPane.setDisable(false);
 			colorTiles();
