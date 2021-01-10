@@ -122,7 +122,6 @@ public class TileView extends StackPane{
 			iconImage = new Image("/images/back_to_life.png", false);
 		}else {
 			iconShape.setFill(null);
-			iconShape.toBack();
 			if(rotateTransition.getStatus() == Animation.Status.RUNNING)
 				rotateTransition.pause();
 			return;
@@ -130,7 +129,6 @@ public class TileView extends StackPane{
 		
 		ImagePattern pattern = new ImagePattern(iconImage);
 		iconShape.setFill(pattern);
-		iconShape.toFront();
 		iconShape.setStroke(Color.PINK);
 	
 		rotateTransition.setFromAngle(0);
@@ -141,7 +139,5 @@ public class TileView extends StackPane{
 			rotateTransition.play();
 		
 	}
-	
-	
 
 }
