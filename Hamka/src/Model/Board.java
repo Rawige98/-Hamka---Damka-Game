@@ -78,9 +78,8 @@ public class Board {
 			boolean isSkip = false;
 			int col = -1, row = -1;
 			int r = 0;
-			boolean flag=direction==3;
+			boolean flag = direction == 3;
 			// check if the road to the target is clear
-			System.out.println(direction);
 			while ((i != xEnd && j != yEnd) && r != 20) {
 				r++;
 				if (Math.abs(dx) == Math.abs(dy) && direction != 2 && direction != 3) {
@@ -103,7 +102,7 @@ public class Board {
 					}
 				} else {
 					if ((Math.abs(dx) + Math.abs(dy) == 8)) {
-						if (i != 0 && i != 7 && direction != 3&&flag==false) {
+						if (i != 0 && i != 7 && direction != 3 && flag == false) {
 							if (dx > 0 && dy > 0) {
 								i++;
 								j--;
@@ -143,7 +142,7 @@ public class Board {
 						}
 					}
 				}
-				direction=-1;
+				direction = -1;
 				if (i == -1)
 					i = 7;
 				if (i == 8)
@@ -154,8 +153,6 @@ public class Board {
 					j = 0;
 				dy = yEnd - j;
 				dx = xEnd - i;
-			
-				System.out.println(i+"  j"+j);
 				if (!isP1Turn && (myBoard[j][i] instanceof WhiteSoldier)
 						|| isP1Turn && (myBoard[j][i] instanceof BlackSoldier)) {
 					col = j;

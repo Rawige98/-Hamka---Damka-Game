@@ -60,20 +60,17 @@ public class PlayGameController {
 	}
 
 	public boolean switchTurnNow() {
-
 		game.switchTurn();
 		return true;
-
 	}
-
 	public boolean isLastMove() {
 		if (game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()).isEmpty()) {
 			game.finishGame(GameStatus.FINISH);
 			Game.notFinished = false;
 			SysData.getInstance().saveGame(DataType.FINISHED_GAMES, game);
 			return true;
-
 		}
+		
 		return false;
 	}
 
