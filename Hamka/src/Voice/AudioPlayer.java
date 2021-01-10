@@ -265,7 +265,6 @@ public class AudioPlayer extends Thread {
 			}
 			line.open(audioFormat);
 		} catch (Exception ex) {
-			Logger.getLogger(getClass().getName()).log(Level.WARNING, null, ex);
 			return;
 		}
 		
@@ -278,7 +277,6 @@ public class AudioPlayer extends Thread {
 			try {
 				nRead = ais.read(abData, 0, abData.length);
 			} catch (IOException ex) {
-				Logger.getLogger(getClass().getName()).log(Level.WARNING, null, ex);
 			}
 			if (nRead >= 0) {
 				line.write(abData, 0, nRead);

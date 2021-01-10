@@ -249,7 +249,7 @@ public class PlayController implements Initializable {
 						int col = toBoard(mouseY);
 						int row = toBoard(mouseX);
 						Tile tile = PlayGameController.getInstance().getGame().getBoard().getMyBoard()[row - 1][col
-								- 1];
+						                                                                                        - 1];
 						if (suggestedTileBlueMove().contains(tile)) {
 							Piece newPiece = makePiece(
 									(currentPlayer.equals(player_1) ? PieceType.GREY : PieceType.WHITE),
@@ -344,8 +344,8 @@ public class PlayController implements Initializable {
 				if (!Game.isOwnKill()) {
 					boardView[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
 					pieceGroup.getChildren().remove(otherPiece);
+					showMsg("!! Great, nice move !!");
 					checkAnotherKill(newX, newY);
-					showMsg("!! Great, nice move !!\nNOTE: If you have another kill... Do it with the same soldier!");
 				} else {
 					boardView[toBoard(Game.getKilledSoldier().getCols())][toBoard(Game.getKilledSoldier().getRows())]
 							.setPiece(null);
@@ -370,11 +370,20 @@ public class PlayController implements Initializable {
 	private void checkAnotherKill(int newX, int newY) {
 		// TODO Auto-generated method stub
 		//PlayGameController.getInstance().switchTurnNow();
+		if(lastColor.equals(Color.BLACK))
+			PlayGameController.getInstance().switchTurnNow();
+
 		if (PlayGameController.getInstance().haveAnotherKill(newX, newY)) {
+			showMsg("You have another kill... Do it with the same soldier!");
 			samePlayerTurn = true;
+			PlayerTimer1.reset();
 			lastColor = Color.RED;
 		} else {
-			PlayGameController.getInstance().switchTurnNow();
+			samePlayerTurn = false;
+			if(!lastColor.equals(Color.YELLOW))
+				PlayGameController.getInstance().switchTurnNow();
+			lastColor = Color.BLACK;
+
 		}
 	}
 
@@ -639,11 +648,7 @@ public class PlayController implements Initializable {
 		player_2 = PlayGameController.getInstance().getGame().getPlayer2();
 		game = PlayGameController.getInstance().getGame();
 		Game.setP1Turn(game.isP1Turn());
-		if(Game.getIsP1Turn())
 		currentPlayer = player_1;
-		else {
-			currentPlayer=player_2;
-		}
 		if (WebCamPreviewController.profilePic.getImage() != null) {
 			player1image.setFill(new ImagePattern(WebCamPreviewController.profilePic.getImage()));
 			player1image.setStroke(player_1.getColor());
@@ -722,9 +727,9 @@ public class PlayController implements Initializable {
 					second = 0;
 					mints++;
 				}
-				if (second == 10 && mints == 0)
+				if (second == 30 && mints == 0)
 					handler.showColor(Color.GREEN);
-				if (second == 20 && mints == 0)
+				if (second == 30 && mints == 1)
 					handler.showColor(Color.ORANGE);
 				Platform.runLater(() -> {
 					if (mints < 10 && second < 10) {
@@ -981,7 +986,7 @@ public class PlayController implements Initializable {
 		// CornerRadii.EMPTY, Insets.EMPTY)));
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames()
-				.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
+		.add(new KeyFrame(Duration.millis(2500), new KeyValue(msgPane.visibleProperty(), false)));
 		timeline.play();
 	}
 
