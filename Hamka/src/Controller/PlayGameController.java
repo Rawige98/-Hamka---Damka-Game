@@ -60,19 +60,15 @@ public class PlayGameController {
 	}
 
 	public boolean switchTurnNow() {
-
 		game.switchTurn();
 		return true;
-
 	}
-
 	public boolean isLastMove() {
-		if (game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()).isEmpty()) {
+		if (game.getBoard().checkAvailableMoves(!Game.getIsP1Turn()).isEmpty()||game.getBoard().checkAvailableMoves(Game.getIsP1Turn()).isEmpty()) {
 			game.finishGame(GameStatus.FINISH);
 			Game.notFinished = false;
 			SysData.getInstance().saveGame(DataType.FINISHED_GAMES, game);
 			return true;
-
 		}
 		return false;
 	}
@@ -143,10 +139,10 @@ public class PlayGameController {
 	public boolean checkIfQueen(int x, int y) {
 		return game.getBoard().getMyBoard()[x][y].isQueen();
 	}
-
 	public boolean haveAnotherKill(int x, int y) {
 		Tile currTile = game.getBoard().getTile(y, x);
-		ArrayList<Tile> suggestedSkips = game.getBoard().avilableSkipsForTile(currTile, Game.getIsP1Turn());
+		System.out.println(Game.getIsP1Turn());
+		ArrayList<Tile> suggestedSkips = game.getBoard().avilableSkipsForTile(currTile,Game.getIsP1Turn());
 		return !suggestedSkips.isEmpty();
 	}
 }
