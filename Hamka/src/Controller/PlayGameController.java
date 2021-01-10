@@ -141,7 +141,6 @@ public class PlayGameController {
 	}
 	public boolean haveAnotherKill(int x, int y) {
 		Tile currTile = game.getBoard().getTile(y, x);
-		System.out.println(Game.getIsP1Turn());
 		ArrayList<Tile> suggestedSkips = game.getBoard().avilableSkipsForTile(currTile,Game.getIsP1Turn());
 		return !suggestedSkips.isEmpty();
 	}
