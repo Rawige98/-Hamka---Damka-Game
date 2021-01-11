@@ -37,6 +37,8 @@ public class LoadGameControl implements Initializable {
 			PlayGameController.getInstance().setGame(game);
 			PlayGameController.getInstance().setPlayer1(game.getPlayer1());
 			PlayGameController.getInstance().setPlayer2(game.getPlayer2());
+			WebCamPreviewController.profilePic.setImage(null);
+			WebCamPreviewController.profilePic2.setImage(null);
 			Stage primaryStage = new Stage();
 			Parent root;
 			try {
