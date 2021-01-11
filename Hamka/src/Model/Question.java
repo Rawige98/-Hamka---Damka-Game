@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import Utils.Consts;
 import Utils.Difficulty;
 import Utils.E_Teams;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 
 
@@ -39,7 +41,11 @@ public class Question {
 			this.answers.add(answerToAdd);
 			return true;
 		}
-		return false;
+		else
+		{
+			return false;
+		}
+		
 	}
 
     /**

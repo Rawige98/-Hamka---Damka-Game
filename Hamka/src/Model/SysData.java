@@ -561,9 +561,8 @@ public class SysData {
 		String externalPath = null;
 		if (d.equals(DataType.FINISHED_GAMES)) {
 			externalPath = gameJsonPath;
-			if (!games.contains(game1)) {
 				games.add(game1);
-			}
+			
 		
 		}
 		if (d.equals(DataType.PAUSED_GAMES)) {
