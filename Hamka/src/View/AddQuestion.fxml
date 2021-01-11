@@ -69,7 +69,7 @@
       <RadioButton fx:id="r3" layoutX="310.0" layoutY="256.0" mnemonicParsing="false" toggleGroup="$right" />
       <RadioButton fx:id="r2" layoutX="310.0" layoutY="220.0" mnemonicParsing="false" toggleGroup="$right" />
       <RadioButton fx:id="r4" layoutX="310.0" layoutY="293.0" mnemonicParsing="false" toggleGroup="$right" />
-      <Button layoutX="345.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="33.0" prefWidth="37.0" style="-fx-background-color: white; -fx-background-radius: 50;">
+      <Button layoutX="345.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="33.0" prefWidth="37.0" style="-fx-background-color: white; -fx-background-radius: 50;">
          <graphic>
             <ImageView fitHeight="24.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
