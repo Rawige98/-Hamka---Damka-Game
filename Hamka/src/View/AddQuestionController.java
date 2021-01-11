@@ -74,6 +74,16 @@ public class AddQuestionController implements Initializable {
 	public void closeWindow() {
 		((Stage) add.getScene().getWindow()).close();
 	}
+	public void back(ActionEvent event) throws Exception {
+	closeWindow();
+	Stage primaryStage = new Stage();
+	Parent root = FXMLLoader.load(getClass().getResource("/View/Questions.fxml"));
+	Scene scene = new Scene(root, 456, 450);
+	primaryStage.setScene(scene);
+	primaryStage.setTitle("questions");
+	primaryStage.show();
+	}
+	
 
 	public void add(ActionEvent event) throws Exception {
 		String ques = text.getText();
