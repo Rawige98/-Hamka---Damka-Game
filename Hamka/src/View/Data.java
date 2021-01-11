@@ -90,6 +90,8 @@ public class Data {
 				PlayGameController.getInstance().setPlayer1(getCellGame().getPlayer1());
 				PlayGameController.getInstance().setPlayer2(getCellGame().getPlayer2());
 				PlayGameController.getInstance().setHistory(true);
+				WebCamPreviewController.profilePic.setImage(null);
+				WebCamPreviewController.profilePic2.setImage(null);
 				Stage primaryStage = new Stage();
 				Parent root;
 				try {
