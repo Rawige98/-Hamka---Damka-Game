@@ -131,20 +131,30 @@ public class AddQuestionController implements Initializable {
 				if(q.getAnswers().contains(answer1) ||q.getAnswers().contains(answer2) ||q.getAnswers().contains(answer3)
 						||q.getAnswers().contains(answer4))
 				{
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("same answer");
-					alert.setContentText("You must enter different answers!");
-					alert.show();
+//					q.getAnswers().clear();
+//					Alert alert = new Alert(AlertType.ERROR);
+//					alert.setTitle("same answer");
+//					alert.setContentText("You must enter different answers!");
+//					alert.show();
 					 
 				}
 			
 				else
 				{
+					if(!q.addAnswer(answer1)|| !q.addAnswer(answer2)|| !q.addAnswer(answer3)|| !q.addAnswer(answer4))
+					{
+						q.getAnswers().clear();
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("same answer");
+						alert.setContentText("You must enter different answers!");
+						alert.show();
+						
+					}
+					else
+					{
+					
 				
-				q.addAnswer(answer1);
-				q.addAnswer(answer2);
-				q.addAnswer(answer3);
-				q.addAnswer(answer4);
+				
 				SysData.getInstance().addQuestion(q);
 				//SysData.getInstance().loadQuestions(null);
 				//SysData.getInstance().saveQuestions(null);
@@ -155,6 +165,7 @@ public class AddQuestionController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.setTitle("questions");
 				primaryStage.show();
+					}
 				}
 			}
 			
