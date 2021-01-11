@@ -150,12 +150,20 @@ public class AddQuestionController implements Initializable {
 						alert.show();
 						
 					}
+					boolean isAdded=SysData.getInstance().addQuestion(q);
+					if(!isAdded)
+					{
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("same question exists");
+						alert.setContentText("You must enter different question!");
+						alert.show();
+						
+					}
 					else
 					{
 					
 				
-				
-				SysData.getInstance().addQuestion(q);
+			
 				//SysData.getInstance().loadQuestions(null);
 				//SysData.getInstance().saveQuestions(null);
 				closeWindow();

@@ -254,17 +254,23 @@ public class SysData {
 
 	// ************************************************add
 	// Question****************************************************************************
-	public void addQuestion(Question question) {
+	public boolean addQuestion(Question question) {
 		ArrayList<Question> myArray = questions.get(question.getDifficulty());
 		if (myArray == null) {
 			myArray = new ArrayList<Question>();
 			myArray.add(question);
+			questions.put(question.getDifficulty(), myArray);
+			saveQuestions(null);
+			return true;
 		} else if (!myArray.contains(question)) {
 			myArray.add(question);
+			questions.put(question.getDifficulty(), myArray);
+			saveQuestions(null);
+			return true;
 		}
-		questions.put(question.getDifficulty(), myArray);
-		saveQuestions(null);
+		
 
+		return false;
 	}
 
 	// ************************************************remove
